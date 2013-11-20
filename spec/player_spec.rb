@@ -20,13 +20,16 @@ describe 'Player' do
       @board.filled_spaces['1B'].should == 'O'
     end
 
-    it "calls bad cell message if cell input is taken" do
+    # it "calls taken cell message if cell input is taken" do
+    #   @player_o.add_marker('1B')
+    #   @player_x.add_marker('1B')
+    #   @board.should receive(:taken_cell_message).with('1B')
+    # end
 
-    end
-
-    it "calls bad cell message if cell input is taken" do
-
-    end
+    # it "calls bad cell message if cell input is taken" do
+    #   @player_x.add_marker('test')
+    #   @board.should receive(:bad_cell_message).with('test')
+    # end
 
   end
 

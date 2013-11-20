@@ -10,13 +10,11 @@ class Player
   end
 
   def add_marker(cell)
-    if board.available_cell?(cell)
-      board.filled_spaces[cell] = self.marker
-      true
-    else
-      board.bad_cell_message
-      false
-    end
+    board.filled_spaces[cell] = self.marker
+  end
+
+  def remove_marker(cell)
+    board.filled_spaces[cell] = nil
   end
 
   def next_player_turn
