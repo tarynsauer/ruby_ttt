@@ -13,7 +13,7 @@ class Game
     @player_one.opponent = @player_two
     @player_two.opponent = @player_one
     @game_over  = false
-    @ai = AI.new
+    @ai = AI.new(@board)
   end
 
   def who_goes_first

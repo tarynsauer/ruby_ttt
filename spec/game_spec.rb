@@ -77,7 +77,7 @@ describe 'Game' do
          '1B' => 'X', '2B' => nil, '3B' => 'X',
          '1C' => 'O', '2C' => 'X', '3C' => nil }, false]
     ].each do |board_filled_spaces, expected_outcome|
-      it "changes #{board_filled_spaces} into #{expected_outcome}" do
+      it "gets #{board_filled_spaces} and returns #{expected_outcome}" do
         @board.filled_spaces = board_filled_spaces
         @game.winning_move?('O').should == expected_outcome
       end
