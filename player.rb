@@ -9,14 +9,6 @@ class Player
     @opponent = nil
   end
 
-  def add_marker(cell)
-    board.filled_spaces[cell] = self.marker
-  end
-
-  def remove_marker(cell)
-    board.filled_spaces[cell] = nil
-  end
-
   def next_player_turn
     self.turn = 0
     if self.opponent

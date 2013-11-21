@@ -13,7 +13,7 @@ class Game
     @player_one.opponent = @player_two
     @player_two.opponent = @player_one
     @game_over  = false
-    @ai = AI.new(@board)
+    @ai = AI.new
   end
 
   def who_goes_first
@@ -26,31 +26,14 @@ class Game
     end
   end
 
-  def winning_move?(marker)
-    winning_lines = [['1A', '1B', '1C'], ['2A', '2B', '2C'], ['3A', '3B', '3C'],
-                     ['1A', '2A', '3A'], ['1B', '2B', '3B'], ['1C', '2C', '3C'],
-                     ['1C', '2B', '3A'], ['1A', '2B', '3C']]
-    board_markers = board.filled_spaces.select { |k,v| v == marker }.keys
-    winning_lines.each do |line|
-      if (line & board_markers).length == 3
-        return true
-      end
-    end
-    false
-  end
-
   def game_status_check
-    if winning_move?(current_player.marker)
+    if board.winning_move?(current_player.marker)
       board.winning_game_message(current_player)
       exit_game
-    elsif !moves_remaining?
+    elsif !board.moves_remaining?
       board.tie_game_message
       exit_game
     end
-  end
-
-  def moves_remaining?
-    board.filled_spaces.has_value?(nil)
   end
 
   def current_player
@@ -72,20 +55,27 @@ class Game
   end
 
   def play!
-    who_goes_first
+    player_one.turn = 1
     until game_over
       board.next_move_message(current_player)
       board.display_board
-      user_input = gets.chomp
-      move = clean_up_input(user_input)
-      if board.available_cell?(move)
-        current_player.add_marker(move)
+      if current_player.player_type == "human"
+        user_input = gets.chomp
+        move = clean_up_input(user_input)
+        if board.available_cell?(move)
+          board.add_marker(move, current_player.marker)
+          game_status_check
+          current_player.next_player_turn
+        elsif board.valid_cell?(move)
+          board.taken_cell_message(move)
+        else
+          board.bad_cell_message(move)
+        end
+      else
+        move = ai.computer_move(current_player, self)
+        board.add_marker(move, current_player.marker)
         game_status_check
         current_player.next_player_turn
-      elsif board.valid_cell?(move)
-        board.taken_cell_message(move)
-      else
-        board.bad_cell_message(move)
       end
     end
   end
@@ -93,4 +83,4 @@ class Game
 end
 
 # board = Board.new
-# Game.new('human', 'human', board).play!
+# Game.new('human', 'computer', board).play!

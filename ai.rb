@@ -1,48 +1,45 @@
 class AI
 
-  attr_accessor :board
-  def initialize(board)
-    @board = board
+  def computer_move(player, game)
+    test_board = game.board.dup
+    move = get_best_move(test_board, player, game)
+    game.board.add_marker(move, player.marker)
   end
 
-  def get_free_positions
-    board.filled_spaces.select {|k,v| v.nil?}
-  end
-
-  def get_computer_move(player, game)
-    original_board = board.filled_spaces
-    possible_moves = get_free_positions
+  def get_best_move(board, player, game)
+    return board.random_cell if board.get_free_positions.empty?
+    possible_moves = board.get_free_positions
     possible_moves.each do |cell, score|
-      possible_moves[cell] = get_score(player, game, cell, score = 0)
+      possible_moves[cell] = minimax_score(game, board, player, cell)
     end
-    board = original_board
+    return possible_moves
     moves = possible_moves.max_by{ |cell, score| score }
-    moves.first
+    return moves.first
   end
 
-  def get_score(player, game, cell, score)
-    while game.moves_remaining?
-      player.add_marker(cell)
-      if game.winning_move?(player.marker)
-        player.remove_marker(cell)
-        return score += 1
-      else
-        remaining_moves = get_free_positions
-        remaining_moves.each_key do |cell_1|
-          player.opponent.add_marker(cell_1)
-          if game.winning_move?(player.opponent.marker)
-            player.remove_marker(cell_1)
-            return score -= 1
-          else
-            remaining_moves = get_free_positions
-            remaining_moves.each_key do |cell_2|
-              get_score(player, game, cell_2, score)
-            end
-          end
-        end
+  def minimax_score(game, board, player, cell)
+    board.add_marker(cell, player.marker)
+    return 1 if board.winning_move?(player.marker) && player == game.current_player
+    return -1 if board.winning_move?(player.marker)
+    return 0 if board.moves_remaining? == false
+
+    if player == game.current_player
+      best = -999
+      board.get_free_positions.each_key do |cell_1|
+        val = minimax_score(game, board, player.opponent, cell_1)
+        best = [best, val].max
+        board.remove_marker(cell_1)
       end
+      return best
+    else
+      best = 999
+      board.get_free_positions.each_key do |cell_2|
+        val = minimax_score(game, board, player, cell_2)
+        best = [best, val].min
+        board.remove_marker(cell_2)
+      end
+      return best
     end
-    score
   end
 
 end

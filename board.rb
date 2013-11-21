@@ -67,4 +67,44 @@ class Board
   def bad_cell_message(cell)
     print "#{cell} is not a valid cell ID!\n"
   end
+
+  def add_marker(cell, marker)
+    filled_spaces[cell] = marker
+  end
+
+  def remove_marker(cell)
+    filled_spaces[cell] = nil
+  end
+
+  def moves_remaining?
+    filled_spaces.has_value?(nil)
+  end
+
+  def winning_move?(marker)
+    winning_lines = [['1A', '1B', '1C'], ['2A', '2B', '2C'], ['3A', '3B', '3C'],
+                     ['1A', '2A', '3A'], ['1B', '2B', '3B'], ['1C', '2C', '3C'],
+                     ['1C', '2B', '3A'], ['1A', '2B', '3C']]
+    board_markers = filled_spaces.select { |k,v| v == marker }.keys
+    winning_lines.each do |line|
+      if (line & board_markers).length == 3
+        return true
+      end
+    end
+    false
+  end
+
+  def get_free_positions
+    filled_spaces.select {|k,v| v.nil?}
+  end
+
+  def empty?
+    get_free_positions.length == 9
+  end
+
+  def random_cell
+    cells = get_free_positions.keys
+    cells_size = cells.length - 1
+    cells[rand(cells_size)]
+  end
+
 end
