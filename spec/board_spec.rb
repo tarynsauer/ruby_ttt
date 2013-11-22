@@ -158,4 +158,41 @@ describe 'Board' do
 
   end
 
+  describe '#game_over?' do
+    before :each do
+      @board = Board.new
+      @game = Game.new('human', 'human', @board)
+      @player_x = @game.player_one
+      @player_o = @game.player_two
+    end
+
+    it "returns true for win" do
+      @board.filled_spaces = {
+        "1A"=> 'O', "2A"=>'O', "3A"=>'O',
+        "1B"=> nil, "2B"=>'X', "3B"=> 'X',
+        "1C"=> nil, "2C"=>nil, "3C"=> nil
+      }
+      @board.game_over?.should == true
+    end
+
+    it "returns false for neither win nor tie" do
+      @board.filled_spaces = {
+        "1A"=> nil, "2A"=>'O', "3A"=>'O',
+        "1B"=> nil, "2B"=>'X', "3B"=> 'X',
+        "1C"=> nil, "2C"=>nil, "3C"=> nil
+      }
+      @board.game_over?.should == false
+    end
+
+    it "returns true for tie" do
+      @board.filled_spaces = {
+        "1A"=> 'X', "2A"=>'O', "3A"=>'O',
+        "1B"=> 'O', "2B"=>'X', "3B"=> 'X',
+        "1C"=> 'X', "2C"=>'O', "3C"=> 'X'
+      }
+      @board.game_over?.should == true
+    end
+
+  end
+
 end

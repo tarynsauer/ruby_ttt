@@ -45,6 +45,7 @@ class Board
   end
 
   def first_move_message(player)
+    print "\n\n************ New Game ************\n"
     print "Player '#{player.marker}' goes first.\n"
   end
 
@@ -94,7 +95,7 @@ class Board
   end
 
   def game_over?
-    !moves_remaining?
+    !moves_remaining? || winning_move?('X')|| winning_move?('O')
   end
 
   def get_free_positions

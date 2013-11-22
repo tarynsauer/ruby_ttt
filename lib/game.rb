@@ -67,7 +67,7 @@ class Game
   end
 
   def play!
-    player_one.turn = 1
+    who_goes_first
     until game_over
       board.next_move_message(current_player)
       board.display_board
