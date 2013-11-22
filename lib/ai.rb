@@ -24,13 +24,13 @@ class AI
     return get_score(game, board, player) if board.game_over?
 
     if player == game.current_player
-      best = []
+      worst = []
       board.get_free_positions.each_key do |cell_1|
         val = minimax_score(game, board, player.opponent, cell_1, depth += 1)
-        best << (val.to_f / depth)
+        worst << (val.to_f / depth)
         board.remove_marker(cell_1)
       end
-      return (best.min)
+      return (worst.min)
     else
       best = []
       board.get_free_positions.each_key do |cell_2|

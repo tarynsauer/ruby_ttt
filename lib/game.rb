@@ -26,6 +26,18 @@ class Game
     end
   end
 
+  def self.get_player_type(marker)
+    print "For player " + "'#{marker}'," + " enter 'human' or 'computer.'\n"
+    type = gets.chomp.downcase
+    if (type == 'human') || (type == 'computer')
+      print "Player " + "'#{marker}' " + "is #{type}.\n"
+    else
+      print "#{type} is not a valid option."
+      self.get_player_type(marker)
+    end
+    type
+  end
+
   def game_status_check
     if board.winning_move?(current_player.marker)
       board.winning_game_message(current_player)
@@ -82,5 +94,6 @@ class Game
 
 end
 
-# board = Board.new
-# Game.new('human', 'computer', board).play!
+player_1 = Game.get_player_type('X')
+player_2 = Game.get_player_type('O')
+Game.new(player_1, player_2, Board.new).play!
