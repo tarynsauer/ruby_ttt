@@ -100,4 +100,67 @@ describe 'AI' do
       @game.ai.get_best_move(@game, @board, @player_x).should == ("1A" || "3A" || "1C" || "3C")
     end
 
+    it "chooses win when same cell is block and win" do
+      @board.filled_spaces = {
+        "1A"=> nil, "2A"=> 'O', "3A"=> 'O',
+        "1B"=> nil, "2B"=> 'X', "3B"=> nil,
+        "1C"=> nil, "2C"=> 'O', "3C"=> 'X'
+      }
+      @player_x.turn = 1
+      @game.ai.get_best_move(@game, @board, @player_x).should == "1A"
+    end
+
+    it "chooses center cell for the win" do
+      @board.filled_spaces = {
+        "1A"=> 'X', "2A"=> 'O', "3A"=> 'O',
+        "1B"=> nil, "2B"=> nil, "3B"=> nil,
+        "1C"=> nil, "2C"=> 'O', "3C"=> 'X'
+      }
+      @player_x.turn = 1
+      @game.ai.get_best_move(@game, @board, @player_x).should == "2B"
+    end
+  end
+
+  describe '#get_best_move -- game walkthrough' do
+    it "chooses pre-emptive block/win move" do
+      @board.filled_spaces = {
+        "1A"=> 'X', "2A"=> nil, "3A"=> 'O',
+        "1B"=> nil, "2B"=> nil, "3B"=> nil,
+        "1C"=> nil, "2C"=> nil, "3C"=> nil
+      }
+      @player_x.turn = 1
+      @game.ai.get_best_move(@game, @board, @player_x).should == "1C"
+    end
+
+    it "chooses pre-emptive block/win move" do
+      @board.filled_spaces = {
+        "1A"=> 'X', "2A"=> nil, "3A"=> 'O',
+        "1B"=> 'O', "2B"=> nil, "3B"=> nil,
+        "1C"=> 'X', "2C"=> nil, "3C"=> nil
+      }
+      @player_x.turn = 1
+      @game.ai.get_best_move(@game, @board, @player_x).should == "3C"
+    end
+
+    it "chooses win" do
+      @board.filled_spaces = {
+        "1A"=> 'X', "2A"=> nil, "3A"=> 'O',
+        "1B"=> 'O', "2B"=> nil, "3B"=> nil,
+        "1C"=> 'X', "2C"=> 'O', "3C"=> 'X'
+      }
+      @player_x.turn = 1
+      @game.ai.get_best_move(@game, @board, @player_x).should == "2B"
+    end
+
+    it "chooses win" do
+      @board.filled_spaces = {
+        "1A"=> 'X', "2A"=> nil, "3A"=> 'O',
+        "1B"=> 'O', "2B"=> 'O', "3B"=> nil,
+        "1C"=> 'X', "2C"=> nil, "3C"=> 'X'
+      }
+      @player_x.turn = 1
+      @game.ai.get_best_move(@game, @board, @player_x).should == "2C"
+    end
+  end
+
 end

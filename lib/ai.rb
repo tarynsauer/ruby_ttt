@@ -1,6 +1,7 @@
 class AI
 
   def computer_move(player, game)
+    ###return game.board.random_cell if game.board.empty?  ### This line is optional but helps reduce lag.
     test_board = game.board.dup
     test_board.filled_spaces = game.board.filled_spaces.dup
     move = get_best_move(game, test_board, player)
@@ -13,7 +14,6 @@ class AI
     possible_moves.each_key do |cell|
       possible_moves[cell] = minimax_score(game, board, player, cell, depth)
     end
-    # return possible_moves
     moves = possible_moves.max_by { |cell, score| score }
     return moves.first
   end
@@ -35,14 +35,14 @@ class AI
       end
     else
       best_score = -999
-      board.get_free_positions.each_key do |cell1|
-        board.add_marker(cell1, player.opponent.marker)
-        score = minimax_score(game, board, player.opponent, cell1, depth += 1)
+      board.get_free_positions.each_key do |cell2|
+        board.add_marker(cell2, player.opponent.marker)
+        score = minimax_score(game, board, player.opponent, cell2, depth += 1)
         score = (score/depth.to_f)
         if score > best_score
           best_score = score
         end
-        board.remove_marker(cell1)
+        board.remove_marker(cell2)
       end
     end
     board.remove_marker(cell)
