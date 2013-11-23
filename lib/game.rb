@@ -84,7 +84,7 @@ class Game
           board.bad_cell_message(move)
         end
       else
-        move = ai.computer_move(current_player, self)
+        move = ai.computer_move(board, current_player)
         board.add_marker(move, current_player.marker)
         game_status_check
         current_player.next_player_turn
@@ -94,6 +94,6 @@ class Game
 
 end
 
-player_1 = Game.get_player_type('X')
-player_2 = Game.get_player_type('O')
-Game.new(player_1, player_2, Board.new).play!
+# player_1 = Game.get_player_type('X')
+# player_2 = Game.get_player_type('O')
+# Game.new(player_1, player_2, Board.new).play!
