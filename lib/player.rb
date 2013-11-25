@@ -16,12 +16,4 @@ class Player
     end
   end
 
-  def color
-    if self.turn == 1
-      1
-    else
-      -1
-    end
-  end
-
 end

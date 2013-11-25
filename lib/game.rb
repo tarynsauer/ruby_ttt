@@ -13,17 +13,16 @@ class Game
     @player_one.opponent = @player_two
     @player_two.opponent = @player_one
     @game_over  = false
-    @ai = AI.new
+    @ai         = AI.new
   end
 
   def who_goes_first
     if rand(0..1) == 1
       player_one.turn = 1
-      board.first_move_message(player_one)
     else
       player_two.turn = 1
-      board.first_move_message(player_two)
     end
+    board.first_move_message(current_player)
   end
 
   def self.get_player_type(marker)
@@ -49,11 +48,7 @@ class Game
   end
 
   def current_player
-    if player_one.turn == 1
-      player_one
-    else
-      player_two
-    end
+    player_one.turn == 1 ? player_one : player_two
   end
 
   def standardize(input)
