@@ -14,6 +14,7 @@ class Game
     @player_two.opponent = @player_one
     @game_over  = false
     @ai         = AI.new
+    who_goes_first
   end
 
   def who_goes_first
@@ -31,17 +32,32 @@ class Game
     if (type == 'human') || (type == 'computer')
       print "Player " + "'#{marker}' " + "is #{type}.\n"
     else
-      print "#{type} is not a valid option."
-      self.get_player_type(marker)
+      self.invalid_type(type, marker)
     end
     type
   end
 
-  def game_status_check
+  def self.invalid_type(type, marker)
+    print "#{type} is not a valid option."
+    self.get_player_type(marker)
+  end
+
+  def game_status_update
+    winner_check
+    tie_game_check
+    board.next_move_message(current_player)
+    board.display_board
+  end
+
+  def winner_check
     if board.winning_move?(current_player.marker)
       board.winning_game_message(current_player)
       exit_game
-    elsif !board.moves_remaining?
+    end
+  end
+
+  def tie_game_check
+    if !board.moves_remaining?
       board.tie_game_message
       exit_game
     end
@@ -61,34 +77,37 @@ class Game
     exit
   end
 
+  def check_move(cell)
+    if board.available_cell?(cell)
+      board.add_marker(cell, current_player.marker)
+      current_player.next_player_turn
+    elsif board.taken_cell_message(cell)
+      board.valid_cell?(cell)
+    else
+      board.bad_cell_message(cell)
+    end
+  end
+
+  def get_next_move
+    if current_player.player_type == "human"
+      move = standardize(gets.chomp)
+      check_move(move)
+    else
+      move = ai.computer_move(board, current_player)
+      board.add_marker(move, current_player.marker)
+      current_player.next_player_turn
+    end
+  end
+
   def play!
-    who_goes_first
     until game_over
-      board.next_move_message(current_player)
-      board.display_board
-      if current_player.player_type == "human"
-        user_input = gets.chomp
-        move = standardize(user_input)
-        if board.available_cell?(move)
-          board.add_marker(move, current_player.marker)
-          game_status_check
-          current_player.next_player_turn
-        elsif board.valid_cell?(move)
-          board.taken_cell_message(move)
-        else
-          board.bad_cell_message(move)
-        end
-      else
-        move = ai.computer_move(board, current_player)
-        board.add_marker(move, current_player.marker)
-        game_status_check
-        current_player.next_player_turn
-      end
+      game_status_update
+      get_next_move
     end
   end
 
 end
 
-# player_1 = Game.get_player_type('X')
-# player_2 = Game.get_player_type('O')
-# Game.new(player_1, player_2, Board.new).play!
+player_1 = Game.get_player_type('X')
+player_2 = Game.get_player_type('O')
+Game.new(player_1, player_2, Board.new).play!

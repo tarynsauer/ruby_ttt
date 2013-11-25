@@ -31,17 +31,15 @@ class AI
 
   def apply_minimax(board, player, cell, depth)
     return get_score(board, player) if board.game_over?(player)
-    player.turn == 1 ? minmax_score(board, player, depth).min : minmax_score(board, player, depth).max
+    player.turn == 1 ? minimax(board, player, depth).min : minimax(board, player, depth).max
   end
 
-  def minmax_score(board, player, depth)
-    best_score = []
+  def minimax(board, player, depth, best_score=[])
     board.open_cells.each_key do |cell1|
       board.add_marker(cell1, player.opponent.marker)
-      score = apply_minimax(board, player.opponent, cell1, depth += 1)
-      score = (score/depth.to_f)
-      best_score.push(score)
+      score = (apply_minimax(board, player.opponent, cell1, depth += 1)/depth.to_f)
       board.remove_marker(cell1)
+      best_score.push(score)
     end
     best_score
   end
