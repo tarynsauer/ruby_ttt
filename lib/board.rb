@@ -1,9 +1,9 @@
 class Board
-  attr_accessor :filled_spaces
+  attr_accessor :all_cells
   def initialize
-    @filled_spaces = { '1A' => nil, '2A' => nil, '3A' => nil,
-                       '1B' => nil, '2B' => nil, '3B' => nil,
-                       '1C' => nil, '2C' => nil, '3C' => nil }
+    @all_cells = { '1A' => nil, '2A' => nil, '3A' => nil,
+                   '1B' => nil, '2B' => nil, '3B' => nil,
+                   '1C' => nil, '2C' => nil, '3C' => nil }
   end
 
   def display_board
@@ -29,19 +29,19 @@ class Board
   end
 
   def show_marker(cell)
-    if filled_spaces[cell].nil?
+    if all_cells[cell].nil?
       ' '
     else
-      filled_spaces[cell]
+      all_cells[cell]
     end
   end
 
   def available_cell?(cell)
-    valid_cell?(cell) && filled_spaces[cell].nil?
+    valid_cell?(cell) && all_cells[cell].nil?
   end
 
   def valid_cell?(cell)
-    filled_spaces.has_key?(cell)
+    all_cells.has_key?(cell)
   end
 
   def first_move_message(player)
@@ -70,22 +70,22 @@ class Board
   end
 
   def add_marker(cell, marker)
-    filled_spaces[cell] = marker
+    all_cells[cell] = marker
   end
 
   def remove_marker(cell)
-    filled_spaces[cell] = nil
+    all_cells[cell] = nil
   end
 
   def moves_remaining?
-    filled_spaces.has_value?(nil)
+    all_cells.has_value?(nil)
   end
 
   def winning_move?(marker)
     winning_lines = [['1A', '1B', '1C'], ['2A', '2B', '2C'], ['3A', '3B', '3C'],
                      ['1A', '2A', '3A'], ['1B', '2B', '3B'], ['1C', '2C', '3C'],
                      ['1C', '2B', '3A'], ['1A', '2B', '3C']]
-    board_markers = filled_spaces.select { |k,v| v == marker }.keys
+    board_markers = all_cells.select { |k,v| v == marker }.keys
     winning_lines.each do |line|
       if (line & board_markers).length == 3
         return true
@@ -94,22 +94,22 @@ class Board
     false
   end
 
-  def game_over?
-    !moves_remaining? || winning_move?('X')|| winning_move?('O')
+  def game_over?(player)
+    !moves_remaining? || winning_move?(player.marker)|| winning_move?(player.opponent.marker)
   end
 
-  def get_free_positions
-    filled_spaces.select {|k,v| v.nil?}
+  def open_cells
+    all_cells.select {|k,v| v.nil?}
   end
 
   def empty?
-    get_free_positions.length == 9
+    open_cells.length == 9
   end
 
   def random_cell
-    cells = get_free_positions.keys
-    cells_size = cells.length - 1
-    cells[rand(cells_size)]
+    cells = open_cells.keys
+    cells_count = cells.length - 1
+    cells[rand(cells_count)]
   end
 
 end

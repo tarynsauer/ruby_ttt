@@ -56,7 +56,7 @@ class Game
     end
   end
 
-  def clean_up_input(input)
+  def standardize(input)
     input.split('').sort.join('').upcase
   end
 
@@ -73,7 +73,7 @@ class Game
       board.display_board
       if current_player.player_type == "human"
         user_input = gets.chomp
-        move = clean_up_input(user_input)
+        move = standardize(user_input)
         if board.available_cell?(move)
           board.add_marker(move, current_player.marker)
           game_status_check

@@ -11,7 +11,7 @@ describe 'AI' do
 
   describe '#get_best_move' do
     it "takes winning space when one is available" do
-      @board.filled_spaces = {
+      @board.all_cells = {
         "1A"=> nil, "2A"=>'X', "3A"=>'X',
         "1B"=> nil, "2B"=>'O', "3B"=> 'O',
         "1C"=> nil, "2C"=>nil, "3C"=> nil
@@ -21,7 +21,7 @@ describe 'AI' do
     end
 
     it "takes winning space when one is available" do
-      @board.filled_spaces = {
+      @board.all_cells = {
         "1A"=> nil, "2A"=>'O', "3A"=>'X',
         "1B"=> nil, "2B"=>'X', "3B"=> 'O',
         "1C"=> nil, "2C"=>nil, "3C"=> nil
@@ -31,7 +31,7 @@ describe 'AI' do
     end
 
     it "blocks opponent win" do
-      @board.filled_spaces = {
+      @board.all_cells = {
         "1A"=> nil, "2A"=>'O', "3A"=>'O',
         "1B"=> "O", "2B"=>'X', "3B"=> 'X',
         "1C"=> "X", "2C"=>"O", "3C"=> nil
@@ -41,7 +41,7 @@ describe 'AI' do
     end
 
     it "blocks opponent win" do
-      @board.filled_spaces = {
+      @board.all_cells = {
         "1A"=> nil, "2A"=>'O', "3A"=>'O',
         "1B"=> "O", "2B"=>'X', "3B"=> 'X',
         "1C"=> "X", "2C"=>"O", "3C"=> nil
@@ -51,7 +51,7 @@ describe 'AI' do
     end
 
     it "chooses win over block" do
-      @board.filled_spaces = {
+      @board.all_cells = {
         "1A"=> nil, "2A"=>'O', "3A"=>'O',
         "1B"=> nil, "2B"=>'X', "3B"=> 'X',
         "1C"=> "X", "2C"=>"O", "3C"=> 'O'
@@ -61,7 +61,7 @@ describe 'AI' do
     end
 
     it "chooses win over block or non-win" do
-      @board.filled_spaces = {
+      @board.all_cells = {
         "1A"=> nil, "2A"=>'O', "3A"=>'O',
         "1B"=> nil, "2B"=>'X', "3B"=> 'X',
         "1C"=> "X", "2C"=>nil, "3C"=> 'O'
@@ -71,7 +71,7 @@ describe 'AI' do
     end
 
     it "chooses block over multiple non-wins" do
-      @board.filled_spaces = {
+      @board.all_cells = {
         "1A"=> nil, "2A"=>'O', "3A"=>'O',
         "1B"=> nil, "2B"=>nil, "3B"=> 'X',
         "1C"=> "X", "2C"=>nil, "3C"=> nil
@@ -81,7 +81,7 @@ describe 'AI' do
     end
 
     it "chooses corner when with one non-corner move on the board" do
-      @board.filled_spaces = {
+      @board.all_cells = {
         "1A"=> nil, "2A"=> nil, "3A"=> nil,
         "1B"=> nil, "2B"=> 'O', "3B"=> nil,
         "1C"=> nil, "2C"=> nil, "3C"=> nil
@@ -91,7 +91,7 @@ describe 'AI' do
     end
 
     it "chooses corner when with one non-corner move on the board" do
-      @board.filled_spaces = {
+      @board.all_cells = {
         "1A"=> nil, "2A"=> 'O', "3A"=> nil,
         "1B"=> nil, "2B"=> nil, "3B"=> nil,
         "1C"=> nil, "2C"=> nil, "3C"=> nil
@@ -101,7 +101,7 @@ describe 'AI' do
     end
 
     it "chooses win when same cell is block and win" do
-      @board.filled_spaces = {
+      @board.all_cells = {
         "1A"=> nil, "2A"=> 'O', "3A"=> 'O',
         "1B"=> nil, "2B"=> 'X', "3B"=> nil,
         "1C"=> nil, "2C"=> 'O', "3C"=> 'X'
@@ -111,7 +111,7 @@ describe 'AI' do
     end
 
     it "chooses center cell for the win" do
-      @board.filled_spaces = {
+      @board.all_cells = {
         "1A"=> 'X', "2A"=> 'O', "3A"=> 'O',
         "1B"=> nil, "2B"=> nil, "3B"=> nil,
         "1C"=> nil, "2C"=> 'O', "3C"=> 'X'
@@ -123,7 +123,7 @@ describe 'AI' do
 
   describe '#get_best_move -- game walkthrough' do
     it "chooses pre-emptive block/win move" do
-      @board.filled_spaces = {
+      @board.all_cells = {
         "1A"=> 'X', "2A"=> nil, "3A"=> 'O',
         "1B"=> nil, "2B"=> nil, "3B"=> nil,
         "1C"=> nil, "2C"=> nil, "3C"=> nil
@@ -133,7 +133,7 @@ describe 'AI' do
     end
 
     it "chooses pre-emptive block/win move" do
-      @board.filled_spaces = {
+      @board.all_cells = {
         "1A"=> 'X', "2A"=> nil, "3A"=> 'O',
         "1B"=> 'O', "2B"=> nil, "3B"=> nil,
         "1C"=> 'X', "2C"=> nil, "3C"=> nil
@@ -143,7 +143,7 @@ describe 'AI' do
     end
 
     it "chooses win" do
-      @board.filled_spaces = {
+      @board.all_cells = {
         "1A"=> 'X', "2A"=> nil, "3A"=> 'O',
         "1B"=> 'O', "2B"=> nil, "3B"=> nil,
         "1C"=> 'X', "2C"=> 'O', "3C"=> 'X'
@@ -153,7 +153,7 @@ describe 'AI' do
     end
 
     it "chooses win" do
-      @board.filled_spaces = {
+      @board.all_cells = {
         "1A"=> 'X', "2A"=> nil, "3A"=> 'O',
         "1B"=> 'O', "2B"=> 'O', "3B"=> nil,
         "1C"=> 'X', "2C"=> nil, "3C"=> 'X'

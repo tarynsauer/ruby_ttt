@@ -14,13 +14,13 @@ describe 'Game' do
     end
   end
 
-  describe '#clean_up_input' do
+  describe '#standardize' do
     it "returns cell ID in the correct format" do
-      @game.clean_up_input('1a').should == '1A'
+      @game.standardize('1a').should == '1A'
     end
 
     it "returns cell ID in the correct format" do
-      @game.clean_up_input('a1').should == '1A'
+      @game.standardize('a1').should == '1A'
     end
   end
 
