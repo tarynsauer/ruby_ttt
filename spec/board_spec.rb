@@ -3,8 +3,8 @@ require 'spec_helper'
 describe 'Board' do
 
   before :each do
-    @board = Board.new
-    @game = Game.new('human', 'human', @board)
+    @board = Board.new(3)
+     @game = Game.new('human', 'human', @board)
     @player_x = @game.player_one
     @player_o = @game.player_two
     @board.add_marker('1B', @player_x.marker)
@@ -103,7 +103,7 @@ describe 'Board' do
 
   describe '#open_cells' do
     before :each do
-      @board = Board.new
+      @board = Board.new(3)
       @game = Game.new('human', 'human', @board)
       @player_x = @game.player_one
       @player_o = @game.player_two
@@ -127,7 +127,7 @@ describe 'Board' do
 
   describe '#open_cells' do
     before :each do
-      @board = Board.new
+      @board = Board.new(3)
       @game = Game.new('human', 'human', @board)
       @player_x = @game.player_one
       @player_o = @game.player_two
@@ -146,7 +146,7 @@ describe 'Board' do
 
   describe '#random_cell' do
     before :each do
-      @board = Board.new
+      @board = Board.new(3)
       @game = Game.new('human', 'human', @board)
       @player_x = @game.player_one
       @player_o = @game.player_two
@@ -160,7 +160,7 @@ describe 'Board' do
 
   describe '#game_over?' do
     before :each do
-      @board = Board.new
+      @board = Board.new(3)
       @game = Game.new('human', 'human', @board)
       @player_x = @game.player_one
       @player_o = @game.player_two

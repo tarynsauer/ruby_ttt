@@ -48,7 +48,6 @@ class Game
   def game_status_check
     winner_check
     tie_game_check
-    board.next_move_message(current_player)
   end
 
   def winner_check
@@ -93,6 +92,7 @@ class Game
     board.add_marker(cell, player.marker)
     game_status_check
     player.next_player_turn
+    board.next_move_message(current_player)
   end
 
   def get_next_move
@@ -116,4 +116,4 @@ end
 
 # player_1 = Game.get_player_type('X')
 # player_2 = Game.get_player_type('O')
-# Game.new(player_1, player_2, Board.new).play!
+# Game.new(player_1, player_2, Board.new(3)).play!

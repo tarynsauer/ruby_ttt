@@ -1,39 +1,133 @@
 class Board
-  attr_accessor :all_cells
-  def initialize
-    @all_cells = { '1A' => nil, '2A' => nil, '3A' => nil,
-                   '1B' => nil, '2B' => nil, '3B' => nil,
-                   '1C' => nil, '2C' => nil, '3C' => nil }
+  attr_accessor :all_cells, :num_of_rows, :winning_lines
+  def initialize(num_of_rows)
+    @num_of_rows   = num_of_rows
+    @all_cells     = create_board_hash
+    @winning_lines = get_winning_lines
+  end
+
+  def create_board_hash
+    new_board    = Hash.new
+    alpha        = 'A'
+    numeric      = 1
+    num_of_rows.times do
+      num_of_rows.times do
+        key       = numeric.to_s + alpha
+        numeric  += 1
+        new_board[key] = nil
+      end
+      alpha   = alpha.next
+      numeric = 1
+    end
+    new_board
+  end
+
+  def get_winning_lines
+    lines = []
+    winning_rows.each { |row| lines << row }
+    winning_cols.each { |col| lines << col }
+    winning_diagonals.each { |diagonal| lines << diagonal }
+    lines
+  end
+
+  def winning_rows
+    rows   = []
+    hash   = all_cells.keys
+    beg    = 0
+    ending = num_of_rows - 1
+    until rows.length == num_of_rows
+      rows << hash[beg..ending]
+      beg += num_of_rows
+      ending += num_of_rows
+    end
+    rows
+  end
+
+  def winning_cols
+    cols   = []
+    index  = 0
+    num_of_rows.times do
+      cols << get_col(index)
+      index += 1
+    end
+    cols
+  end
+
+  def get_col(index)
+    col = []
+    hash   = all_cells.keys
+    num_of_rows.times do
+      col << hash[index]
+      index += num_of_rows
+    end
+    col
+  end
+
+  def winning_diagonals
+    diagonals = []
+    diagonals << get_diag_one
+    diagonals << get_diag_two
+  end
+
+  def get_diag_one
+    diag1 = []
+    alpha = 'A'
+    numeric = 1
+    num_of_rows.times do
+      diag1 << numeric.to_s + alpha
+      alpha = alpha.next
+      numeric += 1
+    end
+    diag1
+  end
+
+  def get_diag_two
+    diag2 = []
+    alpha = 'A'
+    numeric = num_of_rows
+    num_of_rows.times do
+      diag2 << numeric.to_s + alpha
+      alpha = alpha.next
+      numeric -= 1
+    end
+    diag2
+  end
+
+  def print_board_numbers
+    num = 1
+    print "    "
+    num_of_rows.times do
+      print "--#{num}-- "
+      num += 1
+    end
+    print "\n"
+  end
+
+  def print_divider
+    print "   "
+    num_of_rows.times { print "------" }
+    print "\n"
   end
 
   def display_board
-    show_rowA(show_marker('1A'), show_marker('2A'), show_marker('3A'))
-    show_rowB(show_marker('1B'), show_marker('2B'), show_marker('3B'))
-    show_rowC(show_marker('1C'), show_marker('2C'), show_marker('3C'))
+    print_board_numbers
+    alpha = 'A'
+    winning_rows.each do |row|
+      show_row(alpha, row)
+      alpha = alpha.next
+    end
+    print_board_numbers
   end
 
-  def show_rowA(cell1, cell2, cell3)
-    print "  --1-- --2-- --3--\n"
-    print "A |" + " " + cell1 + " " + "| " + "|" + " " + cell2 + " " + "| " + "|" + " " + cell3 + " " + "| A\n"
-  end
-
-  def show_rowB(cell1, cell2, cell3)
-    print "  ----- ----- -----\n"
-    print "B |" + " " + cell1 + " " + "| " + "|" + " " + cell2 + " " + "| " + "|" + " " + cell3 + " " + "| B\n"
-  end
-
-  def show_rowC(cell1, cell2, cell3)
-    print "  ----- ----- -----\n"
-    print "C |" + " " + cell1 + " " + "| " + "|" + " " + cell2 + " " + "| " + "|" + " " + cell3 + " " + "| C\n"
-    print "  --1-- --2-- --3--\n"
+  def show_row(letter, cells)
+    print "#{letter}"
+    cells.each { |cell| print "  |  " + show_marker(cell) }
+    print "  | #{letter}\n"
+    print_divider
   end
 
   def show_marker(cell)
-    if all_cells[cell].nil?
-      ' '
-    else
-      all_cells[cell]
-    end
+    all_cells[cell].nil? ? ' ' : all_cells[cell]
   end
 
   def available_cell?(cell)
@@ -82,12 +176,9 @@ class Board
   end
 
   def winning_move?(marker)
-    winning_lines = [['1A', '1B', '1C'], ['2A', '2B', '2C'], ['3A', '3B', '3C'],
-                     ['1A', '2A', '3A'], ['1B', '2B', '3B'], ['1C', '2C', '3C'],
-                     ['1C', '2B', '3A'], ['1A', '2B', '3C']]
     board_markers = all_cells.select { |k,v| v == marker }.keys
     winning_lines.each do |line|
-      if (line & board_markers).length == 3
+      if (line & board_markers).length == num_of_rows
         return true
       end
     end
@@ -103,7 +194,7 @@ class Board
   end
 
   def empty?
-    open_cells.length == 9
+    open_cells.length == (num_of_rows * num_of_rows)
   end
 
   def random_cell

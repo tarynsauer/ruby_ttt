@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'Game' do
 
   before :each do
-    @board = Board.new()
+    @board = Board.new(3)
     @game = Game.new('human', 'human', @board)
     @game.player_one.turn = 1
   end
