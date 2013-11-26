@@ -30,17 +30,33 @@ class AI
 
   def apply_minimax(board, player, cell, depth)
     return get_score(board, player) if board.game_over?(player)
-    player.turn == 1 ? minimax(board, player, depth).min : minimax(board, player, depth).max
+    if player.turn == 1
+      min_alphabeta(board, player, depth, alpha=-999, beta=999)
+    else
+      max_alphabeta(board, player, depth, alpha=-999, beta=999)
+    end
   end
 
-  def minimax(board, player, depth, best_score=[])
+  def min_alphabeta(board, player, depth, alpha, beta)
     board.open_cells.each_key do |cell1|
       board.add_marker(cell1, player.opponent.marker)
       score = (apply_minimax(board, player.opponent, cell1, depth += 1) / depth.to_f)
+      beta = score if score < beta
+      return beta if alpha >= beta
       board.remove_marker(cell1)
-      best_score.push(score)
     end
-    best_score
+    beta
+  end
+
+  def max_alphabeta(board, player, depth, alpha, beta)
+    board.open_cells.each_key do |cell1|
+      board.add_marker(cell1, player.opponent.marker)
+      score = (apply_minimax(board, player.opponent, cell1, depth += 1) / depth.to_f)
+      alpha = score if score > alpha
+      return alpha if alpha >= beta
+      board.remove_marker(cell1)
+    end
+    alpha
   end
 
   def get_score(board, player)

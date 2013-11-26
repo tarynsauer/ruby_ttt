@@ -106,7 +106,6 @@ class Game
   def play!
     who_goes_first
     until game_over
-      board.next_move_message(current_player)
       board.display_board
       move = get_next_move
       check_move(move)
@@ -115,6 +114,6 @@ class Game
 
 end
 
-player_1 = Game.get_player_type('X')
-player_2 = Game.get_player_type('O')
-Game.new(player_1, player_2, Board.new).play!
+# player_1 = Game.get_player_type('X')
+# player_2 = Game.get_player_type('O')
+# Game.new(player_1, player_2, Board.new).play!
