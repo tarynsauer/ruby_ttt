@@ -14,7 +14,6 @@ class Game
     @player_two.opponent = @player_one
     @game_over  = false
     @ai         = AI.new
-    who_goes_first
   end
 
   def who_goes_first
@@ -29,12 +28,16 @@ class Game
   def self.get_player_type(marker)
     print "For player " + "'#{marker}'," + " enter 'human' or 'computer.'\n"
     type = gets.chomp.downcase
+    self.validate_type(type, marker)
+  end
+
+  def self.validate_type(type, marker)
     if (type == 'human') || (type == 'computer')
       print "Player " + "'#{marker}' " + "is #{type}.\n"
+      type
     else
       self.invalid_type(type, marker)
     end
-    type
   end
 
   def self.invalid_type(type, marker)
@@ -42,11 +45,10 @@ class Game
     self.get_player_type(marker)
   end
 
-  def game_status_update
+  def game_status_check
     winner_check
     tie_game_check
     board.next_move_message(current_player)
-    board.display_board
   end
 
   def winner_check
@@ -79,30 +81,35 @@ class Game
 
   def check_move(cell)
     if board.available_cell?(cell)
-      board.add_marker(cell, current_player.marker)
-      current_player.next_player_turn
-    elsif board.taken_cell_message(cell)
-      board.valid_cell?(cell)
+      advance_game(cell, current_player)
+    elsif board.valid_cell?(cell)
+      board.taken_cell_message(cell)
     else
       board.bad_cell_message(cell)
     end
   end
 
+  def advance_game(cell, player)
+    board.add_marker(cell, player.marker)
+    game_status_check
+    player.next_player_turn
+  end
+
   def get_next_move
     if current_player.player_type == "human"
-      move = standardize(gets.chomp)
-      check_move(move)
+      standardize(gets.chomp)
     else
-      move = ai.computer_move(board, current_player)
-      board.add_marker(move, current_player.marker)
-      current_player.next_player_turn
+      ai.computer_move(board, current_player)
     end
   end
 
   def play!
+    who_goes_first
     until game_over
-      game_status_update
-      get_next_move
+      board.next_move_message(current_player)
+      board.display_board
+      move = get_next_move
+      check_move(move)
     end
   end
 

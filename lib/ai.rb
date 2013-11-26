@@ -3,8 +3,7 @@ class AI
   def computer_move(board, player)
     test_board = board.dup
     test_board.all_cells = board.all_cells.dup
-    move = get_best_move(test_board, player)
-    board.add_marker(move, player.marker)
+    get_best_move(test_board, player)
   end
 
   def get_best_move(board, player)
@@ -37,7 +36,7 @@ class AI
   def minimax(board, player, depth, best_score=[])
     board.open_cells.each_key do |cell1|
       board.add_marker(cell1, player.opponent.marker)
-      score = (apply_minimax(board, player.opponent, cell1, depth += 1)/depth.to_f)
+      score = (apply_minimax(board, player.opponent, cell1, depth += 1) / depth.to_f)
       board.remove_marker(cell1)
       best_score.push(score)
     end
