@@ -1,4 +1,9 @@
 class AI
+  POS_INF = 999
+  NEG_INF = -999
+  WIN     = 1
+  LOSE    = -1
+  TIE     = 0
 
   def computer_move(board, player)
     test_board = board.dup
@@ -30,7 +35,7 @@ class AI
 
   def apply_minimax(board, player, cell, depth)
     return get_score(board, player) if board.game_over?(player)
-    player.turn == 1 ? min_alphabeta(board, player, depth, alpha=-999, beta=999) : max_alphabeta(board, player, depth, alpha=-999, beta=999)
+    player.turn == 1 ? min_alphabeta(board, player, depth, alpha=NEG_INF, beta=POS_INF) : max_alphabeta(board, player, depth, alpha=NEG_INF, beta=POS_INF)
   end
 
   def min_alphabeta(board, player, depth, alpha, beta)
@@ -56,9 +61,9 @@ class AI
   end
 
   def get_score(board, player)
-    return 1 if board.winning_move?(player.marker) && player.turn == 1
-    return -1 if board.winning_move?(player.marker)
-    0
+    return WIN if board.winning_move?(player.marker) && player.turn == 1
+    return LOSE if board.winning_move?(player.marker)
+    TIE
   end
 
 end

@@ -1,19 +1,7 @@
 class UI
   attr_accessor :board
   def initialize(board)
-    @board   = board
-  end
-
-  def player_type_message(marker)
-    print "For player " + "'#{marker}'," + " enter 'human' or 'computer.'\n"
-  end
-
-  def type_assigned_message(type, marker)
-    print "Player " + "'#{marker}' " + "is #{type}.\n"
-  end
-
-  def invalid_type_message(type)
-    print "#{type} is not a valid option."
+    @board = board
   end
 
   def print_board_numbers

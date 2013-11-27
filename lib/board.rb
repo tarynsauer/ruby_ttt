@@ -7,14 +7,14 @@ class Board
   end
 
   def create_board_hash
-    new_board    = Hash.new
-    alpha        = 'A'
-    numeric      = 1
+    new_board = Hash.new
+    alpha     = 'A'
+    numeric   = 1
     num_of_rows.times do
       num_of_rows.times do
-        key       = numeric.to_s + alpha
-        numeric  += 1
-        new_board[key] = nil
+        cellID = numeric.to_s + alpha
+        numeric += 1
+        new_board[cellID] = nil
       end
       alpha   = alpha.next
       numeric = 1
@@ -31,13 +31,13 @@ class Board
   end
 
   def winning_rows
-    rows   = []
-    cells  = all_cells.keys
-    beg    = 0
-    ending = num_of_rows - 1
+    rows    = []
+    cellIDs = all_cells.keys
+    beg     = 0
+    ending  = num_of_rows - 1
     until rows.length == num_of_rows
-      rows << cells[beg..ending]
-      beg += num_of_rows
+      rows << cellIDs[beg..ending]
+      beg    += num_of_rows
       ending += num_of_rows
     end
     rows
@@ -47,29 +47,29 @@ class Board
     cols   = []
     index  = 0
     num_of_rows.times do
-      cols << get_col(index)
+      cols << get_column(index)
       index += 1
     end
     cols
   end
 
-  def get_col(index)
-    col   = []
-    cells = all_cells.keys
+  def get_column(index)
+    column  = []
+    cellIDs = all_cells.keys
     num_of_rows.times do
-      col << cells[index]
+      column << cellIDs[index]
       index += num_of_rows
     end
-    col
+    column
   end
 
   def winning_diagonals
     diagonals = []
-    diagonals << get_diag_one
-    diagonals << get_diag_two
+    diagonals << diagonal_one
+    diagonals << diagonal_two
   end
 
-  def get_diag_one
+  def diagonal_one
     diagonal = []
     alpha    = 'A'
     numeric  = 1
@@ -81,7 +81,7 @@ class Board
     diagonal
   end
 
-  def get_diag_two
+  def diagonal_two
     diagonal = []
     alpha    = 'A'
     numeric  = num_of_rows

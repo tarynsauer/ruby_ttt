@@ -1,6 +1,5 @@
 require './lib/ai'
 require './lib/board'
-require './lib/game'
 require './lib/player'
 require './lib/ui'
 
@@ -27,14 +26,14 @@ class Game
   end
 
   def self.get_player_type(marker)
-    ui.player_type_message(marker)
+    print "For player " + "'#{marker}'," + " enter 'human' or 'computer.'\n"
     type = gets.chomp.downcase
     self.validate_type(type, marker)
   end
 
   def self.validate_type(type, marker)
     if (type == 'human') || (type == 'computer')
-      ui.type_assigned_message(type, marker)
+      print "Player " + "'#{marker}' " + "is #{type}.\n"
       type
     else
       self.invalid_type(type, marker)
@@ -42,7 +41,7 @@ class Game
   end
 
   def self.invalid_type(type, marker)
-    ui.invalid_type_message(type)
+    print "#{type} is not a valid option."
     self.get_player_type(marker)
   end
 
@@ -110,7 +109,3 @@ class Game
   end
 
 end
-
-# player_1 = Game.get_player_type('X')
-# player_2 = Game.get_player_type('O')
-# Game.new(player_1, player_2, Board.new(3)).play!
