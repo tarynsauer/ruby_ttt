@@ -2,10 +2,10 @@ require './lib/ai'
 require './lib/board'
 require './lib/game'
 require './lib/player'
+require './lib/ui'
 
 class Game
-
-  attr_accessor :player_one, :player_two, :board, :game_over, :ai
+  attr_accessor :player_one, :player_two, :board, :game_over, :ai, :ui
   def initialize(player_one_type, player_two_type, board)
     @board      = board
     @player_one = Player.new('X', player_one_type, @board)
@@ -14,6 +14,7 @@ class Game
     @player_two.opponent = @player_one
     @game_over  = false
     @ai         = AI.new
+    @ui         = UI.new(@board)
   end
 
   def who_goes_first
@@ -22,7 +23,7 @@ class Game
     else
       player_two.turn = 1
     end
-    board.first_move_message(current_player)
+    ui.first_move_message(current_player)
   end
 
   def self.get_player_type(marker)
@@ -52,14 +53,14 @@ class Game
 
   def winner_check
     if board.winning_move?(current_player.marker)
-      board.winning_game_message(current_player)
+      ui.winning_game_message(current_player)
       exit_game
     end
   end
 
   def tie_game_check
     if !board.moves_remaining?
-      board.tie_game_message
+      ui.tie_game_message
       exit_game
     end
   end
@@ -73,7 +74,7 @@ class Game
   end
 
   def exit_game
-    board.display_board
+    ui.display_board
     game_over = true
     exit
   end
@@ -82,9 +83,9 @@ class Game
     if board.available_cell?(cell)
       advance_game(cell, current_player)
     elsif board.valid_cell?(cell)
-      board.taken_cell_message(cell)
+      ui.taken_cell_message(cell)
     else
-      board.bad_cell_message(cell)
+      ui.bad_cell_message(cell)
     end
   end
 
@@ -92,7 +93,7 @@ class Game
     board.add_marker(cell, player.marker)
     game_status_check
     player.next_player_turn
-    board.next_move_message(current_player)
+    ui.next_move_message(current_player)
   end
 
   def get_next_move
@@ -102,7 +103,7 @@ class Game
   def play!
     who_goes_first
     until game_over
-      board.display_board
+      ui.display_board
       move = get_next_move
       check_move(move)
     end
