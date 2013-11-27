@@ -32,11 +32,11 @@ class Board
 
   def winning_rows
     rows   = []
-    hash   = all_cells.keys
+    cells  = all_cells.keys
     beg    = 0
     ending = num_of_rows - 1
     until rows.length == num_of_rows
-      rows << hash[beg..ending]
+      rows << cells[beg..ending]
       beg += num_of_rows
       ending += num_of_rows
     end
@@ -54,10 +54,10 @@ class Board
   end
 
   def get_col(index)
-    col = []
-    hash   = all_cells.keys
+    col   = []
+    cells = all_cells.keys
     num_of_rows.times do
-      col << hash[index]
+      col << cells[index]
       index += num_of_rows
     end
     col
@@ -70,27 +70,27 @@ class Board
   end
 
   def get_diag_one
-    diag1 = []
-    alpha = 'A'
-    numeric = 1
+    diagonal = []
+    alpha    = 'A'
+    numeric  = 1
     num_of_rows.times do
-      diag1 << numeric.to_s + alpha
+      diagonal << numeric.to_s + alpha
       alpha = alpha.next
       numeric += 1
     end
-    diag1
+    diagonal
   end
 
   def get_diag_two
-    diag2 = []
-    alpha = 'A'
-    numeric = num_of_rows
+    diagonal = []
+    alpha    = 'A'
+    numeric  = num_of_rows
     num_of_rows.times do
-      diag2 << numeric.to_s + alpha
+      diagonal << numeric.to_s + alpha
       alpha = alpha.next
       numeric -= 1
     end
-    diag2
+    diagonal
   end
 
   def print_board_numbers
@@ -178,9 +178,7 @@ class Board
   def winning_move?(marker)
     board_markers = all_cells.select { |k,v| v == marker }.keys
     winning_lines.each do |line|
-      if (line & board_markers).length == num_of_rows
-        return true
-      end
+      return true if (line & board_markers).length == num_of_rows
     end
     false
   end
@@ -198,7 +196,7 @@ class Board
   end
 
   def random_cell
-    cells = open_cells.keys
+    cells       = open_cells.keys
     cells_count = cells.length - 1
     cells[rand(cells_count)]
   end
