@@ -11,9 +11,7 @@ class Player
 
   def next_player_turn
     self.turn = 0
-    if self.opponent
-      self.opponent.turn = 1
-    end
+    self.opponent.turn = 1 if self.opponent
   end
 
 end

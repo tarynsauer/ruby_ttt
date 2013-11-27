@@ -96,11 +96,7 @@ class Game
   end
 
   def get_next_move
-    if current_player.player_type == "human"
-      standardize(gets.chomp)
-    else
-      ai.computer_move(board, current_player)
-    end
+    current_player.player_type == "human" ? standardize(gets.chomp) : ai.computer_move(board, current_player)
   end
 
   def play!
@@ -114,6 +110,6 @@ class Game
 
 end
 
-# player_1 = Game.get_player_type('X')
-# player_2 = Game.get_player_type('O')
-# Game.new(player_1, player_2, Board.new(3)).play!
+player_1 = Game.get_player_type('X')
+player_2 = Game.get_player_type('O')
+Game.new(player_1, player_2, Board.new(3)).play!
