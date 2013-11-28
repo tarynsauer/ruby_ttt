@@ -4,6 +4,26 @@ class UI
     @board = board
   end
 
+  def difficulty_level_message
+    print "Select computer difficulty level: Enter 'easy' or 'hard.'\n"
+  end
+
+  def level_assigned_message(level)
+    print "You selected difficulty level #{level.upcase}.\n"
+  end
+
+  def invalid_input_message(input)
+    print "#{input} is not a valid option."
+  end
+
+  def player_type_message(marker)
+    print "For player " + "'#{marker}'," + " enter 'human' or 'computer.'\n"
+  end
+
+  def type_assigned_message(type, marker)
+    print "Player " + "'#{marker}' " + "is #{type}.\n"
+  end
+
   def print_board_numbers
     num = 1
     print "    "

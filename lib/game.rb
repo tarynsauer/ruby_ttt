@@ -4,16 +4,38 @@ require './lib/player'
 require './lib/ui'
 
 class Game
-  attr_accessor :player_one, :player_two, :board, :game_over, :ai, :ui
-  def initialize(player_one_type, player_two_type, board)
+  attr_accessor :player_one, :player_two, :board, :game_over, :difficulty_level, :ai, :ui
+  def initialize(board)
     @board      = board
-    @player_one = Player.new('X', player_one_type, @board)
-    @player_two = Player.new('O', player_two_type, @board)
+    @ui         = UI.new(@board)
+    @player_one = Player.new('X', get_player_type('X'), @board)
+    @player_two = Player.new('O', get_player_type('Y'), @board)
     @player_one.opponent = @player_two
     @player_two.opponent = @player_one
     @game_over  = false
     @ai         = AI.new
-    @ui         = UI.new(@board)
+    @difficulty_level = get_difficulty_level
+  end
+
+  def get_difficulty_level
+    return nil unless player_one.player_type == 'computer' || player_two.player_type == 'computer'
+    ui.difficulty_level_message
+    level = gets.chomp.downcase
+    validate_level(level)
+  end
+
+  def validate_level(level)
+    if (level == 'hard') || (level == 'easy')
+      ui.level_assigned_message(level)
+      level
+    else
+      invalid_level(level)
+    end
+  end
+
+  def invalid_level(level)
+    ui.invalid_input_message(level)
+    get_difficulty_level
   end
 
   def who_goes_first
@@ -25,24 +47,24 @@ class Game
     ui.first_move_message(current_player)
   end
 
-  def self.get_player_type(marker)
-    print "For player " + "'#{marker}'," + " enter 'human' or 'computer.'\n"
+  def get_player_type(marker)
+    ui.player_type_message(marker)
     type = gets.chomp.downcase
-    self.validate_type(type, marker)
+    validate_type(type, marker)
   end
 
-  def self.validate_type(type, marker)
+  def validate_type(type, marker)
     if (type == 'human') || (type == 'computer')
-      print "Player " + "'#{marker}' " + "is #{type}.\n"
+      ui.type_assigned_message(type, marker)
       type
     else
-      self.invalid_type(type, marker)
+      invalid_type(type, marker)
     end
   end
 
-  def self.invalid_type(type, marker)
-    print "#{type} is not a valid option."
-    self.get_player_type(marker)
+  def invalid_type(type, marker)
+    ui.invalid_input_message(type)
+    get_player_type(marker)
   end
 
   def game_status_check
@@ -96,7 +118,13 @@ class Game
   end
 
   def get_next_move
-    current_player.player_type == "human" ? standardize(gets.chomp) : ai.computer_move(board, current_player)
+    if current_player.player_type == "human"
+      standardize(gets.chomp)
+    elsif difficulty_level == "hard"
+      ai.computer_move(board, current_player)
+    else
+      board.random_cell
+    end
   end
 
   def play!
