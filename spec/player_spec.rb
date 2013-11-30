@@ -4,7 +4,7 @@ describe 'Player' do
 
   before :each do
     @board    = Board.new(3)
-    @game     = Game.new('human', 'human', @board)
+    @game     = TestGame.new(@board)
     @player_x = @game.player_one
     @player_o = @game.player_two
   end

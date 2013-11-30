@@ -4,7 +4,7 @@ describe 'Board' do
 
   before :each do
     @board = Board.new(3)
-     @game = Game.new('human', 'human', @board)
+    @game = TestGame.new(@board)
     @player_x = @game.player_one
     @player_o = @game.player_two
     @board.add_marker('1B', @player_x.marker)
@@ -104,7 +104,7 @@ describe 'Board' do
   describe '#open_cells' do
     before :each do
       @board    = Board.new(3)
-      @game     = Game.new('human', 'human', @board)
+      @game     = TestGame.new(@board)
       @player_x = @game.player_one
       @player_o = @game.player_two
     end
@@ -128,7 +128,7 @@ describe 'Board' do
   describe '#open_cells' do
     before :each do
       @board    = Board.new(3)
-      @game     = Game.new('human', 'human', @board)
+      @game     = TestGame.new(@board)
       @player_x = @game.player_one
       @player_o = @game.player_two
     end
@@ -147,7 +147,7 @@ describe 'Board' do
   describe '#random_cell' do
     before :each do
       @board    = Board.new(3)
-      @game     = Game.new('human', 'human', @board)
+      @game     = TestGame.new(@board)
       @player_x = @game.player_one
       @player_o = @game.player_two
     end
@@ -161,7 +161,7 @@ describe 'Board' do
   describe '#game_over?' do
     before :each do
       @board    = Board.new(3)
-      @game     = Game.new('human', 'human', @board)
+      @game     = TestGame.new(@board)
       @player_x = @game.player_one
       @player_o = @game.player_two
     end
