@@ -101,28 +101,12 @@ class Board
     all_cells.has_key?(cell)
   end
 
-  def add_marker(cell, marker)
-    all_cells[cell] = marker
-  end
-
   def remove_marker(cell)
     all_cells[cell] = nil
   end
 
   def moves_remaining?
     all_cells.has_value?(nil)
-  end
-
-  def winning_move?(marker)
-    board_markers = all_cells.select { |k,v| v == marker }.keys
-    winning_lines.each do |line|
-      return true if (line & board_markers).length == num_of_rows
-    end
-    false
-  end
-
-  def game_over?(player)
-    !moves_remaining? || winning_move?(player.marker)|| winning_move?(player.opponent.marker)
   end
 
   def open_cells

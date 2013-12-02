@@ -73,7 +73,7 @@ class Game
   end
 
   def winner_check
-    if board.winning_move?(current_player.marker)
+    if current_player.winner?(board)
       ui.winning_game_message(current_player)
       exit_game
     end

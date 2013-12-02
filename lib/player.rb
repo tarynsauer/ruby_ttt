@@ -21,7 +21,7 @@ class Player
   def winner?(board)
     board_markers = board.all_cells.select { |k,v| v == self.marker }.keys
     board.winning_lines.each do |line|
-      return true if (line & board_markers).length == num_of_rows
+      return true if (line & board_markers).length == board.num_of_rows
     end
     false
   end
@@ -29,7 +29,7 @@ class Player
   def loser?(board)
     board_markers = board.all_cells.select { |k,v| v == self.opponent.marker }.keys
     board.winning_lines.each do |line|
-      return true if (line & board_markers).length == num_of_rows
+      return true if (line & board_markers).length == board.num_of_rows
     end
     false
   end
