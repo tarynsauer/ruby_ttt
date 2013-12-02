@@ -7,6 +7,18 @@ require_relative '../lib/game'
 require_relative '../lib/player'
 require_relative '../lib/ui'
 
+require 'stringio'
+
+def capture_stdout &block
+  old_stdout = $stdout
+  fake_stdout = StringIO.new
+  $stdout = fake_stdout
+  block.call
+  fake_stdout.string
+ensure
+  $stdout = old_stdout
+end
+
 class TestGame < Game
   attr_accessor :player_one, :player_two, :board, :game_over, :difficulty_level, :ai, :ui
     def initialize(board)
