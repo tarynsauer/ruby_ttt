@@ -111,7 +111,7 @@ class Game
   end
 
   def advance_game(cell, player)
-    board.add_marker(cell, player.marker)
+    player.add_marker(board, cell)
     game_status_check
     player.next_player_turn
     ui.next_move_message(current_player)

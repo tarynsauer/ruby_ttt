@@ -9,6 +9,18 @@ describe 'Player' do
     @player_o = @game.player_two
   end
 
+  describe '#add_marker' do
+    it "adds player's marker to the board" do
+      @player_x.add_marker(@board, '1A')
+      @board.all_cells['1A'].should == 'X'
+    end
+
+    it "adds player's marker to the board" do
+      @player_o.add_marker(@board, '1B')
+      @board.all_cells['1B'].should == 'O'
+    end
+  end
+
   describe '#next_player_turn' do
     before :each do
       @player_o.turn = 1

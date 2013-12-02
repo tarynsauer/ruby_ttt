@@ -7,19 +7,7 @@ describe 'Board' do
     @game = TestGame.new(@board)
     @player_x = @game.player_one
     @player_o = @game.player_two
-    @board.add_marker('1B', @player_x.marker)
-  end
-
-  describe '#add_marker' do
-    it "adds player's marker to the board" do
-      @board.add_marker('1A', @player_x.marker)
-      @board.all_cells['1A'].should == 'X'
-    end
-
-    it "adds player's marker to the board" do
-      @board.add_marker('1B', @player_o.marker)
-      @board.all_cells['1B'].should == 'O'
-    end
+    @player_x.add_marker(@board, '1B')
   end
 
   describe '#remove_marker' do
@@ -114,13 +102,13 @@ describe 'Board' do
     end
 
     it "gets hash of cell IDs of open positions" do
-      @board.add_marker("1A", @player_x.marker)
+      @player_x.add_marker(@board, "1A")
       @board.open_cells.should == {"2A"=>nil, "3A"=>nil, "1B"=>nil, "2B"=>nil, "3B"=>nil, "1C"=>nil, "2C"=>nil, "3C"=>nil}
     end
 
     it "gets hash of cell IDs of open positions" do
-      @board.add_marker("1A", @player_x.marker)
-      @board.add_marker("2A", @player_o.marker)
+      @player_x.add_marker(@board, "1A")
+      @player_o.add_marker(@board, "2A")
       @board.open_cells.should == {"3A"=>nil, "1B"=>nil, "2B"=>nil, "3B"=>nil, "1C"=>nil, "2C"=>nil, "3C"=>nil}
     end
   end
@@ -138,7 +126,7 @@ describe 'Board' do
     end
 
     it "gets hash of cell IDs of open positions" do
-      @board.add_marker('1A', @player_x.marker)
+      @player_x.add_marker(@board, '1A')
       @board.empty?.should == false
     end
 
