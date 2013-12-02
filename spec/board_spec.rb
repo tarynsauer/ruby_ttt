@@ -164,6 +164,7 @@ describe 'Board' do
       @game     = TestGame.new(@board)
       @player_x = @game.player_one
       @player_o = @game.player_two
+
     end
 
     it "returns true for win" do
