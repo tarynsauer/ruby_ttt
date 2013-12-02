@@ -1,7 +1,11 @@
+require 'coveralls'
+Coveralls.wear!
+
 require_relative '../lib/ai'
 require_relative '../lib/board'
 require_relative '../lib/game'
 require_relative '../lib/player'
+require_relative '../lib/ui'
 
 class TestGame < Game
   attr_accessor :player_one, :player_two, :board, :game_over, :difficulty_level, :ai, :ui
