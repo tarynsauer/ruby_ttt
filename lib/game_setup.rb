@@ -5,10 +5,9 @@ class GameSetup
     @ui         = UI.new(@board)
     @player_one = player_one
     @player_two = player_two
-    setup_game(@board, @player_one, @player_two)
   end
 
-  def setup_game(board, player_one, player_two)
+  def start_setup!
     set_opponents
     set_player_types
     level = get_difficulty_level
