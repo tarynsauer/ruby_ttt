@@ -9,10 +9,20 @@ class GameSetup
   end
 
   def setup_game(board, player_one, player_two)
-    get_player_type(player_one)
-    get_player_type(player_two)
+    set_opponents
+    set_player_types
     level = get_difficulty_level
     start_new_game(board, player_one, player_two, level)
+  end
+
+  def set_opponents
+    player_one.opponent = player_two
+    player_two.opponent = player_one
+  end
+
+  def set_player_types
+    get_player_type(player_one)
+    get_player_type(player_two)
   end
 
   def start_new_game(board, player_one, player_two, level)

@@ -4,9 +4,8 @@ describe 'Board' do
 
   before :each do
     @board = Board.new(3)
-    @game = TestGame.new(@board)
-    @player_x = @game.player_one
-    @player_o = @game.player_two
+    @player_x = Player.new('X', @board)
+    @player_o = Player.new('O', @board)
     @player_x.add_marker(@board, '1B')
   end
 
@@ -63,10 +62,9 @@ describe 'Board' do
 
   describe '#open_cells' do
     before :each do
-      @board    = Board.new(3)
-      @game     = TestGame.new(@board)
-      @player_x = @game.player_one
-      @player_o = @game.player_two
+      @board = Board.new(3)
+      @player_x = Player.new('X', @board)
+      @player_o = Player.new('O', @board)
     end
 
     it "gets hash of cell IDs of open positions" do
@@ -87,10 +85,9 @@ describe 'Board' do
 
   describe '#open_cells' do
     before :each do
-      @board    = Board.new(3)
-      @game     = TestGame.new(@board)
-      @player_x = @game.player_one
-      @player_o = @game.player_two
+      @board = Board.new(3)
+      @player_x = Player.new('X', @board)
+      @player_o = Player.new('O', @board)
     end
 
     it "gets hash of cell IDs of open positions" do
@@ -106,10 +103,9 @@ describe 'Board' do
 
   describe '#random_cell' do
     before :each do
-      @board    = Board.new(3)
-      @game     = TestGame.new(@board)
-      @player_x = @game.player_one
-      @player_o = @game.player_two
+      @board = Board.new(3)
+      @player_x = Player.new('X', @board)
+      @player_o = Player.new('O', @board)
     end
 
     it "gets hash of cell IDs of open positions" do

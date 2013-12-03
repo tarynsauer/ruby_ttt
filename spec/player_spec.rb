@@ -3,10 +3,11 @@ require 'spec_helper'
 describe 'Player' do
 
   before :each do
-    @board    = Board.new(3)
-    @game     = TestGame.new(@board)
-    @player_x = @game.player_one
-    @player_o = @game.player_two
+    @board = Board.new(3)
+    @player_x = Player.new('X', @board)
+    @player_o = Player.new('O', @board)
+    @player_x.opponent = @player_o
+    @player_o.opponent = @player_x
   end
 
   describe '#add_marker' do
@@ -79,11 +80,11 @@ describe 'Player' do
 
   describe '#game_over?' do
     before :each do
-      @board    = Board.new(3)
-      @game     = TestGame.new(@board)
-      @player_x = @game.player_one
-      @player_o = @game.player_two
-
+      @board = Board.new(3)
+      @player_x = Player.new('X', @board)
+      @player_o = Player.new('O', @board)
+      @player_x.opponent = @player_o
+      @player_o.opponent = @player_x
     end
 
     it "returns true for win" do

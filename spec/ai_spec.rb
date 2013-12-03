@@ -3,10 +3,13 @@ require 'spec_helper'
 describe 'AI' do
 
   before :each do
-    @board    = Board.new(3)
-    @game     = TestGame.new(@board)
-    @player_x = @game.player_one
-    @player_o = @game.player_two
+    @board = Board.new(3)
+    @ai    = AI.new
+    @player_x = Player.new('X', @board)
+    @player_o = Player.new('O', @board)
+    @player_x.opponent = @player_o
+    @player_o.opponent = @player_x
+    @player_x.turn = 1
   end
 
   describe '#get_best_move' do
@@ -16,8 +19,7 @@ describe 'AI' do
         "1B"=> nil, "2B"=>'O', "3B"=> 'O',
         "1C"=> nil, "2C"=>nil, "3C"=> nil
       }
-      @player_x.turn = 1
-      @game.ai.get_best_move(@board, @player_x).should == "1A"
+      @ai.get_best_move(@board, @player_x).should == "1A"
     end
 
     it "takes winning space when one is available" do
@@ -26,8 +28,7 @@ describe 'AI' do
         "1B"=> nil, "2B"=>'X', "3B"=> 'O',
         "1C"=> nil, "2C"=>nil, "3C"=> nil
       }
-      @player_x.turn = 1
-      @game.ai.get_best_move(@board, @player_x).should == "1C"
+      @ai.get_best_move(@board, @player_x).should == "1C"
     end
 
     it "blocks opponent win" do
@@ -36,8 +37,7 @@ describe 'AI' do
         "1B"=> "O", "2B"=>'X', "3B"=> 'X',
         "1C"=> "X", "2C"=>"O", "3C"=> nil
       }
-      @player_x.turn = 1
-      @game.ai.get_best_move(@board, @player_x).should == "1A"
+      @ai.get_best_move(@board, @player_x).should == "1A"
     end
 
     it "blocks opponent win" do
@@ -46,8 +46,7 @@ describe 'AI' do
         "1B"=> "O", "2B"=>'X', "3B"=> 'X',
         "1C"=> "X", "2C"=>"O", "3C"=> nil
       }
-      @player_x.turn = 1
-      @game.ai.get_best_move(@board, @player_x).should == "1A"
+      @ai.get_best_move(@board, @player_x).should == "1A"
     end
 
     it "chooses win over block" do
@@ -56,8 +55,7 @@ describe 'AI' do
         "1B"=> nil, "2B"=>'X', "3B"=> 'X',
         "1C"=> "X", "2C"=>"O", "3C"=> 'O'
       }
-      @player_x.turn = 1
-      @game.ai.get_best_move(@board, @player_x).should == "1B"
+      @ai.get_best_move(@board, @player_x).should == "1B"
     end
 
     it "chooses win over block or non-win" do
@@ -66,8 +64,7 @@ describe 'AI' do
         "1B"=> nil, "2B"=>'X', "3B"=> 'X',
         "1C"=> "X", "2C"=>nil, "3C"=> 'O'
       }
-      @player_x.turn = 1
-      @game.ai.get_best_move(@board, @player_x).should == "1B"
+      @ai.get_best_move(@board, @player_x).should == "1B"
     end
 
     it "chooses block over multiple non-wins" do
@@ -76,8 +73,7 @@ describe 'AI' do
         "1B"=> nil, "2B"=>nil, "3B"=> 'X',
         "1C"=> "X", "2C"=>nil, "3C"=> nil
       }
-      @player_x.turn = 1
-      @game.ai.get_best_move(@board, @player_x).should == "1A"
+      @ai.get_best_move(@board, @player_x).should == "1A"
     end
 
     it "chooses corner when with one non-corner move on the board" do
@@ -86,8 +82,7 @@ describe 'AI' do
         "1B"=> nil, "2B"=> 'O', "3B"=> nil,
         "1C"=> nil, "2C"=> nil, "3C"=> nil
       }
-      @player_x.turn = 1
-      @game.ai.get_best_move(@board, @player_x).should == ("1A" || "3A" || "1C" || "3C")
+      @ai.get_best_move(@board, @player_x).should == ("1A" || "3A" || "1C" || "3C")
     end
 
     it "chooses corner when with one non-corner move on the board" do
@@ -96,8 +91,7 @@ describe 'AI' do
         "1B"=> nil, "2B"=> nil, "3B"=> nil,
         "1C"=> nil, "2C"=> nil, "3C"=> nil
       }
-      @player_x.turn = 1
-      @game.ai.get_best_move(@board, @player_x).should == ("1A" || "3A" || "1C" || "3C")
+      @ai.get_best_move(@board, @player_x).should == ("1A" || "3A" || "1C" || "3C")
     end
 
     it "chooses win when same cell is block and win" do
@@ -106,8 +100,7 @@ describe 'AI' do
         "1B"=> nil, "2B"=> 'X', "3B"=> nil,
         "1C"=> nil, "2C"=> 'O', "3C"=> 'X'
       }
-      @player_x.turn = 1
-      @game.ai.get_best_move(@board, @player_x).should == "1A"
+      @ai.get_best_move(@board, @player_x).should == "1A"
     end
 
     it "chooses center cell for the win" do
@@ -116,8 +109,7 @@ describe 'AI' do
         "1B"=> nil, "2B"=> nil, "3B"=> nil,
         "1C"=> nil, "2C"=> 'O', "3C"=> 'X'
       }
-      @player_x.turn = 1
-      @game.ai.get_best_move(@board, @player_x).should == "2B"
+      @ai.get_best_move(@board, @player_x).should == "2B"
     end
   end
 
@@ -128,8 +120,7 @@ describe 'AI' do
         "1B"=> nil, "2B"=> nil, "3B"=> nil,
         "1C"=> nil, "2C"=> nil, "3C"=> nil
       }
-      @player_x.turn = 1
-      @game.ai.get_best_move(@board, @player_x).should == "1C"
+      @ai.get_best_move(@board, @player_x).should == "1C"
     end
 
     it "chooses pre-emptive block/win move" do
@@ -138,8 +129,7 @@ describe 'AI' do
         "1B"=> 'O', "2B"=> nil, "3B"=> nil,
         "1C"=> 'X', "2C"=> nil, "3C"=> nil
       }
-      @player_x.turn = 1
-      @game.ai.get_best_move(@board, @player_x).should == "3C"
+      @ai.get_best_move(@board, @player_x).should == "3C"
     end
 
     it "chooses win" do
@@ -148,8 +138,7 @@ describe 'AI' do
         "1B"=> 'O', "2B"=> nil, "3B"=> nil,
         "1C"=> 'X', "2C"=> 'O', "3C"=> 'X'
       }
-      @player_x.turn = 1
-      @game.ai.get_best_move(@board, @player_x).should == "2B"
+      @ai.get_best_move(@board, @player_x).should == "2B"
     end
 
     it "chooses win" do
@@ -158,8 +147,7 @@ describe 'AI' do
         "1B"=> 'O', "2B"=> 'O', "3B"=> nil,
         "1C"=> 'X', "2C"=> nil, "3C"=> 'X'
       }
-      @player_x.turn = 1
-      @game.ai.get_best_move(@board, @player_x).should == "2C"
+      @ai.get_best_move(@board, @player_x).should == "2C"
     end
   end
 

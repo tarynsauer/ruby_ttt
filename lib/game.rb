@@ -11,8 +11,6 @@ class Game
     @ui         = UI.new(@board)
     @player_one = player_one
     @player_two = player_two
-    @player_one.opponent = @player_two
-    @player_two.opponent = @player_one
     @game_over  = false
     @ai         = AI.new
     @difficulty_level = difficulty_level
