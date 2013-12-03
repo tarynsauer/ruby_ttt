@@ -1,9 +1,9 @@
 class Player
 
   attr_accessor :marker, :turn, :player_type, :board, :opponent
-  def initialize(marker, player_type, board)
+  def initialize(marker, board)
     @marker      = marker
-    @player_type = player_type
+    @player_type = 'human'
     @turn        = 0
     @board       = board
     @opponent    = nil

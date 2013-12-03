@@ -2,40 +2,20 @@ require './lib/ai'
 require './lib/board'
 require './lib/player'
 require './lib/ui'
+require './lib/game_setup'
 
 class Game
   attr_accessor :player_one, :player_two, :board, :game_over, :difficulty_level, :ai, :ui
-  def initialize(board)
+  def initialize(board, player_one, player_two, difficulty_level)
     @board      = board
     @ui         = UI.new(@board)
-    @player_one = Player.new('X', get_player_type('X'), @board)
-    @player_two = Player.new('O', get_player_type('Y'), @board)
+    @player_one = player_one
+    @player_two = player_two
     @player_one.opponent = @player_two
     @player_two.opponent = @player_one
     @game_over  = false
     @ai         = AI.new
-    @difficulty_level = get_difficulty_level
-  end
-
-  def get_difficulty_level
-    return nil unless player_one.player_type == 'computer' || player_two.player_type == 'computer'
-    ui.difficulty_level_message
-    level = gets.chomp.downcase
-    validate_level(level)
-  end
-
-  def validate_level(level)
-    if (level == 'hard') || (level == 'easy')
-      ui.level_assigned_message(level)
-      level
-    else
-      invalid_level(level)
-    end
-  end
-
-  def invalid_level(level)
-    ui.invalid_input_message(level)
-    get_difficulty_level
+    @difficulty_level = difficulty_level
   end
 
   def who_goes_first
@@ -45,26 +25,6 @@ class Game
       player_two.turn = 1
     end
     ui.first_move_message(current_player)
-  end
-
-  def get_player_type(marker)
-    ui.player_type_message(marker)
-    type = gets.chomp.downcase
-    validate_type(type, marker)
-  end
-
-  def validate_type(type, marker)
-    if (type == 'human') || (type == 'computer')
-      ui.type_assigned_message(type, marker)
-      type
-    else
-      invalid_type(type, marker)
-    end
-  end
-
-  def invalid_type(type, marker)
-    ui.invalid_input_message(type)
-    get_player_type(marker)
   end
 
   def game_status_check
@@ -86,12 +46,12 @@ class Game
     end
   end
 
-  def current_player
-    player_one.turn == 1 ? player_one : player_two
-  end
-
   def standardize(input)
     input.split('').sort.join('').upcase
+  end
+
+  def current_player
+    player_one.turn == 1 ? player_one : player_two
   end
 
   def exit_game
