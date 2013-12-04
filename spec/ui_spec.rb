@@ -2,36 +2,29 @@ require 'spec_helper'
 
 describe 'UI' do
 
-  class MockKernel
-    @@input = nil
-    @@lines = []
-    def self.print(string)
-      @@input = string
-      @@lines.push(@@input)
+  context 'Game settings methods' do
+    before :each do
+      @board    = MockBoard.new
+      @player_x = MockPlayer.new('X', @board)
+      @player_o = MockPlayer.new('O', @board)
+      @ui       = UI.new(@board)
+      @ui.io    = MockKernel
     end
 
-    def self.last_print_call
-      @@input
+    describe '#request_player_type' do
+      it 'returns string input from user' do
+        @ui.io.set_gets('Human')
+        player_type_return = @ui.request_player_type('X')
+        expect(player_type_return).to eq('human')
+      end
     end
 
-    def self.last_lines(num)
-      @@lines[-num..-1].join('')
-    end
-  end
-
-  class MockBoard
-    attr_accessor :num_of_rows, :all_cells, :winning_rows
-    def initialize
-      @num_of_rows  = 3
-      @all_cells    = {},
-      @winning_rows = [[],[],[]]
-    end
-  end
-
-  class MockPlayer
-    attr_accessor :marker
-    def initialize
-      @marker = 'X'
+    describe '#request_difficulty_level' do
+      it 'returns string input from user' do
+        @ui.io.set_gets('EASY')
+        difficulty_level_return = @ui.request_difficulty_level
+        expect(difficulty_level_return).to eq('easy')
+      end
     end
   end
 
@@ -40,7 +33,7 @@ describe 'UI' do
       board   = MockBoard.new
       @ui     = UI.new(board)
       @ui.io  = MockKernel
-      @player = MockPlayer.new
+      @player = MockPlayer.new('X', board)
     end
 
     describe '#first_move_message' do

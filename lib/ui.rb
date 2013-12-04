@@ -5,6 +5,16 @@ class UI
     @io    = Kernel
   end
 
+  def request_player_type(marker)
+    player_type_message(marker)
+    io.gets.chomp.downcase
+  end
+
+  def request_difficulty_level
+    difficulty_level_message
+    io.gets.chomp.downcase
+  end
+
   def difficulty_level_message
     io.print "Select computer difficulty level: Enter 'easy' or 'hard.'\n"
   end
@@ -14,7 +24,7 @@ class UI
   end
 
   def invalid_input_message(input)
-    io.print "#{input} is not a valid option."
+    io.print " #{input} is not a valid option.\n"
   end
 
   def player_type_message(marker)
