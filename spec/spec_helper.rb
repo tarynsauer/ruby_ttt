@@ -24,10 +24,11 @@ class MockBoard
 end
 
 class MockPlayer
-  attr_accessor :marker, :board, :player_type, :opponent
+  attr_accessor :marker, :board, :player_type, :turn, :opponent
   def initialize(marker, board)
     @marker = marker
     @board  = board
+    @turn = 0
     @player_type = 'human'
     @opponent = nil
   end
@@ -57,5 +58,47 @@ class MockKernel
 
     def self.gets
       @@gets_string
+    end
+  end
+
+  class MockUI < UI
+    def initialize(board)
+      super
+      @request_player_type = 0
+      @request_difficulty_level = 0
+      @type_assigned_message = 0
+      @level_assigned_message = 0
+    end
+
+    def request_player_type(marker)
+      @request_player_type += 1
+    end
+
+    def request_player_type_called
+      @request_player_type
+    end
+
+    def request_difficulty_level
+      @request_difficulty_level += 1
+    end
+
+    def request_difficulty_level_called
+      @request_difficulty_level
+    end
+
+    def type_assigned_message(type, marker)
+      @type_assigned_message += 1
+    end
+
+    def type_assigned_message_called
+      @type_assigned_message
+    end
+
+    def level_assigned_message(level)
+      @level_assigned_message += 1
+    end
+
+    def level_assigned_message_called
+      @level_assigned_message
     end
   end

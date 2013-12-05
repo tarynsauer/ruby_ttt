@@ -8,7 +8,7 @@ class GameSetup
     @io         = Kernel
   end
 
-  def start_setup!
+  def start!
     set_opponents
     get_player_type(player_one)
     get_player_type(player_two)
