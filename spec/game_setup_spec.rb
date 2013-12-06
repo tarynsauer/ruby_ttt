@@ -7,6 +7,7 @@ describe 'GameSetup' do
     @player_x   = MockPlayer.new('X', @board)
     @player_o   = MockPlayer.new('O', @board)
     @game_setup = GameSetup.new(@board, @player_x, @player_o)
+    @game_setup.ui.io = MockKernel
   end
 
   describe '#set_opponents' do
@@ -18,6 +19,25 @@ describe 'GameSetup' do
     it "assigns player o as player x opponent" do
       @game_setup.set_opponents
       expect(@player_o.opponent).to eq(@player_x)
+    end
+  end
+
+  context 'get methods' do
+    describe '#get_player_type' do
+      it "sets player type when user input is valid" do
+        @game_setup.ui.io.set_gets('computer')
+        @game_setup.get_player_type(@player_x)
+        expect(@player_x.player_type).to eq('computer')
+      end
+    end
+
+    describe '#get_difficulty_level' do
+      it "returns nil when both players are human" do
+        @player_x.player_type = 'human'
+        @player_o.player_type = 'human'
+        level = @game_setup.get_difficulty_level
+        expect(level).to be_nil
+      end
     end
   end
 
@@ -85,7 +105,6 @@ describe 'GameSetup' do
 
     describe '#set_first_turn' do
       it 'assigns type to player object' do
-        @game_setup.ui.io = MockKernel
         @game_setup.set_first_turn(@player_x)
         expect(@game_setup.ui.io.last_print_call).to include("Player 'X' goes first")
       end

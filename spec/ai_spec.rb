@@ -3,10 +3,10 @@ require 'spec_helper'
 describe 'AI' do
 
   before :each do
-    @board = Board.new(3)
-    @ai    = AI.new
-    @player_x = Player.new('X', @board)
-    @player_o = Player.new('O', @board)
+    @ai       = AI.new
+    @board    = Board.new(3)
+    @player_x = MockPlayer.new('X', @board)
+    @player_o = MockPlayer.new('O', @board)
     @player_x.opponent = @player_o
     @player_o.opponent = @player_x
     @player_x.turn = 1

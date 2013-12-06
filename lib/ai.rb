@@ -33,6 +33,12 @@ class AI
     best_score
   end
 
+  def get_score(board, player)
+    return WIN if board.winner?(player.marker) && player.turn == 1
+    return LOSE if board.winner?(player.marker)
+    TIE
+  end
+
   def apply_minimax(board, player, cell, depth, alpha, beta)
     return get_score(board, player) if board.game_over?
     if player.turn == 1
@@ -80,12 +86,6 @@ class AI
       break if alpha >= beta
     end
     beta
-  end
-
-  def get_score(board, player)
-    return WIN if board.winner?(player.marker) && player.turn == 1
-    return LOSE if board.winner?(player.marker)
-    TIE
   end
 
 end

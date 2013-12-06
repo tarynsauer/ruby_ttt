@@ -1,11 +1,10 @@
 class GameSetup
-  attr_accessor :ui, :board, :player_one, :player_two, :io
+  attr_accessor :ui, :board, :player_one, :player_two
   def initialize(board, player_one, player_two)
     @board      = board
     @ui         = UI.new(@board)
     @player_one = player_one
     @player_two = player_two
-    @io         = Kernel
   end
 
   def start!
