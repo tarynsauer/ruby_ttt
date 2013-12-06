@@ -14,30 +14,6 @@ class Player
     self.opponent.turn = 1 if self.opponent
   end
 
-  # def add_marker(board, cell)
-  #   board.all_cells[cell] = self.marker
-  # end
-
-  # def winner?(board)
-  #   board_markers = board.all_cells.select { |k,v| v == self.marker }.keys
-  #   board.winning_lines.each do |line|
-  #     return true if (line & board_markers).length == board.num_of_rows
-  #   end
-  #   false
-  # end
-
-  # def loser?(board)
-  #   board_markers = board.all_cells.select { |k,v| v == self.opponent.marker }.keys
-  #   board.winning_lines.each do |line|
-  #     return true if (line & board_markers).length == board.num_of_rows
-  #   end
-  #   false
-  # end
-
-  # def game_over?(board)
-  #   !board.moves_remaining? || winner?(board)|| loser?(board)
-  # end
-
 end
 
 # class Minimizing < Player

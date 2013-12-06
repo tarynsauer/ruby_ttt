@@ -73,13 +73,27 @@ describe 'GameSetup' do
     end
   end
 
-  context 'set setting methods' do
+  context 'setting methods' do
 
     describe '#set_player_type' do
       it 'assigns type to player object' do
         @player_x.player_type = 'human'
         @game_setup.set_player_type('computer', @player_x)
         expect(@player_x.player_type).to eq('computer')
+      end
+    end
+
+    describe '#set_first_turn' do
+      it 'assigns type to player object' do
+        @game_setup.ui.io = MockKernel
+        @game_setup.set_first_turn(@player_x)
+        expect(@game_setup.ui.io.last_print_call).to include("Player 'X' goes first")
+      end
+
+      it 'assigns type to player object' do
+        @player_x.turn = 0
+        @game_setup.set_first_turn(@player_x)
+        expect(@player_x.turn).to eq(1)
       end
     end
 

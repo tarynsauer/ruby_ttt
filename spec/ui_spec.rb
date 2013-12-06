@@ -31,7 +31,7 @@ describe 'UI' do
       it 'gets and standardizes cell ID input' do
         @ui.io.set_gets('a1')
         user_move = @ui.request_human_move
-        expect(user_move).should eq('1A')
+        expect(user_move).to eq('1A')
       end
     end
 

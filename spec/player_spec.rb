@@ -23,7 +23,6 @@ describe 'Player' do
     it "changes opponent's turn value to 1" do
       @player_o.turn.should == 1
     end
-
   end
 
 end

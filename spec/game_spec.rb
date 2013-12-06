@@ -40,14 +40,14 @@ describe 'Game' do
       @player_x.turn = 1
       @player_o.turn = 0
       @game.game_status_check
-      expect(@game.ui.io.last_print_call).should include('GAME OVER! Player')
+      expect(@game.ui.io.last_print_call).to include('GAME OVER! Player')
     end
 
     it "does not return player with a value of 0" do
       @player_x.turn = 0
       @player_o.turn = 1
       @game.game_status_check
-      expect(@game.ui.io.last_print_call).should include('tie')
+      expect(@game.ui.io.last_print_call).to include('tie')
     end
   end
 
@@ -59,12 +59,12 @@ describe 'Game' do
     end
     it 'adds player Xs marker to the board' do
       @game.advance_game('1A', @player_x)
-      expect(@game.board.all_cells['1A']).should eq('X')
+      expect(@game.board.all_cells['1A']).to eq('X')
     end
 
     it 'adds player Os marker to the board' do
       @game.advance_game('1A', @player_o)
-      expect(@game.board.all_cells['1A']).should eq('O')
+      expect(@game.board.all_cells['1A']).to eq('O')
     end
 
     it 'prints next move message' do
@@ -72,7 +72,7 @@ describe 'Game' do
       @player_x.turn = 1
       @player_o.turn = 0
       @game.advance_game('1A', @player_x)
-      expect(@game.ui.io.last_print_call).should include("Player")
+      expect(@game.ui.io.last_print_call).to include("Player")
     end
   end
 
@@ -83,12 +83,12 @@ describe 'Game' do
 
     it "prints taken cell message to screen" do
       @game.invalid_move('3C')
-      expect(@game.ui.io.last_print_call).should include('taken')
+      expect(@game.ui.io.last_print_call).to include('taken')
     end
 
     it "prints bad cell message to screen" do
       @game.invalid_move('blah!!!')
-      expect(@game.ui.io.last_print_call).should include('not a valid cell')
+      expect(@game.ui.io.last_print_call).to include('not a valid cell')
     end
   end
 
