@@ -8,11 +8,16 @@ class GameSetup
   end
 
   def start!
-    set_opponents
-    get_player_type(player_one)
-    get_player_type(player_two)
-    level = get_difficulty_level
-    start_new_game(board, player_one, player_two, level)
+    begin
+      set_opponents
+      get_player_type(player_one)
+      get_player_type(player_two)
+      level = get_difficulty_level
+      start_new_game(board, player_one, player_two, level)
+    rescue Interrupt
+      ui.early_exit_message
+      exit
+    end
   end
 
   def start_new_game(board, player_one, player_two, level)

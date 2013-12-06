@@ -161,14 +161,14 @@ describe 'UI' do
     describe '#print_board_numbers' do
       it "prints numbers for each row on the board" do
         @ui.print_board_numbers
-        MockKernel.last_lines(9).should include("1", "2", "3")
+        @ui.io.last_lines(9).should include("1", "2", "3")
       end
     end
 
     describe '#print_divider' do
       it "prints divider below each row on the board" do
         @ui.print_divider
-        MockKernel.last_lines(4).should include("------------------")
+        @ui.io.last_lines(4).should include("------------------")
       end
     end
 
@@ -176,31 +176,38 @@ describe 'UI' do
       it "prints row with a marker present" do
         cells = ['1A', '2A', '3A']
         @ui.show_row('A', cells)
-        MockKernel.last_lines(9).should include("  |     |  X  |  ")
+        @ui.io.last_lines(9).should include("  |     |  X  |  ")
       end
 
       it "prints row blank row" do
         cells = ['1B', '2B', '3B']
         @ui.show_row('A', cells)
-        MockKernel.last_lines(9).should include("  |  O  |  O  |  ")
+        @ui.io.last_lines(9).should include("  |  O  |  O  |  ")
       end
 
       it "prints row with two markers present" do
         cells = ['1C', '2C', '3C']
         @ui.show_row('A', cells)
-        MockKernel.last_lines(9).should include("  |     |     |  ")
+        @ui.io.last_lines(9).should include("  |     |     |  ")
       end
     end
 
     describe '#display_board' do
       it "calls print_board_numbers twice" do
-        expect(@ui).to receive(:print_board_numbers).twice
         @ui.display_board
+        @ui.io.last_lines(25).should include("1", "2", "3")
       end
 
       it "calls print_board_rows once" do
-        expect(@ui).to receive(:print_board_rows).once
         @ui.display_board
+        @ui.io.last_lines(25).should include("A", "B", "C")
+      end
+    end
+
+    describe '#early_exit_message' do
+      it "prints exit message to screen" do
+        @ui.early_exit_message
+        @ui.io.last_lines(4).should include("Exiting Tic-Tac-Toe")
       end
     end
 

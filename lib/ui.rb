@@ -109,4 +109,10 @@ class UI
     io.print "#{cell} is not a valid cell ID!\n"
   end
 
+  def early_exit_message
+    io.print "\nExiting Tic-Tac-Toe..."
+    io.print "...\n"
+    io.print "Goodbye!\n\n"
+  end
+
 end

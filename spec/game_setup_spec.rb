@@ -93,8 +93,34 @@ describe 'GameSetup' do
     end
   end
 
-  context 'setting methods' do
+  context 'invalid input methods' do
+    describe '#invalid_type' do
+      it 'prints invalid message to screen' do
+        @game_setup.invalid_type('baddd', @player_x)
+        expect(@game_setup.ui.io.last_lines(4)).to include('baddd is not a valid option')
+      end
 
+      it 'prints player type message to the screen' do
+        @game_setup.invalid_type('baddd', @player_x)
+        expect(@game_setup.ui.io.last_lines(4)).to include("For player 'X', enter 'human' or 'computer.")
+      end
+    end
+
+    describe '#invalid_level' do
+      it 'prints invalid message to screen' do
+        @game_setup.invalid_level('wrong')
+        expect(@game_setup.ui.io.last_lines(4)).to include('wrong is not a valid option')
+      end
+
+      # it 'prints difficulty level message to the screen' do
+      #   @player_x.player_type = 'computer'
+      #   @game_setup.invalid_level('wrong')
+      #   expect(@game_setup.ui.io.last_lines(4)).to include("Select computer difficulty level")
+      # end
+    end
+  end
+
+  context 'setting methods' do
     describe '#set_player_type' do
       it 'assigns type to player object' do
         @player_x.player_type = 'human'
@@ -115,7 +141,6 @@ describe 'GameSetup' do
         expect(@player_x.turn).to eq(1)
       end
     end
-
   end
 
 end
