@@ -27,14 +27,14 @@ class AI
   end
 
   def get_move_score(board, player, cell)
-    player.add_marker(board, cell)
+    board.add_marker(player.marker, cell)
     best_score = apply_minimax(board, player, cell, depth=0, NEG_INF, POS_INF)
     board.remove_marker(cell)
     best_score
   end
 
   def apply_minimax(board, player, cell, depth, alpha, beta)
-    return get_score(board, player) if player.game_over?(board)
+    return get_score(board, player) if board.game_over?
     if player.turn == 1
       # maximizing_player = Maximizing.new(player)
       max_alphabeta(board, player, depth, alpha, beta)
@@ -47,7 +47,7 @@ class AI
   # def alphabeta(board, player, depth, alpha, beta)
   #   best_score = 0
   #   board.open_cells.each_key do |cell|
-  #     player.opponent.add_marker(board, cell)
+  #     board.add_marker(opponent.marker, cell)
   #     score = (apply_minimax(board, player.opponent, cell, depth += 1, alpha, beta) / depth.to_f)
   #     player.comparison(score, alpha, beta, best_score)
   #     board.remove_marker(cell)
@@ -58,7 +58,7 @@ class AI
 
   def min_alphabeta(board, player, depth, alpha, beta)
     board.open_cells.each_key do |cell|
-      player.opponent.add_marker(board, cell)
+      board.add_marker(player.opponent.marker, cell)
       score = (apply_minimax(board, player.opponent, cell, depth += 1, alpha, beta) / depth.to_f)
       if score > alpha
         alpha = score
@@ -71,7 +71,7 @@ class AI
 
   def max_alphabeta(board, player, depth, alpha, beta)
     board.open_cells.each_key do |cell|
-      player.opponent.add_marker(board, cell)
+      board.add_marker(player.opponent.marker, cell)
       score = (apply_minimax(board, player.opponent, cell, depth += 1, alpha, beta) / depth.to_f)
       if score < beta
         beta = score
@@ -83,8 +83,8 @@ class AI
   end
 
   def get_score(board, player)
-    return WIN if player.winner?(board) && player.turn == 1
-    return LOSE if player.winner?(board)
+    return WIN if board.winner?(player.marker) && player.turn == 1
+    return LOSE if board.winner?(player.marker)
     TIE
   end
 

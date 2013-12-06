@@ -18,8 +18,35 @@ class MockBoard
   attr_accessor :num_of_rows, :all_cells, :winning_rows
   def initialize
     @num_of_rows  = 3
-    @all_cells    = {},
+    @all_cells    = {"1A"=>nil, "2A"=>nil, "3A"=>nil,
+                     "1B"=>nil, "2B"=> nil, "3B"=>nil,
+                     "1C"=>nil, "2C"=>nil, "3C"=>nil},
     @winning_rows = [[],[],[]]
+  end
+
+  def random_cell
+    'A1'
+  end
+
+  def valid_cell?(cell)
+    cell == '3C'
+  end
+
+  def winner?(marker)
+    marker == 'X'
+  end
+
+  def moves_remaining?
+    false
+  end
+
+  def game_over?
+  end
+end
+
+class MockAI
+  def self.computer_move(board, player)
+    'A2'
   end
 end
 
@@ -32,6 +59,9 @@ class MockPlayer
     @player_type = 'human'
     @opponent = nil
   end
+
+  def next_player_turn
+  end
 end
 
 class MockKernel
@@ -39,6 +69,7 @@ class MockKernel
     @@lines = []
     @@output = nil
     @@gets_string = ''
+
     def self.print(string)
       @@input = string
       @@lines.push(@@input)
@@ -58,47 +89,5 @@ class MockKernel
 
     def self.gets
       @@gets_string
-    end
-  end
-
-  class MockUI < UI
-    def initialize(board)
-      super
-      @request_player_type = 0
-      @request_difficulty_level = 0
-      @type_assigned_message = 0
-      @level_assigned_message = 0
-    end
-
-    def request_player_type(marker)
-      @request_player_type += 1
-    end
-
-    def request_player_type_called
-      @request_player_type
-    end
-
-    def request_difficulty_level
-      @request_difficulty_level += 1
-    end
-
-    def request_difficulty_level_called
-      @request_difficulty_level
-    end
-
-    def type_assigned_message(type, marker)
-      @type_assigned_message += 1
-    end
-
-    def type_assigned_message_called
-      @type_assigned_message
-    end
-
-    def level_assigned_message(level)
-      @level_assigned_message += 1
-    end
-
-    def level_assigned_message_called
-      @level_assigned_message
     end
   end

@@ -93,6 +93,22 @@ class Board
     diagonal
   end
 
+  def add_marker(marker, cell)
+    all_cells[cell] = marker
+  end
+
+  def winner?(marker)
+    board_markers = all_cells.select { |k,v| v == marker }.keys
+    winning_lines.each do |line|
+      return true if (line & board_markers).length == num_of_rows
+    end
+    false
+  end
+
+  def game_over?
+    !moves_remaining? || winner?('X')|| winner?('O')
+  end
+
   def available_cell?(cell)
     valid_cell?(cell) && all_cells[cell].nil?
   end

@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'GameSetup' do
 
   before :each do
-    @board      = MockBoard
+    @board      = MockBoard.new
     @player_x   = MockPlayer.new('X', @board)
     @player_o   = MockPlayer.new('O', @board)
     @game_setup = GameSetup.new(@board, @player_x, @player_o)
@@ -18,6 +18,22 @@ describe 'GameSetup' do
     it "assigns player o as player x opponent" do
       @game_setup.set_opponents
       expect(@player_o.opponent).to eq(@player_x)
+    end
+  end
+
+  describe '#who_goes_first' do
+    before :each do
+      @player_x.turn = 0
+      @player_o.turn = 0
+    end
+    it "sets turn value to one for one of the players" do
+      @game_setup.who_goes_first
+      expect((@player_x.turn == 1) || (@player_o.turn == 1)).to be_true
+    end
+
+    it "sets turn value to one for only one player" do
+      @game_setup.who_goes_first
+      expect((@player_x.turn == 1) && (@player_o.turn == 1)).to be_false
     end
   end
 
@@ -64,12 +80,6 @@ describe 'GameSetup' do
         @player_x.player_type = 'human'
         @game_setup.set_player_type('computer', @player_x)
         expect(@player_x.player_type).to eq('computer')
-      end
-
-      it 'calls #type_assigned_message' do
-        @game_setup.ui = MockUI.new(@board)
-        @game_setup.set_player_type('computer', @player_x)
-        expect(@game_setup.ui.type_assigned_message_called).to eq(1)
       end
     end
 

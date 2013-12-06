@@ -3,35 +3,103 @@ require 'spec_helper'
 describe 'Game' do
 
   before :each do
-    board = double('board')
-    player_one = double(:turn => 1)
-    player_two = double(:turn => 0)
-    @game = Game.new(board, player_one, player_two, 'hard')
+    @board    = MockBoard.new
+    @player_x = MockPlayer.new('X', @board)
+    @player_o = MockPlayer.new('O', @board)
+    @game     = Game.new(@board, @player_x, @player_o, 'easy')
+    @player_x.turn = 1
   end
 
-  # def setup_board(moves)
-  #   moves.each do |move|
-  #     board.add_marker(move)
-  #   end
-  # end
+  describe '#get_next_move' do
+    it "returns player input when current player is human" do
+      @player_x.player_type = 'human'
+      @game.ui.io = MockKernel
+      @game.ui.io.set_gets('a1')
+      @game.get_next_move.should == '1A'
+    end
 
-  describe '#current_player' do
+    it "returns a cell ID when computer is easy" do
+      @player_x.player_type = 'computer'
+      @game.get_next_move.should eq('A1')
+    end
+
+    it "returns a cell ID when computer is hard" do
+      @player_x.player_type = 'computer'
+      @game = Game.new(@board, @player_x, @player_o, 'hard')
+      @game.ai = MockAI
+      @game.get_next_move.should eq('A2')
+    end
+  end
+
+  describe '#game_status_check' do
+    before :each do
+      @game.ui.io = MockKernel
+    end
+
     it "returns player with a turn value of 1" do
-      @game.current_player.should == @game.player_one
+      @player_x.turn = 1
+      @player_o.turn = 0
+      @game.game_status_check
+      expect(@game.ui.io.last_print_call).should include('GAME OVER! Player')
     end
 
     it "does not return player with a value of 0" do
-      @game.current_player.should_not == @game.player_two
+      @player_x.turn = 0
+      @player_o.turn = 1
+      @game.game_status_check
+      expect(@game.ui.io.last_print_call).should include('tie')
     end
   end
 
-  describe '#standardize' do
-    it "returns cell ID in the correct format" do
-      @game.standardize('1a').should == '1A'
+  describe '#advance_game' do
+    before :each do
+      @player_x = MockPlayer.new('X', @board)
+      @player_o = MockPlayer.new('O', @board)
+      @game     = Game.new(Board.new(3), @player_x, @player_o, 'easy')
+    end
+    it 'adds player Xs marker to the board' do
+      @game.advance_game('1A', @player_x)
+      expect(@game.board.all_cells['1A']).should eq('X')
     end
 
-    it "returns cell ID in the correct format" do
-      @game.standardize('a1').should == '1A'
+    it 'adds player Os marker to the board' do
+      @game.advance_game('1A', @player_o)
+      expect(@game.board.all_cells['1A']).should eq('O')
+    end
+
+    it 'prints next move message' do
+      @game.ui.io = MockKernel
+      @player_x.turn = 1
+      @player_o.turn = 0
+      @game.advance_game('1A', @player_x)
+      expect(@game.ui.io.last_print_call).should include("Player")
+    end
+  end
+
+  describe '#invalid_move' do
+    before :each do
+      @game.ui.io = MockKernel
+    end
+
+    it "prints taken cell message to screen" do
+      @game.invalid_move('3C')
+      expect(@game.ui.io.last_print_call).should include('taken')
+    end
+
+    it "prints bad cell message to screen" do
+      @game.invalid_move('blah!!!')
+      expect(@game.ui.io.last_print_call).should include('not a valid cell')
+    end
+  end
+
+  describe '#current_player' do
+
+    it "returns player with a turn value of 1" do
+      @game.current_player.should == @player_x
+    end
+
+    it "does not return player with a value of 0" do
+      @game.current_player.should_not == @player_o
     end
   end
 

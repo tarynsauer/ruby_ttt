@@ -26,6 +26,24 @@ describe 'UI' do
         expect(difficulty_level_return).to eq('easy')
       end
     end
+
+    describe '#request_human_move' do
+      it 'gets and standardizes cell ID input' do
+        @ui.io.set_gets('a1')
+        user_move = @ui.request_human_move
+        expect(user_move).should eq('1A')
+      end
+    end
+
+    describe '#standardize' do
+      it "returns cell ID in the correct format" do
+        @ui.standardize('1a').should == '1A'
+      end
+
+      it "returns cell ID in the correct format" do
+        @ui.standardize('a1').should == '1A'
+      end
+    end
   end
 
   context 'player move messages' do

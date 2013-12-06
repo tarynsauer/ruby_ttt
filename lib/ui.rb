@@ -15,6 +15,14 @@ class UI
     io.gets.chomp.downcase
   end
 
+  def request_human_move
+    standardize(io.gets.chomp)
+  end
+
+  def standardize(input)
+    input.split('').sort.join('').upcase
+  end
+
   def difficulty_level_message
     io.print "Select computer difficulty level: Enter 'easy' or 'hard.'\n"
   end

@@ -17,6 +17,7 @@ class GameSetup
   end
 
   def start_new_game(board, player_one, player_two, level)
+    who_goes_first
     Game.new(board, player_one, player_two, level).play!
   end
 
@@ -62,6 +63,15 @@ class GameSetup
   def invalid_level(level)
     ui.invalid_input_message(level)
     get_difficulty_level
+  end
+
+  def who_goes_first
+    rand(0..1) == 1 ? set_first_turn(player_one) : set_first_turn(player_two)
+  end
+
+  def set_first_turn(player)
+    player.turn = 1
+    ui.first_move_message(player)
   end
 
 end

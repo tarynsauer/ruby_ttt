@@ -11,41 +11,41 @@ class Game
     @ui         = UI.new(@board)
     @player_one = player_one
     @player_two = player_two
-    @game_over  = false
     @ai         = AI.new
     @difficulty_level = difficulty_level
   end
 
-  def who_goes_first
-    if rand(0..1) == 1
-      player_one.turn = 1
-    else
-      player_two.turn = 1
+  def play!
+    until board.game_over?
+      ui.display_board
+      move = get_next_move
+      board.available_cell?(move) ? advance_game(move, current_player) : invalid_move(move)
     end
-    ui.first_move_message(current_player)
+    exit_game
+  end
+
+  def get_next_move
+    return ui.request_human_move if current_player.player_type == "human"
+    difficulty_level == "hard" ? ai.computer_move(board, current_player) : board.random_cell
+  end
+
+  def advance_game(cell, player)
+    board.add_marker(player.marker, cell)
+    game_status_check
+    player.next_player_turn
+    ui.next_move_message(current_player) unless board.game_over?
   end
 
   def game_status_check
-    winner_check
-    tie_game_check
-  end
-
-  def winner_check
-    if current_player.winner?(board)
+    if board.winner?(current_player.marker)
       ui.winning_game_message(current_player)
-      exit_game
-    end
-  end
-
-  def tie_game_check
-    if !board.moves_remaining?
+    elsif !board.moves_remaining?
       ui.tie_game_message
-      exit_game
     end
   end
 
-  def standardize(input)
-    input.split('').sort.join('').upcase
+  def invalid_move(cell)
+    board.valid_cell?(cell) ? ui.taken_cell_message(cell) : ui.bad_cell_message(cell)
   end
 
   def current_player
@@ -54,44 +54,7 @@ class Game
 
   def exit_game
     ui.display_board
-    game_over = true
     exit
-  end
-
-  def check_move(cell)
-    if board.available_cell?(cell)
-      advance_game(cell, current_player)
-    elsif board.valid_cell?(cell)
-      ui.taken_cell_message(cell)
-    else
-      ui.bad_cell_message(cell)
-    end
-  end
-
-  def advance_game(cell, player)
-    player.add_marker(board, cell)
-    game_status_check
-    player.next_player_turn
-    ui.next_move_message(current_player)
-  end
-
-  def get_next_move
-    if current_player.player_type == "human"
-      standardize(gets.chomp)
-    elsif difficulty_level == "hard"
-      ai.computer_move(board, current_player)
-    else
-      board.random_cell
-    end
-  end
-
-  def play!
-    who_goes_first
-    until game_over
-      ui.display_board
-      move = get_next_move
-      check_move(move)
-    end
   end
 
 end
