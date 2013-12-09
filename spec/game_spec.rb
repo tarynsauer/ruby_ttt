@@ -4,8 +4,8 @@ describe 'Game' do
 
   before :each do
     @board    = MockBoard.new
-    @player_x = MockPlayer.new('X', @board)
-    @player_o = MockPlayer.new('O', @board)
+    @player_x = MockPlayer.new('X')
+    @player_o = MockPlayer.new('O')
     @game     = Game.new(@board, @player_x, @player_o, 'easy')
     @player_x.turn = 1
   end
@@ -53,8 +53,8 @@ describe 'Game' do
 
   describe '#advance_game' do
     before :each do
-      @player_x = MockPlayer.new('X', @board)
-      @player_o = MockPlayer.new('O', @board)
+      @player_x = MockPlayer.new('X')
+      @player_o = MockPlayer.new('O')
       @game     = Game.new(Board.new(3), @player_x, @player_o, 'easy')
     end
     it 'adds player Xs marker to the board' do

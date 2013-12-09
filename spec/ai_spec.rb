@@ -5,8 +5,8 @@ describe 'AI' do
   before :each do
     @ai       = AI.new
     @board    = Board.new(3)
-    @player_x = MockPlayer.new('X', @board)
-    @player_o = MockPlayer.new('O', @board)
+    @player_x = MockPlayer.new('X')
+    @player_o = MockPlayer.new('O')
     @player_x.opponent = @player_o
     @player_o.opponent = @player_x
     @player_x.turn = 1

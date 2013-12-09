@@ -61,7 +61,7 @@ class UI
 
   def print_board_rows
     alpha = 'A'
-    board.winning_rows.each do |row|
+    board.all_rows.each do |row|
       show_row(alpha, row)
       alpha = alpha.next
     end

@@ -1,8 +1,12 @@
+EASY_LEVEL = 'easy'
+HARD_LEVEL = 'hard'
+COMPUTER_PLAYER = 'computer'
+HUMAN_PLAYER = 'human'
 class GameSetup
   attr_accessor :ui, :board, :player_one, :player_two
   def initialize(board, player_one, player_two)
-    @board      = board
-    @ui         = UI.new(@board)
+    @board = board
+    @ui = UI.new(@board)
     @player_one = player_one
     @player_two = player_two
   end
@@ -20,11 +24,6 @@ class GameSetup
     end
   end
 
-  def start_new_game(board, player_one, player_two, level)
-    who_goes_first
-    Game.new(board, player_one, player_two, level).play!
-  end
-
   def set_opponents
     player_one.opponent = player_two
     player_two.opponent = player_one
@@ -35,8 +34,19 @@ class GameSetup
     validate_type(type, player) ? set_player_type(type, player) : invalid_type(type, player)
   end
 
+  def get_difficulty_level
+    return nil unless player_one.player_type == COMPUTER_PLAYER || player_two.player_type == COMPUTER_PLAYER
+    level = ui.request_difficulty_level
+    validate_level(level) ? set_difficulty_level(level) : invalid_level(level)
+  end
+
+  def start_new_game(board, player_one, player_two, level)
+    who_goes_first
+    Game.new(board, player_one, player_two, level).play!
+  end
+
   def validate_type(type, player)
-    (type == 'human') || (type == 'computer')
+    (type == HUMAN_PLAYER) || (type == COMPUTER_PLAYER)
   end
 
   def set_player_type(type, player)
@@ -49,14 +59,8 @@ class GameSetup
     get_player_type(player)
   end
 
-  def get_difficulty_level
-    return nil unless player_one.player_type == 'computer' || player_two.player_type == 'computer'
-    level = ui.request_difficulty_level
-    validate_level(level) ? set_difficulty_level(level) : invalid_level(level)
-  end
-
   def validate_level(level)
-    (level == 'hard') || (level == 'easy')
+    (level == HARD_LEVEL) || (level == EASY_LEVEL)
   end
 
   def set_difficulty_level(level)

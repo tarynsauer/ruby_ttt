@@ -15,13 +15,13 @@ RSpec.configure do |config|
 end
 
 class MockBoard
-  attr_accessor :num_of_rows, :all_cells, :winning_rows
+  attr_accessor :num_of_rows, :all_cells, :winning_lines
   def initialize
     @num_of_rows  = 3
     @all_cells    = {"1A"=>nil, "2A"=>nil, "3A"=>nil,
                      "1B"=>nil, "2B"=> nil, "3B"=>nil,
                      "1C"=>nil, "2C"=>nil, "3C"=>nil},
-    @winning_rows = [[],[],[]]
+    @winning_lines = [[],[],[]]
   end
 
   def random_cell
@@ -42,6 +42,12 @@ class MockBoard
 
   def game_over?
   end
+
+  def all_rows
+    [['1A', '2A', '3A'],
+     ['1B', '2B', '3B'],
+     ['1C', '2C', '3C']]
+  end
 end
 
 class MockAI
@@ -51,16 +57,19 @@ class MockAI
 end
 
 class MockPlayer
-  attr_accessor :marker, :board, :player_type, :turn, :opponent
-  def initialize(marker, board)
+  attr_accessor :marker, :player_type, :turn, :opponent
+  def initialize(marker)
     @marker = marker
-    @board  = board
     @turn = 0
     @player_type = 'human'
     @opponent = nil
   end
 
   def next_player_turn
+  end
+
+  def current_player?
+    self.turn == 1
   end
 end
 

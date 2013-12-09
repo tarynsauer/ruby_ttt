@@ -5,8 +5,8 @@ describe 'UI' do
   context 'Game settings methods' do
     before :each do
       @board    = MockBoard.new
-      @player_x = MockPlayer.new('X', @board)
-      @player_o = MockPlayer.new('O', @board)
+      @player_x = MockPlayer.new('X')
+      @player_o = MockPlayer.new('O')
       @ui       = UI.new(@board)
       @ui.io    = MockKernel
     end
@@ -51,7 +51,7 @@ describe 'UI' do
       board   = MockBoard.new
       @ui     = UI.new(board)
       @ui.io  = MockKernel
-      @player = MockPlayer.new('X', board)
+      @player = MockPlayer.new('X')
     end
 
     describe '#first_move_message' do
@@ -195,12 +195,12 @@ describe 'UI' do
     describe '#display_board' do
       it "calls print_board_numbers twice" do
         @ui.display_board
-        @ui.io.last_lines(25).should include("1", "2", "3")
+        @ui.io.last_lines(35).should include("1", "2", "3")
       end
 
       it "calls print_board_rows once" do
         @ui.display_board
-        @ui.io.last_lines(25).should include("A", "B", "C")
+        @ui.io.last_lines(35).should include("A", "B", "C")
       end
     end
 

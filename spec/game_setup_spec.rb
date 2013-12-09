@@ -4,8 +4,8 @@ describe 'GameSetup' do
 
   before :each do
     @board      = MockBoard.new
-    @player_x   = MockPlayer.new('X', @board)
-    @player_o   = MockPlayer.new('O', @board)
+    @player_x   = MockPlayer.new('X')
+    @player_o   = MockPlayer.new('O')
     @game_setup = GameSetup.new(@board, @player_x, @player_o)
     @game_setup.ui.io = MockKernel
   end

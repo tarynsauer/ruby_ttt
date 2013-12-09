@@ -5,7 +5,7 @@ require './lib/ui'
 require './lib/game_setup'
 
 class Game
-  attr_accessor :player_one, :player_two, :board, :game_over, :difficulty_level, :ai, :ui
+  attr_accessor :board, :ui, :player_one, :player_two, :ai, :difficulty_level
   def initialize(board, player_one, player_two, difficulty_level)
     @board      = board
     @ui         = UI.new(@board)
@@ -25,8 +25,8 @@ class Game
   end
 
   def get_next_move
-    return ui.request_human_move if current_player.player_type == "human"
-    difficulty_level == "hard" ? ai.computer_move(board, current_player) : board.random_cell
+    return ui.request_human_move if current_player.player_type == HUMAN_PLAYER
+    difficulty_level == HARD_LEVEL ? ai.computer_move(board, current_player) : board.random_cell
   end
 
   def advance_game(cell, player)
@@ -49,7 +49,7 @@ class Game
   end
 
   def current_player
-    player_one.turn == 1 ? player_one : player_two
+    player_one.current_player? ? player_one : player_two
   end
 
   def exit_game

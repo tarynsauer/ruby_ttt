@@ -4,8 +4,8 @@ describe 'Board' do
 
   before :each do
     @board = Board.new(3)
-    @player_x = MockPlayer.new('X', @board)
-    @player_o = MockPlayer.new('O', @board)
+    @player_x = MockPlayer.new('X')
+    @player_o = MockPlayer.new('O')
     @board.add_marker(@player_x.marker, '1B')
   end
 
@@ -29,6 +29,24 @@ describe 'Board' do
                                        ['3A', '3B', '3C'],
                                        ['1A', '2B', '3C'],
                                        ['3A', '2B', '1C']]
+    end
+  end
+
+  describe '#all_rows' do
+    it 'returns an array of all rows on the board' do
+      rows = @board.all_rows
+      expect(rows).should == [['1A', '2A', '3A'],
+                              ['1B', '2B', '3B'],
+                              ['1C', '2C', '3C']]
+    end
+
+    it 'returns an array of all rows on the board' do
+      board = Board.new(4)
+      rows  = board.all_rows
+      expect(rows).should == [['1A', '2A', '3A', '4A'],
+                              ['1B', '2B', '3B', '4B'],
+                              ['1C', '2C', '3C', '4C'],
+                              ['1D', '2D', '3D', '4D']]
     end
   end
 
@@ -155,8 +173,8 @@ describe 'Board' do
   describe '#open_cells' do
     before :each do
       @board = Board.new(3)
-      @player_x = MockPlayer.new('X', @board)
-      @player_o = MockPlayer.new('O', @board)
+      @player_x = MockPlayer.new('X')
+      @player_o = MockPlayer.new('O')
     end
 
     it "gets hash of cell IDs of open positions" do

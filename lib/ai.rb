@@ -1,9 +1,11 @@
 class AI
-  POS_INF = 999
-  NEG_INF = -999
-  WIN     = 1
-  LOSE    = -1
-  TIE     = 0
+  def initialize
+    @@pos_inf = 999
+    @@neg_inf = -999
+    @@win = 1
+    @@lose = -1
+    @@tie = 0
+  end
 
   def computer_move(board, player)
     test_board = board.dup
@@ -28,64 +30,38 @@ class AI
 
   def get_move_score(board, player, cell)
     board.add_marker(player.marker, cell)
-    best_score = apply_minimax(board, player, cell, depth=0, NEG_INF, POS_INF)
+    best_score = apply_minimax(board, player, cell, depth=0, @@neg_inf, @@pos_inf)
     board.remove_marker(cell)
     best_score
   end
 
   def get_score(board, player)
-    return WIN if board.winner?(player.marker) && player.turn == 1
-    return LOSE if board.winner?(player.marker)
-    TIE
+    return @@win if board.winner?(player.marker) && player.current_player?
+    return @@lose if board.winner?(player.marker)
+    @@tie
   end
 
   def apply_minimax(board, player, cell, depth, alpha, beta)
     return get_score(board, player) if board.game_over?
-    if player.turn == 1
-      # maximizing_player = Maximizing.new(player)
-      max_alphabeta(board, player, depth, alpha, beta)
+    if player.current_player?
+      maximizing_player = Maximizing.new(player)
+      alphabeta(board, maximizing_player, depth, alpha, beta)
     else
-      # minimizing_player = Minimizing.new(player)
-      min_alphabeta(board, player, depth, alpha, beta)
+      minimizing_player = Minimizing.new(player)
+      alphabeta(board, minimizing_player, depth, alpha, beta)
     end
   end
 
-  # def alphabeta(board, player, depth, alpha, beta)
-  #   best_score = 0
-  #   board.open_cells.each_key do |cell|
-  #     board.add_marker(opponent.marker, cell)
-  #     score = (apply_minimax(board, player.opponent, cell, depth += 1, alpha, beta) / depth.to_f)
-  #     player.comparison(score, alpha, beta, best_score)
-  #     board.remove_marker(cell)
-  #     break if alpha >= beta
-  #   end
-  #   best_score
-  # end
-
-  def min_alphabeta(board, player, depth, alpha, beta)
+  def alphabeta(board, player, depth, alpha, beta)
     board.open_cells.each_key do |cell|
       board.add_marker(player.opponent.marker, cell)
       score = (apply_minimax(board, player.opponent, cell, depth += 1, alpha, beta) / depth.to_f)
-      if score > alpha
-        alpha = score
-      end
+      alpha = player.get_alpha(alpha, score)
+      beta = player.get_beta(beta, score)
       board.remove_marker(cell)
       break if alpha >= beta
     end
-    alpha
-  end
-
-  def max_alphabeta(board, player, depth, alpha, beta)
-    board.open_cells.each_key do |cell|
-      board.add_marker(player.opponent.marker, cell)
-      score = (apply_minimax(board, player.opponent, cell, depth += 1, alpha, beta) / depth.to_f)
-      if score < beta
-        beta = score
-      end
-      board.remove_marker(cell)
-      break if alpha >= beta
-    end
-    beta
+    player.return_value(alpha, beta)
   end
 
 end
