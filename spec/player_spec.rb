@@ -39,4 +39,34 @@ describe 'Player' do
     end
   end
 
+  describe '#get_alpha' do
+    before :each do
+      @min_player = Minimizing.new(@player_o)
+    end
+
+    it "returns the largest value" do
+      @min_player.get_alpha(1, 2.5).should == 2.5
+    end
+
+    it "returns the largest value" do
+      @min_player.get_alpha(1, -2.5).should == 1
+    end
+
+  end
+
+  describe '#get_beta' do
+    before :each do
+      @max_player = Maximizing.new(@player_o)
+    end
+
+    it "returns the smallest value" do
+      @max_player.get_beta(1, 2.5).should == 1
+    end
+
+    it "returns the smallest value" do
+      @max_player.get_beta(1, -2.5).should == -2.5
+    end
+
+  end
+
 end
