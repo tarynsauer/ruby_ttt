@@ -54,7 +54,7 @@ class Game
 
   def exit_game
     ui.display_board
-    exit
+    ui.io.exit
   end
 
 end

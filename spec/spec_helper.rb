@@ -1,5 +1,7 @@
-require 'coveralls'
-Coveralls.wear!
+require 'simplecov'
+SimpleCov.start
+# require 'coveralls'
+# Coveralls.wear!
 
 require_relative '../lib/ai'
 require_relative '../lib/board'
@@ -17,15 +19,19 @@ end
 class MockBoard
   attr_accessor :num_of_rows, :all_cells, :winning_lines
   def initialize
-    @num_of_rows  = 3
-    @all_cells    = {"1A"=>nil, "2A"=>nil, "3A"=>nil,
-                     "1B"=>nil, "2B"=> nil, "3B"=>nil,
-                     "1C"=>nil, "2C"=>nil, "3C"=>nil},
+    @num_of_rows = 3
+    @all_cells = { "1A"=>nil, "2A"=>nil, "3A"=>nil,
+                   "1B"=>nil, "2B"=>nil, "3B"=>nil,
+                   "1C"=>nil, "2C"=>nil, "3C"=>nil },
     @winning_lines = [[],[],[]]
+    @game_over = false
   end
 
   def random_cell
     'A1'
+  end
+
+  def add_marker(marker, cell)
   end
 
   def valid_cell?(cell)
@@ -40,7 +46,16 @@ class MockBoard
     false
   end
 
+  def available_cell?(cell)
+    @game_over = true
+  end
+
+  def set_game_over(value)
+    @game_over = value
+  end
+
   def game_over?
+    @game_over
   end
 
   def all_rows
@@ -53,6 +68,27 @@ end
 class MockAI
   def self.computer_move(board, player)
     'A2'
+  end
+end
+
+class MockUI
+  attr_accessor :io
+  def initialize
+    @io = Kernel
+  end
+
+  def display_board
+  end
+
+  def request_human_move
+    '1A'
+  end
+
+  def winning_game_message(player)
+  end
+
+  def level_assigned_message(level)
+    'level assigned'
   end
 end
 
@@ -74,29 +110,33 @@ class MockPlayer
 end
 
 class MockKernel
-    @@input = nil
-    @@lines = []
-    @@output = nil
-    @@gets_string = ''
+  @@input = nil
+  @@lines = []
+  @@output = nil
+  @@gets_string = ''
 
-    def self.print(string)
-      @@input = string
-      @@lines.push(@@input)
-    end
-
-    def self.last_print_call
-      @@input
-    end
-
-    def self.last_lines(num)
-      @@lines[-num..-1].join('')
-    end
-
-    def self.set_gets(string)
-      @@gets_string = string
-    end
-
-    def self.gets
-      @@gets_string
-    end
+  def self.print(string)
+    @@input = string
+    @@lines.push(@@input)
   end
+
+  def self.last_print_call
+    @@input
+  end
+
+  def self.last_lines(num)
+    @@lines[-num..-1].join('')
+  end
+
+  def self.set_gets(string)
+    @@gets_string = string
+  end
+
+  def self.gets
+    @@gets_string
+  end
+
+  def self.exit
+    'exited'
+  end
+end

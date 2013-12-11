@@ -1,11 +1,10 @@
+POS_INF = 999
+NEG_INF = -999
+WIN = 1
+LOSE = -1
+TIE = 0
+
 class AI
-  def initialize
-    @@pos_inf = 999
-    @@neg_inf = -999
-    @@win = 1
-    @@lose = -1
-    @@tie = 0
-  end
 
   def computer_move(board, player)
     test_board = board.dup
@@ -30,15 +29,15 @@ class AI
 
   def get_move_score(board, player, cell)
     board.add_marker(player.marker, cell)
-    best_score = apply_minimax(board, player, cell, depth=0, @@neg_inf, @@pos_inf)
+    best_score = apply_minimax(board, player, cell, depth=0, NEG_INF, POS_INF)
     board.remove_marker(cell)
     best_score
   end
 
   def get_score(board, player)
-    return @@win if board.winner?(player.marker) && player.current_player?
-    return @@lose if board.winner?(player.marker)
-    @@tie
+    return WIN if board.winner?(player.marker) && player.current_player?
+    return LOSE if board.winner?(player.marker)
+    TIE
   end
 
   def apply_minimax(board, player, cell, depth, alpha, beta)

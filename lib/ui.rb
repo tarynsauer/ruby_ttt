@@ -2,7 +2,7 @@ class UI
   attr_accessor :board, :io
   def initialize(board)
     @board = board
-    @io    = Kernel
+    @io = Kernel
   end
 
   def request_player_type(marker)

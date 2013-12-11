@@ -17,7 +17,8 @@ class GameSetup
       get_player_type(player_one)
       get_player_type(player_two)
       level = get_difficulty_level
-      start_new_game(board, player_one, player_two, level)
+      who_goes_first
+      Game.new(board, player_one, player_two, level).play!
     rescue Interrupt
       ui.early_exit_message
       exit
@@ -37,12 +38,7 @@ class GameSetup
   def get_difficulty_level
     return nil unless player_one.player_type == COMPUTER_PLAYER || player_two.player_type == COMPUTER_PLAYER
     level = ui.request_difficulty_level
-    validate_level(level) ? set_difficulty_level(level) : invalid_level(level)
-  end
-
-  def start_new_game(board, player_one, player_two, level)
-    who_goes_first
-    Game.new(board, player_one, player_two, level).play!
+    validate_level(level) ? ui.level_assigned_message(level) : invalid_level(level)
   end
 
   def validate_type(type, player)
@@ -61,11 +57,6 @@ class GameSetup
 
   def validate_level(level)
     (level == HARD_LEVEL) || (level == EASY_LEVEL)
-  end
-
-  def set_difficulty_level(level)
-    ui.level_assigned_message(level)
-    start_new_game(board, player_one, player_two, level)
   end
 
   def invalid_level(level)

@@ -38,6 +38,14 @@ describe 'GameSetup' do
         level = @game_setup.get_difficulty_level
         expect(level).to be_nil
       end
+
+      # it "calls #level_assigned_message when level is valid" do
+      #   @player_x.player_type = 'human'
+      #   @player_o.player_type = 'computer'
+      #   @game_setup.ui.io.set_gets('easy')
+      #   @game_setup.get_difficulty_level
+      #   expect(@game_setup.ui.io.last_print_call).should include('You selected difficulty level')
+      # end
     end
   end
 
@@ -94,6 +102,11 @@ describe 'GameSetup' do
   end
 
   context 'invalid input methods' do
+    before :each do
+      @player_x.player_type = 'human'
+      @player_o.player_type = 'human'
+    end
+
     describe '#invalid_type' do
       it 'prints invalid message to screen' do
         @game_setup.invalid_type('baddd', @player_x)
@@ -111,12 +124,6 @@ describe 'GameSetup' do
         @game_setup.invalid_level('wrong')
         expect(@game_setup.ui.io.last_lines(4)).to include('wrong is not a valid option')
       end
-
-      # it 'prints difficulty level message to the screen' do
-      #   @player_x.player_type = 'computer'
-      #   @game_setup.invalid_level('wrong')
-      #   expect(@game_setup.ui.io.last_lines(4)).to include("Select computer difficulty level")
-      # end
     end
   end
 

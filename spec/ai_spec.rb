@@ -12,6 +12,18 @@ describe 'AI' do
     @player_x.turn = 1
   end
 
+  describe '#computer_move' do
+    it "returns a cell ID string" do
+      @board.all_cells = {
+        "1A"=> 'O', "2A"=>'X', "3A"=>'X',
+        "1B"=> nil, "2B"=>'O', "3B"=> 'O',
+        "1C"=> nil, "2C"=>nil, "3C"=> 'X'
+      }
+      best_move = @ai.computer_move(@board, @player_x)
+      best_move.length.should == 2
+    end
+  end
+
   describe '#get_best_move' do
     it "takes winning space when one is available" do
       @board.all_cells = {

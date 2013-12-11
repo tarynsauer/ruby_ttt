@@ -10,6 +10,22 @@ describe 'Game' do
     @player_x.turn = 1
   end
 
+  describe '#play!' do
+    it 'exits game when board shows game over' do
+      @game.ui = MockUI.new
+      @game.ui.io = MockKernel
+      @board.set_game_over(true)
+      @game.play!.should == 'exited'
+    end
+
+    it 'checks cell ID' do
+      @game.ui = MockUI.new
+      @game.ui.io = MockKernel
+      @board.set_game_over(false)
+      @game.play!.should == 'exited'
+    end
+  end
+
   describe '#get_next_move' do
     it "returns player input when current player is human" do
       @player_x.player_type = 'human'
@@ -93,13 +109,20 @@ describe 'Game' do
   end
 
   describe '#current_player' do
-
     it "returns player with a turn value of 1" do
       @game.current_player.should == @player_x
     end
 
     it "does not return player with a value of 0" do
       @game.current_player.should_not == @player_o
+    end
+  end
+
+  describe '#exit_game' do
+    it "exits the game" do
+      @game.ui = MockUI.new
+      @game.ui.io = MockKernel
+      @game.exit_game.should == 'exited'
     end
   end
 
