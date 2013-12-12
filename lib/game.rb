@@ -1,9 +1,8 @@
-require './lib/ai'
-require './lib/board'
-require './lib/player'
-require './lib/ui'
-require './lib/game_setup'
-
+require 'ai'
+require 'board'
+require 'player'
+require 'ui'
+require 'game_setup'
 class Game
   attr_accessor :board, :ui, :player_one, :player_two, :ai, :difficulty_level
   def initialize(board, player_one, player_two, difficulty_level)
