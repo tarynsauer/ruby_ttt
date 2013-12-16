@@ -40,7 +40,7 @@ class CLIGameSetup < GameSetup
       get_player_type(player_two)
       level = get_difficulty_level
       who_goes_first
-      Game.new(ui, player_one, player_two, level).play!
+      CLIGame.new(board, ui, player_one, player_two, level).play!
     rescue Interrupt
       ui.early_exit_message
       exit
