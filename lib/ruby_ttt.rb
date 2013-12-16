@@ -5,22 +5,13 @@ require 'ui'
 require 'game_setup'
 class Game
   attr_accessor :board, :ui, :player_one, :player_two, :ai, :difficulty_level
-  def initialize(board, player_one, player_two, difficulty_level)
+  def initialize(board, ui, player_one, player_two, difficulty_level)
     @board      = board
-    @ui         = UI.new(@board)
+    @ui         = ui
     @player_one = player_one
     @player_two = player_two
     @ai         = AI.new
     @difficulty_level = difficulty_level
-  end
-
-  def play!
-    until board.game_over?
-      ui.display_board
-      move = get_next_move
-      advance_game if verify_move(move)
-    end
-    exit_game
   end
 
   def verify_move(cell)
@@ -32,8 +23,7 @@ class Game
     end
   end
 
-  def get_next_move
-    return ui.request_human_move if !computer_move?
+  def get_computer_move
     difficulty_level == HARD_LEVEL ? ai.computer_move(board, current_player) : board.random_cell
   end
 
@@ -55,12 +45,25 @@ class Game
     end
   end
 
-  def invalid_move(cell)
-    board.valid_cell?(cell) ? ui.taken_cell_message(cell) : ui.bad_cell_message(cell)
-  end
-
   def current_player
     player_one.current_player? ? player_one : player_two
+  end
+
+end
+
+class CLIGame < Game
+
+  def play!
+    until board.game_over?
+      ui.display_board
+      move = computer_move? ? get_computer_move : ui.request_human_move
+      advance_game if verify_move(move)
+    end
+    exit_game
+  end
+
+  def invalid_move(cell)
+    board.valid_cell?(cell) ? ui.taken_cell_message(cell) : ui.bad_cell_message(cell)
   end
 
   def exit_game

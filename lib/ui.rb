@@ -1,7 +1,31 @@
 class UI
-  attr_accessor :board, :io
+  attr_accessor :board
   def initialize(board)
     @board = board
+  end
+
+  def first_move_message(player)
+    "Player '#{player.marker}' goes first."
+  end
+
+  def next_move_message(player)
+    "Player '#{player.marker}': Make your move."
+  end
+
+  def winning_game_message(player)
+    "GAME OVER! Player '#{player.marker}' wins!"
+  end
+
+  def tie_game_message
+    "GAME OVER! It's a tie!"
+  end
+
+end
+
+class CLIUI < UI
+  attr_accessor :io
+  def initialize(board)
+    super
     @io = Kernel
   end
 
@@ -85,8 +109,9 @@ class UI
   end
 
   def first_move_message(player)
+    output = super
     io.print "\n\n************ New Game ************\n"
-    io.print "Player '#{player.marker}' goes first.\n"
+    io.print output + "\n"
   end
 
   def next_move_message(player)
@@ -94,11 +119,13 @@ class UI
   end
 
   def winning_game_message(player)
-    io.print "GAME OVER! Player '#{player.marker}' wins!\n"
+    output = super
+    io.print output + "\n"
   end
 
   def tie_game_message
-    io.print "GAME OVER! It's a tie!\n"
+    output = super
+    io.print output + "\n"
   end
 
   def taken_cell_message(cell)
@@ -113,6 +140,30 @@ class UI
     io.print "\nExiting Tic-Tac-Toe..."
     io.print "...\n"
     io.print "Goodbye!\n\n"
+  end
+
+end
+
+class WebUI < UI
+
+  def print_active_board
+    board_string = ''
+    board.all_rows.each do |row|
+      board_string += "<div class='row'>"
+      row.each { |cell| board_string += "<button name='move' value='#{cell}'> #{board.all_cells[cell]} <span class='cell'>.</span></button>" }
+      board_string += "</div>"
+    end
+    board_string
+  end
+
+  def print_inactive_board
+    board_string = ''
+    board.all_rows.each do |row|
+      board_string += "<div class='row'>"
+      row.each { |cell| board_string += "<button> #{board.all_cells[cell]} <span class='cell'>.</span></button>" }
+      board_string += "</div>"
+    end
+    board_string
   end
 
 end

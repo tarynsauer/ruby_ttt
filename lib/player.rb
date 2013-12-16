@@ -40,7 +40,6 @@ class Minimizing < Player
   def return_value(alpha, beta)
     alpha
   end
-
 end
 
 class Maximizing < Player
@@ -58,6 +57,5 @@ class Maximizing < Player
   def return_value(alpha, beta)
     beta
   end
-
 end
 

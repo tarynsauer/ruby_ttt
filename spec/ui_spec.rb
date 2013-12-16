@@ -7,7 +7,7 @@ describe 'UI' do
       @board    = MockBoard.new
       @player_x = MockPlayer.new('X')
       @player_o = MockPlayer.new('O')
-      @ui       = UI.new(@board)
+      @ui       = CLIUI.new(@board)
       @ui.io    = MockKernel
     end
 
@@ -49,7 +49,7 @@ describe 'UI' do
   context 'player move messages' do
     before :each do
       board   = MockBoard.new
-      @ui     = UI.new(board)
+      @ui     = CLIUI.new(board)
       @ui.io  = MockKernel
       @player = MockPlayer.new('X')
     end
@@ -91,7 +91,7 @@ describe 'UI' do
   context 'invalid move messages' do
     before :each do
       board  = MockBoard.new
-      @ui    = UI.new(board)
+      @ui    = CLIUI.new(board)
       @ui.io = MockKernel
       @cell  = 'A3'
     end
@@ -119,7 +119,7 @@ describe 'UI' do
   context 'game setup messages' do
     before :each do
       board  = MockBoard.new
-      @ui    = UI.new(board)
+      @ui    = CLIUI.new(board)
       @ui.io = MockKernel
     end
 
@@ -154,7 +154,7 @@ describe 'UI' do
        board.all_cells = {"1A"=>nil, "2A"=>'X', "3A"=>nil,
                           "1B"=>'O', "2B"=>'O', "3B"=>nil,
                           "1C"=>nil, "2C"=>nil, "3C"=>nil}
-       @ui    = UI.new(board)
+       @ui    = CLIUI.new(board)
        @ui.io = MockKernel
      end
 
@@ -208,6 +208,29 @@ describe 'UI' do
       it "prints exit message to screen" do
         @ui.early_exit_message
         @ui.io.last_lines(4).should include("Exiting Tic-Tac-Toe")
+      end
+    end
+
+  end
+
+  context 'WebUI print board methods' do
+    before :each do
+       board  = MockBoard.new
+       board.all_cells = {"1A"=>nil, "2A"=>'X', "3A"=>nil,
+                          "1B"=>nil, "2B"=>nil, "3B"=>nil,
+                          "1C"=>nil, "2C"=>nil, "3C"=>nil}
+       @ui    = WebUI.new(board)
+     end
+
+    describe '#print_active_board' do
+      it 'prints cells with value attributes' do
+        @ui.print_active_board.should include("<button name='move' value='2A'> X <span class='cell'>.</span></button>")
+      end
+    end
+
+    describe '#print_inactive_board' do
+      it 'prints cells without value attributes' do
+        @ui.print_inactive_board.should include("<button> X <span class='cell'>.</span></button>")
       end
     end
 

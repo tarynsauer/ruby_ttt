@@ -1,5 +1,6 @@
 MARKER_X = 'X'
 MARKER_O = 'O'
+
 class Board
   attr_accessor :all_cells, :num_of_rows, :winning_lines
   def initialize(num_of_rows)

@@ -3,10 +3,11 @@ require 'spec_helper'
 describe 'GameSetup' do
 
   before :each do
-    @board      = MockBoard.new
-    @player_x   = MockPlayer.new('X')
-    @player_o   = MockPlayer.new('O')
-    @game_setup = GameSetup.new(@board, @player_x, @player_o)
+    @board = MockBoard.new
+    ui = CLIUI.new(@board)
+    @player_x = MockPlayer.new('X')
+    @player_o = MockPlayer.new('O')
+    @game_setup = CLIGameSetup.new(ui, @player_x, @player_o)
     @game_setup.ui.io = MockKernel
   end
 
@@ -162,8 +163,18 @@ describe 'GameSetup' do
         expect(@player_x.turn).to eq(1)
       end
     end
+  end
+
+  context 'WebGameSetup tests' do
 
     describe '#set_player_types' do
+      before :each do
+        ui = MockUI.new
+        @player_x = MockPlayer.new('X')
+        @player_o = MockPlayer.new('O')
+        @game_setup = WebGameSetup.new(ui, @player_x, @player_o)
+      end
+
       it 'sets player type for player_one' do
         @game_setup.set_player_types('computer', 'human')
         @player_x.player_type.should == 'computer'
@@ -174,6 +185,7 @@ describe 'GameSetup' do
         @player_o.player_type.should == 'human'
       end
     end
+
   end
 
 end

@@ -1,7 +1,5 @@
 require 'simplecov'
 SimpleCov.start
-# require 'coveralls'
-# Coveralls.wear!
 
 require 'ai'
 require 'board'
@@ -72,9 +70,10 @@ class MockAI
 end
 
 class MockUI
-  attr_accessor :io
+  attr_accessor :io, :board
   def initialize
     @io = Kernel
+    @board = MockBoard.new
   end
 
   def display_board
