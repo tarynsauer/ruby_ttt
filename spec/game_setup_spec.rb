@@ -49,6 +49,20 @@ describe 'GameSetup' do
     end
   end
 
+  describe '#computer_player_selected?' do
+    it 'returns true if one of the players is comptuer' do
+      @player_x.player_type = 'human'
+      @player_o.player_type = 'computer'
+      @game_setup.computer_player_selected?.should be_true
+    end
+
+    it 'returns false if none of the players is computer' do
+      @player_x.player_type = 'human'
+      @player_o.player_type = 'human'
+      @game_setup.computer_player_selected?.should be_false
+    end
+  end
+
   describe '#who_goes_first' do
     before :each do
       @player_x.turn = 0
@@ -146,6 +160,18 @@ describe 'GameSetup' do
         @player_x.turn = 0
         @game_setup.set_first_turn(@player_x)
         expect(@player_x.turn).to eq(1)
+      end
+    end
+
+    describe '#set_player_types' do
+      it 'sets player type for player_one' do
+        @game_setup.set_player_types('computer', 'human')
+        @player_x.player_type.should == 'computer'
+      end
+
+      it 'sets player type for player_two' do
+        @game_setup.set_player_types('computer', 'human')
+        @player_o.player_type.should == 'human'
       end
     end
   end

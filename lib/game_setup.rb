@@ -36,9 +36,13 @@ class GameSetup
   end
 
   def get_difficulty_level
-    return nil unless player_one.player_type == COMPUTER_PLAYER || player_two.player_type == COMPUTER_PLAYER
+    return nil unless computer_player_selected?
     level = ui.request_difficulty_level
     validate_level(level) ? ui.level_assigned_message(level) : invalid_level(level)
+  end
+
+  def computer_player_selected?
+    (player_one.player_type == COMPUTER_PLAYER) || (player_two.player_type == COMPUTER_PLAYER)
   end
 
   def validate_type(type, player)
@@ -71,6 +75,11 @@ class GameSetup
   def set_first_turn(player)
     player.turn = 1
     ui.first_move_message(player)
+  end
+
+  def set_player_types(player_one_type, player_two_type)
+    player_one.player_type = player_one_type
+    player_two.player_type = player_two_type
   end
 
 end
