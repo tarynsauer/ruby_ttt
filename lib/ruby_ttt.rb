@@ -28,7 +28,7 @@ class Game
       board.add_marker(current_player.marker, cell)
       true
     else
-      invalid_move(move)
+      invalid_move(cell)
     end
   end
 
@@ -43,7 +43,7 @@ class Game
 
   def advance_game
     game_status_check
-    player.next_player_turn
+    current_player.next_player_turn
     ui.next_move_message(current_player) unless board.game_over?
   end
 
