@@ -6,7 +6,6 @@ require 'board'
 require 'ruby_ttt'
 require 'player'
 require 'ui'
-require 'game_setup'
 
 RSpec.configure do |config|
   config.color_enabled = true
