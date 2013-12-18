@@ -2,7 +2,7 @@ class Player
   attr_accessor :marker, :turn, :player_type, :opponent
   def initialize(marker)
     @marker      = marker
-    @player_type = 'human'
+    @player_type = HUMAN_PLAYER
     @turn        = 0
     @opponent    = nil
   end
