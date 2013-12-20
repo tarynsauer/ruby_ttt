@@ -10,6 +10,13 @@ describe 'Player' do
     @player_o.opponent = @player_x
   end
 
+  describe '#set_turn' do
+    it "sets the player's turn to one" do
+      @player_x.set_turn
+      @player_x.turn.should == 1
+    end
+  end
+
   describe '#next_player_turn' do
     before :each do
       @player_o.turn = 1

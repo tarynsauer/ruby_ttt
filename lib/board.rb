@@ -46,20 +46,8 @@ class Board
     rows
   end
 
-  def add_marker(marker, cell)
-    all_cells[cell] = marker
-  end
-
-  def winner?(marker)
-    board_markers = all_cells.select { |k,v| v == marker }.keys
-    winning_lines.each do |line|
-      return true if (line & board_markers).length == num_of_rows
-    end
-    false
-  end
-
-  def game_over?
-    !moves_remaining? || winner?(MARKER_X)|| winner?(MARKER_O)
+  def add_test_marker(cell, marker)
+    board.all_cells[cell] = marker
   end
 
   def available_cell?(cell)
@@ -141,6 +129,80 @@ class Board
       numeric -= 1
     end
     diagonal
+  end
+
+end
+
+class CLIDisplayBoard < Board
+  attr_accessor :all_cells, :num_of_rows, :winning_lines, :io
+  def initialize
+    super
+    @io = Kernel
+  end
+
+  def print_board_numbers
+    num = 1
+    io.print "    "
+    board.num_of_rows.times do
+      io.print "--#{num}-- "
+      num += 1
+    end
+    io.print "\n"
+  end
+
+  def print_divider
+    io.print "   "
+    board.num_of_rows.times { io.print "------" }
+    io.print "\n"
+  end
+
+  def print_board_rows
+    alpha = 'A'
+    board.all_rows.each do |row|
+      show_row(alpha, row)
+      alpha = alpha.next
+    end
+  end
+
+  def show_row(letter, cells)
+    io.print "#{letter}"
+    cells.each { |cell| io.print "  |  " + show_marker(cell) }
+    io.print "  | #{letter}\n"
+    print_divider
+  end
+
+  def show_marker(cell)
+    board.all_cells[cell].nil? ? ' ' : board.all_cells[cell]
+  end
+
+  def display_board
+    print_board_numbers
+    print_board_rows
+    print_board_numbers
+  end
+
+end
+
+class WebDisplayBoard < Board
+
+  def print_active_board
+    board_string = ''
+    board.all_rows.each do |row|
+      board_string += "<div class='row'>"
+      row.each { |cell| board_string += "<button name='move' value='#{cell}'> #{board.all_cells[cell]} <span class='cell'>.</span></button>" }
+      board_string += "</div>"
+    end
+    board_string
+  end
+
+  def print_inactive_board
+    board_string = ''
+    board.all_rows.each do |row|
+      board_string += "<div class='row'>"
+      row.each { |cell| board_string += "<button> #{board.all_cells[cell]} <span class='cell'>.</span></button>" }
+      board_string += "</div>"
+    end
+    board_string
   end
 
 end

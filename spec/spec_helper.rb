@@ -105,6 +105,10 @@ class MockPlayer
   def current_player?
     self.turn == 1
   end
+
+  def set_turn
+    self.turn = 1
+  end
 end
 
 class MockKernel

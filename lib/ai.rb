@@ -18,6 +18,10 @@ class AI
     move.first
   end
 
+  def opponent_marker(marker)
+    marker == MARKER_X ? MARKER_O : MARKER_X
+  end
+
   private
 
   def rank_possible_moves(board, player)
