@@ -54,7 +54,7 @@ class MinimizingPlayer < AIPlayer
     score > alpha ? score : alpha
   end
 
-  def return_value(alpha, beta)
+  def return_best_score(alpha, beta)
     alpha
   end
 end
@@ -70,7 +70,7 @@ class MaximizingPlayer < AIPlayer
     score < beta ? score : beta
   end
 
-  def return_value(alpha, beta)
+  def return_best_score(alpha, beta)
     beta
   end
 end

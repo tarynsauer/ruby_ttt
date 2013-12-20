@@ -1,9 +1,11 @@
 require 'simplecov'
 SimpleCov.start
 
+require 'game_setup'
+require 'player_factory'
 require 'ai'
 require 'board'
-require 'ruby_ttt'
+require 'game'
 require 'player'
 require 'ui'
 
@@ -19,16 +21,13 @@ class MockBoard
     @num_of_rows = 3
     @all_cells = { "1A"=>nil, "2A"=>nil, "3A"=>nil,
                    "1B"=>nil, "2B"=>nil, "3B"=>nil,
-                   "1C"=>nil, "2C"=>nil, "3C"=>nil },
+                   "1C"=>nil, "2C"=>nil, "3C"=>nil }
     @winning_lines = [[],[],[]]
     @game_over = false
   end
 
   def random_cell
     'A1'
-  end
-
-  def add_marker(marker, cell)
   end
 
   def valid_cell?(cell)
@@ -64,7 +63,7 @@ end
 
 class MockAI
   def self.computer_move(board, player)
-    'A2'
+    '2A'
   end
 end
 

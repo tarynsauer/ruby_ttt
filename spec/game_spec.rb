@@ -51,6 +51,64 @@ describe 'Game' do
       end
     end
 
+      describe '#winner? returns correct boolean value' do
+    [
+      [{ '1A' => nil, '2A' => 'X', '3A' => 'O',
+         '1B' => 'X', '2B' => 'O', '3B' => 'X',
+         '1C' => 'O', '2C' => nil, '3C' => nil }, true],
+      [{ '1A' => 'O', '2A' => 'X', '3A' => nil,
+         '1B' => 'O', '2B' => nil, '3B' => 'X',
+         '1C' => 'O', '2C' => 'X', '3C' => nil }, true],
+      [{ '1A' => 'O', '2A' => 'O', '3A' => 'O',
+         '1B' => nil, '2B' => 'X', '3B' => 'X',
+         '1C' => nil, '2C' => nil, '3C' => nil }, true],
+      [{ '1A' => 'O', '2A' => 'X', '3A' => 'O',
+         '1B' => 'O', '2B' => 'O', '3B' => 'X',
+         '1C' => 'X', '2C' => 'X', '3C' => 'O' }, true],
+      [{ '1A' => nil, '2A' => 'X', '3A' => 'O',
+         '1B' => 'X', '2B' => nil, '3B' => 'X',
+         '1C' => 'O', '2C' => nil, '3C' => nil }, false],
+      [{ '1A' => 'O', '2A' => 'X', '3A' => nil,
+         '1B' => 'X', '2B' => nil, '3B' => 'X',
+         '1C' => 'O', '2C' => 'X', '3C' => nil }, false]
+    ].each do |board_all_cells, expected_outcome|
+      it "gets #{board_all_cells} and returns #{expected_outcome}" do
+        @board.all_cells = board_all_cells
+        @board.winner?(@player_o.marker).should == expected_outcome
+      end
+    end
+  end
+
+  describe '#game_over?' do
+    it "returns true for win" do
+      @board.all_cells = {
+        "1A"=> 'O', "2A"=>'O', "3A"=>'O',
+        "1B"=> nil, "2B"=>'X', "3B"=> 'X',
+        "1C"=> nil, "2C"=>nil, "3C"=> nil
+      }
+      @board.game_over?.should be_true
+    end
+
+    it "returns false for neither win nor tie" do
+      @board.all_cells = {
+        "1A"=> nil, "2A"=>'O', "3A"=>'O',
+        "1B"=> nil, "2B"=>'X', "3B"=> 'X',
+        "1C"=> nil, "2C"=>nil, "3C"=> nil
+      }
+      @board.game_over?.should be_false
+    end
+
+    it "returns true for tie" do
+      @board.all_cells = {
+        "1A"=> 'X', "2A"=>'O', "3A"=>'O',
+        "1B"=> 'O', "2B"=>'X', "3B"=> 'X',
+        "1C"=> 'X', "2C"=>'O', "3C"=> 'X'
+      }
+      @board.game_over?.should be_true
+    end
+  end
+
+
     describe '#computer_player_selected?' do
       it 'returns true if one of the players is comptuer' do
         @player_x.player_type = 'human'

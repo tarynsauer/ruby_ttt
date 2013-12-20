@@ -65,7 +65,7 @@ class CLIUI < UI
   end
 
   def invalid_input_message(input)
-    io.print " #{input} is not a valid option.\n"
+    io.print "#{input} is not a valid option.\n"
   end
 
   def player_type_message(marker)

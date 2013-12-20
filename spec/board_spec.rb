@@ -6,7 +6,7 @@ describe 'Board' do
     @board = Board.new(3)
     @player_x = MockPlayer.new('X')
     @player_o = MockPlayer.new('O')
-    @board.add_marker(@player_x.marker, '1B')
+    @board.add_test_marker(@player_x.marker, '1B')
   end
 
   describe '#create_board_hash' do
@@ -50,72 +50,15 @@ describe 'Board' do
     end
   end
 
-  describe '#add_marker' do
+  describe '#add_test_marker' do
     it "adds player's marker to the board" do
-      @board.add_marker(@player_x.marker, '1A')
+      @board.add_test_marker(@player_x.marker, '1A')
       @board.all_cells['1A'].should == 'X'
     end
 
     it "adds player's marker to the board" do
-      @board.add_marker(@player_o.marker, '1B')
+      @board.add_test_marker(@player_o.marker, '1B')
       @board.all_cells['1B'].should == 'O'
-    end
-  end
-
-  describe '#winner? returns correct boolean value' do
-    [
-      [{ '1A' => nil, '2A' => 'X', '3A' => 'O',
-         '1B' => 'X', '2B' => 'O', '3B' => 'X',
-         '1C' => 'O', '2C' => nil, '3C' => nil }, true],
-      [{ '1A' => 'O', '2A' => 'X', '3A' => nil,
-         '1B' => 'O', '2B' => nil, '3B' => 'X',
-         '1C' => 'O', '2C' => 'X', '3C' => nil }, true],
-      [{ '1A' => 'O', '2A' => 'O', '3A' => 'O',
-         '1B' => nil, '2B' => 'X', '3B' => 'X',
-         '1C' => nil, '2C' => nil, '3C' => nil }, true],
-      [{ '1A' => 'O', '2A' => 'X', '3A' => 'O',
-         '1B' => 'O', '2B' => 'O', '3B' => 'X',
-         '1C' => 'X', '2C' => 'X', '3C' => 'O' }, true],
-      [{ '1A' => nil, '2A' => 'X', '3A' => 'O',
-         '1B' => 'X', '2B' => nil, '3B' => 'X',
-         '1C' => 'O', '2C' => nil, '3C' => nil }, false],
-      [{ '1A' => 'O', '2A' => 'X', '3A' => nil,
-         '1B' => 'X', '2B' => nil, '3B' => 'X',
-         '1C' => 'O', '2C' => 'X', '3C' => nil }, false]
-    ].each do |board_all_cells, expected_outcome|
-      it "gets #{board_all_cells} and returns #{expected_outcome}" do
-        @board.all_cells = board_all_cells
-        @board.winner?(@player_o.marker).should == expected_outcome
-      end
-    end
-  end
-
-  describe '#game_over?' do
-    it "returns true for win" do
-      @board.all_cells = {
-        "1A"=> 'O', "2A"=>'O', "3A"=>'O',
-        "1B"=> nil, "2B"=>'X', "3B"=> 'X',
-        "1C"=> nil, "2C"=>nil, "3C"=> nil
-      }
-      @board.game_over?.should be_true
-    end
-
-    it "returns false for neither win nor tie" do
-      @board.all_cells = {
-        "1A"=> nil, "2A"=>'O', "3A"=>'O',
-        "1B"=> nil, "2B"=>'X', "3B"=> 'X',
-        "1C"=> nil, "2C"=>nil, "3C"=> nil
-      }
-      @board.game_over?.should be_false
-    end
-
-    it "returns true for tie" do
-      @board.all_cells = {
-        "1A"=> 'X', "2A"=>'O', "3A"=>'O',
-        "1B"=> 'O', "2B"=>'X', "3B"=> 'X',
-        "1C"=> 'X', "2C"=>'O', "3C"=> 'X'
-      }
-      @board.game_over?.should be_true
     end
   end
 
@@ -182,13 +125,13 @@ describe 'Board' do
     end
 
     it "gets hash of cell IDs of open positions" do
-      @board.add_marker(@player_x.marker, "1A")
+      @board.add_test_marker(@player_x.marker, "1A")
       @board.open_cells.should == {"2A"=>nil, "3A"=>nil, "1B"=>nil, "2B"=>nil, "3B"=>nil, "1C"=>nil, "2C"=>nil, "3C"=>nil}
     end
 
     it "gets hash of cell IDs of open positions" do
-      @board.add_marker(@player_x.marker, "1A")
-      @board.add_marker(@player_o.marker, "2A")
+      @board.add_test_marker(@player_x.marker, "1A")
+      @board.add_test_marker(@player_o.marker, "2A")
       @board.open_cells.should == {"3A"=>nil, "1B"=>nil, "2B"=>nil, "3B"=>nil, "1C"=>nil, "2C"=>nil, "3C"=>nil}
     end
   end
@@ -243,5 +186,85 @@ describe 'Board' do
       ['1C', '2C', '3C'].include?(random_ID)
     end
   end
+
+  context 'displaying the board grid' do
+    before :each do
+       @board  = CLIDisplayBoard.new(3)
+       @board.all_cells = {"1A"=>nil, "2A"=>'X', "3A"=>nil,
+                          "1B"=>'O', "2B"=>'O', "3B"=>nil,
+                          "1C"=>nil, "2C"=>nil, "3C"=>nil}
+       @board.io = MockKernel
+     end
+
+    describe '#print_board_numbers' do
+      it "prints numbers for each row on the board" do
+        @board.print_board_numbers
+        @board.io.last_lines(5).should include("1", "2", "3")
+      end
+    end
+
+    describe '#print_divider' do
+      it "prints divider below each row on the board" do
+        @board.print_divider
+        @board.io.last_lines(4).should include("------------------")
+      end
+    end
+
+    describe '#show_row' do
+      it "prints row with a marker present" do
+        cells = ['1A', '2A', '3A']
+        @board.show_row('A', cells)
+        @board.io.last_lines(9).should include("  |     |  X  |  ")
+      end
+
+      it "prints row blank row" do
+        cells = ['1B', '2B', '3B']
+        @board.show_row('A', cells)
+        @board.io.last_lines(9).should include("  |  O  |  O  |  ")
+      end
+
+      it "prints row with two markers present" do
+        cells = ['1C', '2C', '3C']
+        @board.show_row('A', cells)
+        @board.io.last_lines(9).should include("  |     |     |  ")
+      end
+    end
+
+    describe '#display_board' do
+      it "calls print_board_numbers twice" do
+        @board.display_board
+        @board.io.last_lines(35).should include("1", "2", "3")
+      end
+
+      it "calls print_board_rows once" do
+        @board.display_board
+        @board.io.last_lines(35).should include("A", "B", "C")
+      end
+    end
+
+  end
+
+  context 'WebUI print board methods' do
+    before :each do
+       @board = WebDisplayBoard.new(3)
+       @board.all_cells = {"1A"=>nil, "2A"=>'X', "3A"=>nil,
+                          "1B"=>nil, "2B"=>nil, "3B"=>nil,
+                          "1C"=>nil, "2C"=>nil, "3C"=>nil}
+     end
+
+    describe '#print_active_board' do
+      it 'prints cells with value attributes' do
+        @board.print_active_board.should include("<button name='move' value='2A'> X <span class='cell'>.</span></button>")
+      end
+    end
+
+    describe '#print_inactive_board' do
+      it 'prints cells without value attributes' do
+        @board.print_inactive_board.should include("<button> X <span class='cell'>.</span></button>")
+      end
+    end
+
+  end
+
 
 end

@@ -19,7 +19,7 @@ class PlayerFactory
     end
   end
 
-  def who_goes_first
+  def player_goes_first
     rand(0..1) == 1 ? player_one : player_two
   end
 

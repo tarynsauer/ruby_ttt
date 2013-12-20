@@ -64,7 +64,7 @@ class AI
       board.remove_marker(cell)
       break if alpha >= beta
     end
-    player.return_value(alpha, beta)
+    player.return_best_score(alpha, beta)
   end
 
 end
