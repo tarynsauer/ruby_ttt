@@ -22,7 +22,9 @@ class MockBoard
     @all_cells = { "1A"=>nil, "2A"=>nil, "3A"=>nil,
                    "1B"=>nil, "2B"=>nil, "3B"=>nil,
                    "1C"=>nil, "2C"=>nil, "3C"=>nil }
-    @winning_lines = [[],[],[]]
+    @winning_lines = [['1A', '2A', '3A'],['1B', '2B', '3B'],['1C', '2C', '3C'],
+                      ['1A', '1B', '1C'],['2A', '2B', '2C'],['3A', '3B', '3C'],
+                      ['1A','2B','3C'],['1C','2B','3A']]
     @game_over = false
   end
 
@@ -34,24 +36,12 @@ class MockBoard
     cell == '3C'
   end
 
-  def winner?(marker)
-    marker == 'X'
-  end
-
   def moves_remaining?
     false
   end
 
   def available_cell?(cell)
     @game_over = true
-  end
-
-  def set_game_over(value)
-    @game_over = value
-  end
-
-  def game_over?
-    @game_over
   end
 
   def all_rows
@@ -74,8 +64,7 @@ class MockUI
     @board = MockBoard.new
   end
 
-  def display_board
-  end
+  def display_board; end
 
   def request_human_move
     '1A'
@@ -90,24 +79,13 @@ class MockUI
 end
 
 class MockPlayer
-  attr_accessor :marker, :player_type, :turn, :opponent
+  attr_accessor :marker, :opponent
   def initialize(marker)
     @marker = marker
-    @turn = 0
-    @player_type = 'human'
     @opponent = nil
   end
 
-  def next_player_turn
-  end
-
-  def current_player?
-    self.turn == 1
-  end
-
-  def set_turn
-    self.turn = 1
-  end
+  def next_player_turn; end
 end
 
 class MockKernel

@@ -19,13 +19,9 @@ class Player
 end
 
 class AIPlayer < Player
-  attr_accessor :marker, :opponent, :ai
-  def initialize(marker)
-    super
-    @ai = AI.new
-  end
 
   def make_move(board)
+    ai = AI.new(self)
     cell = ai.computer_move(board, self.marker)
     add_marker(board, cell)
   end
@@ -34,16 +30,16 @@ end
 
 class ComputerPlayer < Player
 
-  def make_move(board)
-    cell = board.random_cell
-    add_marker(board, cell)
+  def make_move(game)
+    cell = game.board.random_cell
+    add_marker(game.board, cell)
   end
 
 end
 
 class HumanPlayer < Player; end
 
-class MinimizingPlayer < AIPlayer
+class MinimizingPlayer < Player
   attr_accessor :marker, :opponent
   def initialize(player)
     @marker = player.marker
@@ -59,7 +55,7 @@ class MinimizingPlayer < AIPlayer
   end
 end
 
-class MaximizingPlayer < AIPlayer
+class MaximizingPlayer < Player
   attr_accessor :marker, :opponent
   def initialize(player)
     @marker = player.marker

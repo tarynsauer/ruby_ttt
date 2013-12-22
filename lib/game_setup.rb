@@ -64,7 +64,7 @@ class CLIGameSetup < GameSetup
 
   def invalid_level(level)
     ui.invalid_input_message(level)
-    get_difficulty_level
+    get_difficulty_level(COMPUTER_PLAYER)
   end
 
   def player_type_by_level(level)
@@ -74,6 +74,7 @@ class CLIGameSetup < GameSetup
   def get_board
     rows = ui.request_board_size
     valid_board_size?(rows) ? ui.board_assigned_message(rows) : invalid_board_size(rows)
+    CLIBoard.new(rows.to_i)
   end
 
   def valid_board_size?(input)
@@ -83,7 +84,7 @@ class CLIGameSetup < GameSetup
 
   def invalid_board_size(rows)
     ui.invalid_input_message(rows)
-    get_board_size
+    get_board
   end
 
 end
@@ -102,7 +103,7 @@ class WebGameSetup < GameSetup
   # def get_settings
   #   settings = {}
   #   players = set_up_players
-  #   settings[:board] = get_board_size
+  #   settings[:board] = get_board
   #   settings[:player_one] = players.player_one
   #   settings[:player_two] = players.player_two
   #   settings[:player_goes_first] = players.player_goes_first

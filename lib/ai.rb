@@ -5,6 +5,10 @@ LOSE = -1
 TIE = 0
 
 class AI
+  attr_reader :current_player
+  def initialize(player)
+    current_player = player
+  end
 
   def computer_move(board, player)
     test_board = board.dup
@@ -18,10 +22,6 @@ class AI
     move.first
   end
 
-  def opponent_marker(marker)
-    marker == MARKER_X ? MARKER_O : MARKER_X
-  end
-
   private
 
   def rank_possible_moves(board, player)
@@ -32,32 +32,32 @@ class AI
   end
 
   def get_move_score(board, player, cell)
-    board.add_marker(player.marker, cell)
+    player.add_marker(board, cell)
     best_score = apply_minimax(board, player, cell, depth=0, NEG_INF, POS_INF)
     board.remove_marker(cell)
     best_score
   end
 
   def get_score(board, player)
-    return WIN if board.winner?(player.marker) && player.current_player?
+    return WIN if board.winner?(player.marker) && (player == current_player)
     return LOSE if board.winner?(player.marker)
     TIE
   end
 
   def apply_minimax(board, player, cell, depth, alpha, beta)
     return get_score(board, player) if board.game_over?
-    if player.current_player?
-      maximizing_player = Maximizing.new(player)
+    if (player == current_player)
+      maximizing_player = MaximizingPlayer.new(player)
       alphabeta(board, maximizing_player, depth, alpha, beta)
     else
-      minimizing_player = Minimizing.new(player)
+      minimizing_player = MinimizingPlayer.new(player)
       alphabeta(board, minimizing_player, depth, alpha, beta)
     end
   end
 
   def alphabeta(board, player, depth, alpha, beta)
     board.open_cells.each_key do |cell|
-      board.add_marker(player.opponent.marker, cell)
+      player.opponent.add_marker(board, cell)
       score = (apply_minimax(board, player.opponent, cell, depth += 1, alpha, beta) / depth.to_f)
       alpha = player.get_alpha(alpha, score)
       beta = player.get_beta(beta, score)

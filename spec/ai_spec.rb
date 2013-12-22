@@ -3,13 +3,12 @@ require 'spec_helper'
 describe 'AI' do
 
   before :each do
-    @ai       = AI.new
-    @board    = Board.new(3)
-    @player_x = MockPlayer.new('X')
-    @player_o = MockPlayer.new('O')
+    @board = Board.new(3)
+    @player_x = AIPlayer.new('X')
+    @player_o = HumanPlayer.new('O')
     @player_x.opponent = @player_o
     @player_o.opponent = @player_x
-    @player_x.turn = 1
+    @ai = AI.new(@player_x)
   end
 
   describe '#computer_move' do

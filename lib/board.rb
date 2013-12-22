@@ -66,6 +66,18 @@ class Board
     all_cells.has_value?(nil)
   end
 
+  def winner?(marker)
+    board_markers = all_cells.select { |cell, value| value == marker }.keys
+    winning_lines.each do |line|
+      return true if (line & board_markers).length == num_of_rows
+    end
+    false
+  end
+
+  def game_over?
+    !moves_remaining? || winner?(MARKER_X) || winner?(MARKER_O)
+  end
+
   def open_cells
     all_cells.select { |k,v| v.nil? }
   end
@@ -133,7 +145,7 @@ class Board
 
 end
 
-class CLIDisplayBoard < Board
+class CLIBoard < Board
   attr_accessor :all_cells, :num_of_rows, :winning_lines, :io
   def initialize(num_of_rows)
     super
@@ -183,7 +195,7 @@ class CLIDisplayBoard < Board
 
 end
 
-class WebDisplayBoard < Board
+class WebBoard < Board
 
   def print_active_board
     board_string = ''
