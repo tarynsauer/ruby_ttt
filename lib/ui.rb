@@ -1,19 +1,16 @@
 class UI
-  attr_accessor :board
-  def initialize(board)
-    @board = board
+  def initialize; end
+
+  def first_move_message(marker)
+    "Player '#{marker}' goes first."
   end
 
-  def first_move_message(player)
-    "Player '#{player.marker}' goes first."
+  def next_move_message(marker)
+    "Player '#{marker}': Make your move."
   end
 
-  def next_move_message(player)
-    "Player '#{player.marker}': Make your move."
-  end
-
-  def winning_game_message(player)
-    "GAME OVER! Player '#{player.marker}' wins!"
+  def winning_game_message(marker)
+    "GAME OVER! Player '#{marker}' wins!"
   end
 
   def tie_game_message
@@ -24,8 +21,7 @@ end
 
 class CLIUI < UI
   attr_accessor :io
-  def initialize(board)
-    super
+  def initialize
     @io = Kernel
   end
 
@@ -36,6 +32,11 @@ class CLIUI < UI
 
   def request_difficulty_level
     difficulty_level_message
+    io.gets.chomp.downcase
+  end
+
+  def request_board_size
+    board_size_message
     io.gets.chomp.downcase
   end
 
@@ -51,12 +52,20 @@ class CLIUI < UI
     io.print "Select computer difficulty level: Enter 'easy' or 'hard.'\n"
   end
 
+  def board_size_message
+    io.print "Enter the number of rows you want your board to have (3-5).\n"
+  end
+
   def level_assigned_message(level)
     io.print "You selected difficulty level #{level.upcase}.\n"
   end
 
+  def board_assigned_message(rows)
+    io.print "You selected a board with #{rows} rows.\n"
+  end
+
   def invalid_input_message(input)
-    io.print " #{input} is not a valid option.\n"
+    io.print "#{input} is not a valid option.\n"
   end
 
   def player_type_message(marker)
@@ -67,58 +76,17 @@ class CLIUI < UI
     io.print "Player " + "'#{marker}' " + "is #{type}.\n"
   end
 
-  def print_board_numbers
-    num = 1
-    io.print "    "
-    board.num_of_rows.times do
-      io.print "--#{num}-- "
-      num += 1
-    end
-    io.print "\n"
-  end
-
-  def print_divider
-    io.print "   "
-    board.num_of_rows.times { io.print "------" }
-    io.print "\n"
-  end
-
-  def print_board_rows
-    alpha = 'A'
-    board.all_rows.each do |row|
-      show_row(alpha, row)
-      alpha = alpha.next
-    end
-  end
-
-  def show_row(letter, cells)
-    io.print "#{letter}"
-    cells.each { |cell| io.print "  |  " + show_marker(cell) }
-    io.print "  | #{letter}\n"
-    print_divider
-  end
-
-  def show_marker(cell)
-    board.all_cells[cell].nil? ? ' ' : board.all_cells[cell]
-  end
-
-  def display_board
-    print_board_numbers
-    print_board_rows
-    print_board_numbers
-  end
-
-  def first_move_message(player)
+  def first_move_message(marker)
     output = super
     io.print "\n\n************ New Game ************\n"
     io.print output + "\n"
   end
 
-  def next_move_message(player)
-    io.print "Player '#{player.marker}': Enter open cell ID.\n"
+  def next_move_message(marker)
+    io.print "Player '#{marker}': Enter open cell ID.\n"
   end
 
-  def winning_game_message(player)
+  def winning_game_message(marker)
     output = super
     io.print output + "\n"
   end
@@ -140,30 +108,6 @@ class CLIUI < UI
     io.print "\nExiting Tic-Tac-Toe..."
     io.print "...\n"
     io.print "Goodbye!\n\n"
-  end
-
-end
-
-class WebUI < UI
-
-  def print_active_board
-    board_string = ''
-    board.all_rows.each do |row|
-      board_string += "<div class='row'>"
-      row.each { |cell| board_string += "<button name='move' value='#{cell}'> #{board.all_cells[cell]} <span class='cell'>.</span></button>" }
-      board_string += "</div>"
-    end
-    board_string
-  end
-
-  def print_inactive_board
-    board_string = ''
-    board.all_rows.each do |row|
-      board_string += "<div class='row'>"
-      row.each { |cell| board_string += "<button> #{board.all_cells[cell]} <span class='cell'>.</span></button>" }
-      board_string += "</div>"
-    end
-    board_string
   end
 
 end

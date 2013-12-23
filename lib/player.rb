@@ -1,19 +1,12 @@
 class Player
-  attr_accessor :marker, :turn, :player_type, :opponent
+  attr_accessor :marker, :opponent
   def initialize(marker)
-    @marker      = marker
-    @player_type = HUMAN_PLAYER
-    @turn        = 0
-    @opponent    = nil
+    @marker = marker
+    @opponent = nil
   end
 
-  def next_player_turn
-    self.turn = 0
-    self.opponent.turn = 1
-  end
-
-  def current_player?
-    self.turn == 1
+  def add_marker(board, cell)
+    board.all_cells[cell] = self.marker
   end
 
   def get_alpha(alpha, score)
@@ -25,36 +18,55 @@ class Player
   end
 end
 
-class Minimizing < Player
-  attr_accessor :marker, :turn, :opponent
+class AIPlayer < Player
+
+  def make_move(board)
+    ai = AI.new(self)
+    cell = ai.computer_move(board, self)
+    add_marker(board, cell)
+  end
+
+end
+
+class ComputerPlayer < Player
+
+  def make_move(board)
+    cell = board.random_cell
+    add_marker(board, cell)
+  end
+
+end
+
+class HumanPlayer < Player; end
+
+class MinimizingPlayer < Player
+  attr_accessor :marker, :opponent
   def initialize(player)
-    @marker      = player.marker
-    @turn        = player.turn
-    @opponent    = player.opponent
+    @marker = player.marker
+    @opponent = player.opponent
   end
 
   def get_alpha(alpha, score)
     score > alpha ? score : alpha
   end
 
-  def return_value(alpha, beta)
+  def return_best_score(alpha, beta)
     alpha
   end
 end
 
-class Maximizing < Player
-  attr_accessor :marker, :turn, :opponent
+class MaximizingPlayer < Player
+  attr_accessor :marker, :opponent
   def initialize(player)
-    @marker      = player.marker
-    @turn        = player.turn
-    @opponent    = player.opponent
+    @marker = player.marker
+    @opponent = player.opponent
   end
 
   def get_beta(beta, score)
     score < beta ? score : beta
   end
 
-  def return_value(alpha, beta)
+  def return_best_score(alpha, beta)
     beta
   end
 end
