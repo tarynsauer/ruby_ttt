@@ -7,7 +7,7 @@ TIE = 0
 class AI
   attr_reader :current_player
   def initialize(player)
-    current_player = player
+    @current_player = player
   end
 
   def computer_move(board, player)

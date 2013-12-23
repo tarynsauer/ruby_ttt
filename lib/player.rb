@@ -22,7 +22,7 @@ class AIPlayer < Player
 
   def make_move(board)
     ai = AI.new(self)
-    cell = ai.computer_move(board, self.marker)
+    cell = ai.computer_move(board, self)
     add_marker(board, cell)
   end
 
@@ -30,9 +30,9 @@ end
 
 class ComputerPlayer < Player
 
-  def make_move(game)
-    cell = game.board.random_cell
-    add_marker(game.board, cell)
+  def make_move(board)
+    cell = board.random_cell
+    add_marker(board, cell)
   end
 
 end

@@ -75,7 +75,7 @@ class CLIGame < Game
   end
 
   def get_next_move
-    current_player.is_a?(HumanPlayer) ? ui.request_human_move : current_player.make_move(self)
+    current_player.is_a?(HumanPlayer) ? ui.request_human_move : current_player.make_move(board)
   end
 
   def invalid_move(cell)

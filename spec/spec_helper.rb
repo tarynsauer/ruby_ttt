@@ -32,6 +32,9 @@ class MockBoard
     'A1'
   end
 
+  def winner?
+  end
+
   def valid_cell?(cell)
     cell == '3C'
   end
@@ -48,12 +51,6 @@ class MockBoard
     [['1A', '2A', '3A'],
      ['1B', '2B', '3B'],
      ['1C', '2C', '3C']]
-  end
-end
-
-class MockAI
-  def self.computer_move(board, player)
-    '2A'
   end
 end
 
@@ -84,8 +81,6 @@ class MockPlayer
     @marker = marker
     @opponent = nil
   end
-
-  def next_player_turn; end
 end
 
 class MockKernel
