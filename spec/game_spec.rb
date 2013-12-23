@@ -48,7 +48,7 @@ describe 'Game' do
     before :each do
       @player_x = MockPlayer.new('X')
       @player_o = MockPlayer.new('O')
-      settings = { :board => MockBoard.new,
+      settings = { :board => Board.new(3),
                    :player_one => @player_x,
                    :player_two => @player_o,
                    :player_first_move => @player_x}
@@ -77,7 +77,7 @@ describe 'Game' do
     before :each do
       @player_x = HumanPlayer.new('X')
       @player_o = HumanPlayer.new('O')
-      settings = { :board => MockBoard.new,
+      settings = { :board => Board.new(3),
                    :player_one => @player_x,
                    :player_two => @player_o,
                    :player_first_move => @player_x}
@@ -110,6 +110,7 @@ describe 'Game' do
   describe '#advance_game' do
     it 'prints next move message' do
       @game.ui.io = MockKernel
+      @game.board = Board.new(3)
       @game.advance_game
       expect(@game.ui.io.last_print_call).to include("Player 'X': Enter open cell ID")
     end

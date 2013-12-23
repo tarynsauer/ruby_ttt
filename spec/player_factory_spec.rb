@@ -20,7 +20,7 @@ describe 'PlayerFactory' do
     end
 
     it 'raises an Invalid type error when type is invalid' do
-      pending
+      expect { PlayerFactory.new('bad_type', HUMAN_PLAYER) }.to raise_error("Invalid player type")
     end
   end
 

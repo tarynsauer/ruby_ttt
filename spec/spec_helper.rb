@@ -88,6 +88,7 @@ class MockKernel
   @@lines = []
   @@output = nil
   @@gets_string = ''
+  @@gets_sequence_array = []
 
   def self.print(string)
     @@input = string
@@ -106,8 +107,12 @@ class MockKernel
     @@gets_string = string
   end
 
+  def self.set_gets_sequence(array)
+    @@gets_sequence_array = array
+  end
+
   def self.gets
-    @@gets_string
+    (@@gets_sequence_array.length > 0) ? @@gets_sequence_array.shift : @@gets_string
   end
 
   def self.exit

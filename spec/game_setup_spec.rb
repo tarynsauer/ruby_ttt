@@ -8,9 +8,10 @@ describe 'GameSetup' do
   end
 
   describe '#get_settings' do
-    it 'returns hash with settings values' do
-      pending
-    end
+    # it 'returns hash with settings values' do
+    #   @setup.ui.io.set_gets_sequence(['3','human','human'])
+    #   @setup.get_settings.is_a?(Hash)
+    # end
   end
 
   describe '#set_up_players' do
