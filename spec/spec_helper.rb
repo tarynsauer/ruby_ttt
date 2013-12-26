@@ -5,7 +5,7 @@ require 'game_setup'
 require 'player_factory'
 require 'ai'
 require 'board'
-require 'game'
+require 'ruby_ttt'
 require 'player'
 require 'ui'
 

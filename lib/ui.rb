@@ -1,5 +1,8 @@
 class UI
-  def initialize; end
+  attr_accessor :io
+  def initialize
+    @io = Kernel
+  end
 
   def first_move_message(marker)
     "Player '#{marker}' goes first."
@@ -20,10 +23,6 @@ class UI
 end
 
 class CLIUI < UI
-  attr_accessor :io
-  def initialize
-    @io = Kernel
-  end
 
   def request_player_type(marker)
     player_type_message(marker)

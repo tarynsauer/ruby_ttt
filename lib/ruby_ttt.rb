@@ -1,5 +1,6 @@
 require 'ai'
 require 'board'
+require 'player_factory'
 require 'game_setup'
 require 'player'
 require 'ui'
@@ -15,7 +16,7 @@ class Game
   end
 
   def advance_game
-    game_status_check(current_player.marker)
+    game_status_check(current_player.opponent.marker)
     ui.next_move_message(current_player.marker) unless board.game_over?
   end
 
@@ -50,7 +51,7 @@ class Game
 end
 
 class CLIGame < Game
-  attr_accessor :board, :player_one, :player_two, :ui
+  attr_accessor :board, :player_one, :player_two, :ui, :player_first_move
   def initialize(settings)
     super
     @ui = CLIUI.new
@@ -66,16 +67,22 @@ class CLIGame < Game
   end
 
   def play!
+    ui.first_move_message(current_player.marker)
     until board.game_over?
       board.display_board
-      move = get_next_move
-      verify_move(move) ? advance_game : invalid_move(move)
+      get_next_move
     end
     exit_game
   end
 
   def get_next_move
-    current_player.is_a?(HumanPlayer) ? ui.request_human_move : current_player.make_move(board)
+    if current_player.is_a?(HumanPlayer)
+      move = ui.request_human_move
+      verify_move(move) ? advance_game : invalid_move(move)
+    else
+      current_player.make_move(board)
+      advance_game
+    end
   end
 
   def invalid_move(cell)
@@ -89,4 +96,30 @@ class CLIGame < Game
 
 end
 
-class WebGame < Game; end
+class WebGame < Game
+  attr_accessor :board, :player_one, :player_two, :ui, :player_first_move
+  def initialize(settings)
+    super
+    @ui = UI.new
+  end
+
+  def get_message(player)
+    return ui.first_move_message(player.marker) if board.empty?
+    if board.winner?(current_player.opponent.marker)
+      ui.winning_game_message(current_player.opponent.marker)
+    elsif !board.moves_remaining?
+      ui.tie_game_message
+    else
+      ui.next_move_message(current_player.marker)
+    end
+  end
+
+  def get_first_move_player(type_one, type_two)
+    PlayerFactory.new(type_one, type_two).player_goes_first
+  end
+
+  def computer_player?(type_one, type_two)
+    ((type_one.downcase) == COMPUTER_PLAYER) || ((type_two.downcase) == COMPUTER_PLAYER)
+  end
+
+end

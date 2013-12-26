@@ -5,28 +5,35 @@ HARD_LEVEL = 'hard'
 EASY_LEVEL = 'easy'
 
 class GameSetup
-  def initialize; end
-
-  def get_settings
-    settings = {}
-    players = set_up_players
-    settings[:board] = get_board
-    settings[:player_one] = players.player_one
-    settings[:player_two] = players.player_two
-    settings[:player_goes_first] = players.player_goes_first
-    settings
+  attr_accessor :ui
+  def initialize
+    @ui = UI.new
   end
 
-  def set_up_players; end
-
-  def get_board; end
-
+  def get_settings
+    {}
+  end
 end
 
 class CLIGameSetup < GameSetup
   attr_accessor :ui
   def initialize
     @ui = CLIUI.new
+  end
+
+  def get_settings
+    settings = super
+    begin
+      players = set_up_players
+      settings[:board] = get_board
+      settings[:player_one] = players.player_one
+      settings[:player_two] = players.player_two
+      settings[:player_first_move] = players.player_goes_first
+      settings
+    rescue Interrupt
+      ui.early_exit_message
+      exit
+    end
   end
 
   def set_up_players
@@ -91,23 +98,19 @@ end
 
 class WebGameSetup < GameSetup
 
-  # def set_up_players(player_one_type, player_two_type)
-  #   PlayerFactory.new(player_one_type, player_two_type)
-  # end
+  def set_up_players(player_one_type, player_two_type)
+    PlayerFactory.new(player_one_type, player_two_type)
+  end
 
-  # def get_board
-  #   board = Board.new(session[:board_size])
-  #   board.all_cells = session[:current_board]
-  # end
+  def get_first_move_player(player_one_type, player_two_type)
+    players = PlayerFactory.new(player_one_type, player_two_type)
+    players.player_goes_first
+  end
 
-  # def get_settings
-  #   settings = {}
-  #   players = set_up_players
-  #   settings[:board] = get_board
-  #   settings[:player_one] = players.player_one
-  #   settings[:player_two] = players.player_two
-  #   settings[:player_goes_first] = players.player_goes_first
-  #   settings
-  # end
+  def get_board(board_size, current_board)
+    board = WebBoard.new(board_size)
+    board.all_cells = current_board
+    board
+  end
 
 end

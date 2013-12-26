@@ -8,10 +8,10 @@ describe 'GameSetup' do
   end
 
   describe '#get_settings' do
-    # it 'returns hash with settings values' do
-    #   @setup.ui.io.set_gets_sequence(['3','human','human'])
-    #   @setup.get_settings.is_a?(Hash)
-    # end
+    it 'returns hash with settings values' do
+      @setup = GameSetup.new
+      @setup.get_settings.is_a?(Hash)
+    end
   end
 
   describe '#set_up_players' do
@@ -121,6 +121,34 @@ describe 'GameSetup' do
         @setup.invalid_board_size('baddd')
         expect(@setup.ui.io.last_lines(4)).to include("number of rows you want")
       end
+    end
+  end
+
+end
+
+describe 'WebGameSetup' do
+    before :each do
+      @setup = WebGameSetup.new
+    end
+
+  describe '#set_up_players' do
+    it 'returns a PlayerFactory object' do
+      players = @setup.set_up_players('human', 'computer')
+      players.is_a?(PlayerFactory)
+    end
+  end
+
+  describe '#get_first_move_player' do
+    it '#get_first_move_player returns a Player object' do
+      player = @setup.get_first_move_player('human', 'computer')
+      player.is_a?(Player)
+    end
+  end
+
+  describe '#get_board' do
+    it 'returns a Board object' do
+      board = @setup.get_board(3, {} )
+      board.is_a?(WebBoard)
     end
   end
 
