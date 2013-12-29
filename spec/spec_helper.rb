@@ -18,7 +18,6 @@ RSpec.configure do |config|
 end
 
 class MockBoard
-  include TictactoeConstants
   attr_accessor :num_of_rows, :all_cells, :winning_lines
   def initialize
     @num_of_rows = 3
@@ -58,7 +57,6 @@ class MockBoard
 end
 
 class MockUI
-  include TictactoeConstants
   attr_accessor :io, :board
   def initialize
     @io = Kernel
@@ -80,7 +78,6 @@ class MockUI
 end
 
 class MockPlayer
-  include TictactoeConstants
   attr_accessor :marker, :opponent
   def initialize(marker)
     @marker = marker
@@ -89,7 +86,6 @@ class MockPlayer
 end
 
 class MockKernel
-  include TictactoeConstants
   @@input = nil
   @@lines = []
   @@output = nil

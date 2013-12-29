@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'AlphaBetaPlayer' do
+describe 'RubyTictactoe::AlphaBetaPlayer' do
 
   before :each do
     @board = MockBoard.new
@@ -8,8 +8,8 @@ describe 'AlphaBetaPlayer' do
     player_o = MockPlayer.new('O')
     player_x.opponent = player_o
     player_o.opponent = player_x
-    @player_x = AlphaBetaPlayer.new(player_x)
-    @player_o = AlphaBetaPlayer.new(player_o)
+    @player_x = RubyTictactoe::AlphaBetaPlayer.new(player_x)
+    @player_o = RubyTictactoe::AlphaBetaPlayer.new(player_o)
   end
 
   describe '#get_alpha' do
@@ -26,10 +26,10 @@ describe 'AlphaBetaPlayer' do
 
 end
 
-describe 'MinimizingPlayer' do
+describe 'RubyTictactoe::MinimizingPlayer' do
   before :each do
     @player_o = MockPlayer.new('O')
-    @min_player = MinimizingPlayer.new(@player_o)
+    @min_player = RubyTictactoe::MinimizingPlayer.new(@player_o)
   end
 
   describe '#get_alpha' do
@@ -50,10 +50,10 @@ describe 'MinimizingPlayer' do
 
 end
 
-describe 'MaximizingPlayer' do
+describe 'RubyTictactoe::MaximizingPlayer' do
   before :each do
     @player_o = MockPlayer.new('O')
-    @max_player = MaximizingPlayer.new(@player_o)
+    @max_player = RubyTictactoe::MaximizingPlayer.new(@player_o)
   end
 
   describe '#get_beta' do

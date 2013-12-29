@@ -1,15 +1,15 @@
 require 'spec_helper'
 
-describe 'GameSetup' do
+describe 'RubyTictactoe::GameSetup' do
 
   before :each do
-    @setup = CLIGameSetup.new
+    @setup = RubyTictactoe::CLIGameSetup.new
     @setup.ui.io = MockKernel
   end
 
   describe '#get_settings' do
     it 'returns hash with settings values' do
-      @setup = GameSetup.new
+      @setup = RubyTictactoe::GameSetup.new
       @setup.get_settings.is_a?(Hash)
     end
   end
@@ -17,7 +17,7 @@ describe 'GameSetup' do
   describe '#set_up_players' do
     it 'returns a PlayerFactory object' do
       @setup.ui.io.set_gets('Human')
-      @setup.set_up_players.is_a?(PlayerFactory)
+      @setup.set_up_players.is_a?(RubyTictactoe::PlayerFactory)
     end
   end
 
@@ -126,29 +126,29 @@ describe 'GameSetup' do
 
 end
 
-describe 'WebGameSetup' do
+describe 'RubyTictactoe::WebGameSetup' do
     before :each do
-      @setup = WebGameSetup.new
+      @setup = RubyTictactoe::WebGameSetup.new
     end
 
   describe '#set_up_players' do
     it 'returns a PlayerFactory object' do
       players = @setup.set_up_players('human', 'computer')
-      players.is_a?(PlayerFactory)
+      players.is_a?(RubyTictactoe::PlayerFactory)
     end
   end
 
   describe '#get_first_move_player' do
     it '#get_first_move_player returns a Player object' do
       player = @setup.get_first_move_player('human', 'computer')
-      player.is_a?(Player)
+      player.is_a?(RubyTictactoe::Player)
     end
   end
 
   describe '#get_board' do
     it 'returns a Board object' do
       board = @setup.get_board(3, {} )
-      board.is_a?(WebBoard)
+      board.is_a?(RubyTictactoe::WebBoard)
     end
   end
 

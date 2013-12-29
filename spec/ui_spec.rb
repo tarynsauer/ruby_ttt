@@ -1,21 +1,21 @@
 require 'spec_helper'
 
-describe 'UI' do
+describe 'RubyTictactoe::UI' do
 
   describe '#next_move_message' do
     it 'returns next move message string' do
-      ui = UI.new
+      ui = RubyTictactoe::UI.new
       ui.next_move_message('X').should == "Player 'X': Make your move."
     end
   end
 
 end
 
-describe 'CLIUI' do
+describe 'RubyTictactoe::CLIUI' do
 
   context 'Game settings methods' do
     before :each do
-      @ui = CLIUI.new
+      @ui = RubyTictactoe::CLIUI.new
       @ui.io = MockKernel
     end
 
@@ -64,7 +64,7 @@ describe 'CLIUI' do
 
   context 'player move messages' do
     before :each do
-      @ui     = CLIUI.new
+      @ui     = RubyTictactoe::CLIUI.new
       @ui.io  = MockKernel
     end
 
@@ -112,7 +112,7 @@ describe 'CLIUI' do
 
   context 'invalid move messages' do
     before :each do
-      @ui = CLIUI.new
+      @ui = RubyTictactoe::CLIUI.new
       @ui.io = MockKernel
       @cell = 'A3'
     end
@@ -139,7 +139,7 @@ describe 'CLIUI' do
 
   context 'game setup messages' do
     before :each do
-      @ui = CLIUI.new
+      @ui = RubyTictactoe::CLIUI.new
       @ui.io = MockKernel
     end
 

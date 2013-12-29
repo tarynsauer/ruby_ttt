@@ -1,112 +1,116 @@
 require 'tictactoe_constants'
-class GameSetup
-  include TictactoeConstants
-  attr_accessor :ui
-  def initialize
-    @ui = UI.new
-  end
 
-  def get_settings
-    {}
-  end
-end
+module RubyTictactoe
 
-class CLIGameSetup < GameSetup
-  attr_accessor :ui
-  def initialize
-    @ui = CLIUI.new
-  end
+  class GameSetup
+    include TictactoeConstants
+    attr_accessor :ui
+    def initialize
+      @ui = UI.new
+    end
 
-  def get_settings
-    settings = super
-    begin
-      players = set_up_players
-      settings[:board] = get_board
-      settings[:player_one] = players.player_one
-      settings[:player_two] = players.player_two
-      settings[:player_first_move] = players.player_goes_first
-      settings
-    rescue Interrupt
-      ui.early_exit_message
-      exit
+    def get_settings
+      {}
     end
   end
 
-  def set_up_players
-    player_one_type = get_player_type(TictactoeConstants::MARKER_X)
-    player_two_type = get_player_type(TictactoeConstants::MARKER_O)
-    PlayerFactory.new(player_one_type, player_two_type)
+  class CLIGameSetup < GameSetup
+    attr_accessor :ui
+    def initialize
+      @ui = CLIUI.new
+    end
+
+    def get_settings
+      settings = super
+      begin
+        players = set_up_players
+        settings[:board] = get_board
+        settings[:player_one] = players.player_one
+        settings[:player_two] = players.player_two
+        settings[:player_first_move] = players.player_goes_first
+        settings
+      rescue Interrupt
+        ui.early_exit_message
+        exit
+      end
+    end
+
+    def set_up_players
+      player_one_type = get_player_type(RubyTictactoe::TictactoeConstants::MARKER_X)
+      player_two_type = get_player_type(RubyTictactoe::TictactoeConstants::MARKER_O)
+      PlayerFactory.new(player_one_type, player_two_type)
+    end
+
+    def get_player_type(marker)
+      type = ui.request_player_type(marker)
+      validated_type = valid_type?(type) ? get_difficulty_level(type) : invalid_type(type, marker)
+      ui.type_assigned_message(validated_type, marker)
+      validated_type
+    end
+
+    def get_difficulty_level(type)
+      return type if type == RubyTictactoe::TictactoeConstants::HUMAN_PLAYER
+      level = ui.request_difficulty_level
+      valid_level?(level) ? ui.level_assigned_message(level) : invalid_level(level)
+      player_type_by_level(level)
+    end
+
+    def valid_type?(type)
+      (type == RubyTictactoe::TictactoeConstants::HUMAN_PLAYER) || (type == RubyTictactoe::TictactoeConstants::COMPUTER_PLAYER)
+    end
+
+    def invalid_type(type, marker)
+      ui.invalid_input_message(type)
+      get_player_type(marker)
+    end
+
+    def valid_level?(level)
+      (level == RubyTictactoe::TictactoeConstants::HARD_LEVEL) || (level == RubyTictactoe::TictactoeConstants::EASY_LEVEL)
+    end
+
+    def invalid_level(level)
+      ui.invalid_input_message(level)
+      get_difficulty_level(RubyTictactoe::TictactoeConstants::COMPUTER_PLAYER)
+    end
+
+    def player_type_by_level(level)
+      level == RubyTictactoe::TictactoeConstants::HARD_LEVEL ? RubyTictactoe::TictactoeConstants::AI_PLAYER : RubyTictactoe::TictactoeConstants::COMPUTER_PLAYER
+    end
+
+    def get_board
+      rows = ui.request_board_size
+      valid_board_size?(rows) ? ui.board_assigned_message(rows) : invalid_board_size(rows)
+      CLIBoard.new(rows.to_i)
+    end
+
+    def valid_board_size?(input)
+      rows = input.to_i
+      rows.is_a?(Integer) && (rows > 2 && rows < 6)
+    end
+
+    def invalid_board_size(rows)
+      ui.invalid_input_message(rows)
+      get_board
+    end
+
   end
 
-  def get_player_type(marker)
-    type = ui.request_player_type(marker)
-    validated_type = valid_type?(type) ? get_difficulty_level(type) : invalid_type(type, marker)
-    ui.type_assigned_message(validated_type, marker)
-    validated_type
-  end
+  class WebGameSetup < GameSetup
 
-  def get_difficulty_level(type)
-    return type if type == TictactoeConstants::HUMAN_PLAYER
-    level = ui.request_difficulty_level
-    valid_level?(level) ? ui.level_assigned_message(level) : invalid_level(level)
-    player_type_by_level(level)
-  end
+    def set_up_players(player_one_type, player_two_type)
+      PlayerFactory.new(player_one_type, player_two_type)
+    end
 
-  def valid_type?(type)
-    (type == TictactoeConstants::HUMAN_PLAYER) || (type == TictactoeConstants::COMPUTER_PLAYER)
-  end
+    def get_first_move_player(player_one_type, player_two_type)
+      players = PlayerFactory.new(player_one_type, player_two_type)
+      players.player_goes_first
+    end
 
-  def invalid_type(type, marker)
-    ui.invalid_input_message(type)
-    get_player_type(marker)
-  end
-
-  def valid_level?(level)
-    (level == TictactoeConstants::HARD_LEVEL) || (level == TictactoeConstants::EASY_LEVEL)
-  end
-
-  def invalid_level(level)
-    ui.invalid_input_message(level)
-    get_difficulty_level(TictactoeConstants::COMPUTER_PLAYER)
-  end
-
-  def player_type_by_level(level)
-    level == TictactoeConstants::HARD_LEVEL ? TictactoeConstants::AI_PLAYER : TictactoeConstants::COMPUTER_PLAYER
-  end
-
-  def get_board
-    rows = ui.request_board_size
-    valid_board_size?(rows) ? ui.board_assigned_message(rows) : invalid_board_size(rows)
-    CLIBoard.new(rows.to_i)
-  end
-
-  def valid_board_size?(input)
-    rows = input.to_i
-    rows.is_a?(Integer) && (rows > 2 && rows < 6)
-  end
-
-  def invalid_board_size(rows)
-    ui.invalid_input_message(rows)
-    get_board
-  end
-
-end
-
-class WebGameSetup < GameSetup
-
-  def set_up_players(player_one_type, player_two_type)
-    PlayerFactory.new(player_one_type, player_two_type)
-  end
-
-  def get_first_move_player(player_one_type, player_two_type)
-    players = PlayerFactory.new(player_one_type, player_two_type)
-    players.player_goes_first
-  end
-
-  def get_board(board_size, current_board)
-    board = WebBoard.new(board_size)
-    board.all_cells = current_board
-    board
+    def get_board(board_size, current_board)
+      board = WebBoard.new(board_size)
+      board.all_cells = current_board
+      board
+    end
   end
 
 end

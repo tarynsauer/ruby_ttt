@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'Game' do
+describe 'RubyTictactoe::Game' do
 
   before :each do
     @player_x = MockPlayer.new('X')
@@ -9,20 +9,20 @@ describe 'Game' do
                  :player_one => @player_x,
                  :player_two => @player_o,
                  :player_first_move => @player_x}
-    @game = CLIGame.new(settings)
+    @game = RubyTictactoe::CLIGame.new(settings)
     @game.ui.io = MockKernel
   end
 
   context 'gameplay methods' do
 
     before :each do
-      @player_x = ComputerPlayer.new('X')
-      @player_o = ComputerPlayer.new('O')
-      settings = { :board => CLIBoard.new(3),
+      @player_x = RubyTictactoe::ComputerPlayer.new('X')
+      @player_o = RubyTictactoe::ComputerPlayer.new('O')
+      settings = { :board => RubyTictactoe::CLIBoard.new(3),
                  :player_one => @player_x,
                  :player_two => @player_o,
                  :player_first_move => @player_x}
-      @game = CLIGame.new(settings)
+      @game = RubyTictactoe::CLIGame.new(settings)
       @game.ui.io = MockKernel
       @player_x.opponent = @player_o
       @player_o.opponent = @player_x
@@ -58,13 +58,13 @@ describe 'Game' do
       end
 
       it 'calls #invalid_move when human enters bad value' do
-        @player_x = HumanPlayer.new('X')
+        @player_x = RubyTictactoe::HumanPlayer.new('X')
         @player_o = MockPlayer.new('O')
-        settings = { :board => CLIBoard.new(3),
+        settings = { :board => RubyTictactoe::CLIBoard.new(3),
                      :player_one => @player_x,
                      :player_two => @player_o,
                      :player_first_move => @player_x }
-        @game = CLIGame.new(settings)
+        @game = RubyTictactoe::CLIGame.new(settings)
         @game.ui.io = MockKernel
         @player_x.opponent = @player_o
         @player_o.opponent = @player_x
@@ -86,11 +86,11 @@ describe 'Game' do
     before :each do
       @player_x = MockPlayer.new('X')
       @player_o = MockPlayer.new('O')
-      settings = { :board => Board.new(3),
+      settings = { :board => RubyTictactoe::Board.new(3),
                    :player_one => @player_x,
                    :player_two => @player_o,
                    :player_first_move => @player_x}
-      @game = CLIGame.new(settings)
+      @game = RubyTictactoe::CLIGame.new(settings)
       @game.ui.io = MockKernel
     end
 
@@ -113,13 +113,13 @@ describe 'Game' do
 
   describe '#verify_move' do
     before :each do
-      @player_x = HumanPlayer.new('X')
-      @player_o = HumanPlayer.new('O')
-      settings = { :board => Board.new(3),
+      @player_x = RubyTictactoe::HumanPlayer.new('X')
+      @player_o = RubyTictactoe::HumanPlayer.new('O')
+      settings = { :board => RubyTictactoe::Board.new(3),
                    :player_one => @player_x,
                    :player_two => @player_o,
                    :player_first_move => @player_x}
-      @game = CLIGame.new(settings)
+      @game = RubyTictactoe::CLIGame.new(settings)
     end
     it 'adds player Xs marker to the board' do
       @game.verify_move('1A')
@@ -150,7 +150,7 @@ describe 'Game' do
       @player_x.opponent = @player_o
       @player_o.opponent = @player_x
       @game.ui.io = MockKernel
-      @game.board = Board.new(3)
+      @game.board = RubyTictactoe::Board.new(3)
       @game.advance_game
       expect(@game.ui.io.last_print_call).to include("Player 'X': Enter open cell ID")
     end
@@ -164,7 +164,7 @@ describe 'Game' do
                :player_one => @player_x,
                :player_two => @player_o,
                :player_first_move => @player_x}
-      @game = CLIGame.new(settings)
+      @game = RubyTictactoe::CLIGame.new(settings)
       @game.ui.io = MockKernel
     end
 
@@ -181,13 +181,13 @@ describe 'Game' do
 
   describe '#total_markers' do
     before :each do
-      @player_x = MockPlayer.new(TictactoeConstants::MARKER_X)
-      @player_o = MockPlayer.new(TictactoeConstants::MARKER_O)
+      @player_x = MockPlayer.new(RubyTictactoe::TictactoeConstants::MARKER_X)
+      @player_o = MockPlayer.new(RubyTictactoe::TictactoeConstants::MARKER_O)
       settings = { :board => MockBoard.new,
                :player_one => @player_x,
                :player_two => @player_o,
                :player_first_move => @player_x}
-      @game = CLIGame.new(settings)
+      @game = RubyTictactoe::CLIGame.new(settings)
       @game.ui.io = MockKernel
       @game.board.all_cells = { "1A"=>'X', "2A"=>'X', "3A"=>'O',
                                 "1B"=>'O', "2B"=>'O', "3B"=>nil,
@@ -195,24 +195,24 @@ describe 'Game' do
     end
 
     it 'returns the total X markers on the board' do
-      @game.total_markers(TictactoeConstants::MARKER_X).should == 2
+      @game.total_markers(RubyTictactoe::TictactoeConstants::MARKER_X).should == 2
     end
 
     it 'returns the total O marker on the board' do
-      @game.total_markers(TictactoeConstants::MARKER_O).should == 3
+      @game.total_markers(RubyTictactoe::TictactoeConstants::MARKER_O).should == 3
     end
   end
 
   describe '#current_player' do
 
     before :each do
-      @player_x = MockPlayer.new(TictactoeConstants::MARKER_X)
-      @player_o = MockPlayer.new(TictactoeConstants::MARKER_O)
+      @player_x = MockPlayer.new(RubyTictactoe::TictactoeConstants::MARKER_X)
+      @player_o = MockPlayer.new(RubyTictactoe::TictactoeConstants::MARKER_O)
       settings = { :board => MockBoard.new,
                    :player_one => @player_x,
                    :player_two => @player_o,
                    :player_first_move => @player_x}
-      @game = CLIGame.new(settings)
+      @game = RubyTictactoe::CLIGame.new(settings)
       @game.ui.io = MockKernel
     end
 
@@ -240,7 +240,7 @@ describe 'Game' do
 
   describe '#exit_game' do
     it "exits the game" do
-      @game.board = CLIBoard.new(3)
+      @game.board = RubyTictactoe::CLIBoard.new(3)
       @game.ui.io = MockKernel
       @game.exit_game.should == 'exited'
     end
@@ -250,20 +250,20 @@ end
 describe 'WebGame' do
 
   before :each do
-    @player_x = HumanPlayer.new('X')
-    @player_o = HumanPlayer.new('O')
+    @player_x = RubyTictactoe::HumanPlayer.new('X')
+    @player_o = RubyTictactoe::HumanPlayer.new('O')
     @player_x.opponent = @player_o
     @player_o.opponent = @player_x
-    settings = { :board => WebBoard.new(3),
+    settings = { :board => RubyTictactoe::WebBoard.new(3),
                  :player_one => @player_x,
                  :player_two => @player_o,
                  :player_first_move => @player_x}
-    @game = WebGame.new(settings)
+    @game = RubyTictactoe::WebGame.new(settings)
   end
 
   describe '#initialize' do
     it 'has the correct UI object' do
-      @game.ui.is_a?(UI)
+      @game.ui.is_a?(RubyTictactoe::UI)
     end
   end
 
@@ -314,7 +314,7 @@ describe 'WebGame' do
   describe '#get_first_move_player' do
     it 'returns a player object' do
       player = @game.get_first_move_player('human', 'human')
-      player.is_a?(HumanPlayer)
+      player.is_a?(RubyTictactoe::HumanPlayer)
     end
   end
 

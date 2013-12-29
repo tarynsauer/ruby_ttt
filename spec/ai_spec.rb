@@ -1,14 +1,14 @@
 require 'spec_helper'
 
-describe 'AI' do
+describe 'RubyTictactoe::AI' do
 
   before :each do
-    @board = Board.new(3)
-    @player_x = AIPlayer.new('X')
-    @player_o = HumanPlayer.new('O')
+    @board = RubyTictactoe::Board.new(3)
+    @player_x = RubyTictactoe::AIPlayer.new('X')
+    @player_o = RubyTictactoe::HumanPlayer.new('O')
     @player_x.opponent = @player_o
     @player_o.opponent = @player_x
-    @ai = AI.new(@player_x)
+    @ai = RubyTictactoe::AI.new(@player_x)
   end
 
   describe '#computer_move' do

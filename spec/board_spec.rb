@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe 'Board' do
+describe 'RubyTictactoe::Board' do
 
   before :each do
-    @board = Board.new(3)
+    @board = RubyTictactoe::Board.new(3)
     @player_x = MockPlayer.new('X')
     @player_o = MockPlayer.new('O')
     @board.add_test_marker(@player_x.marker, '1B')
@@ -11,7 +11,7 @@ describe 'Board' do
 
   describe '#create_board_hash' do
     it 'creates an empty board hash' do
-      board = Board.new(3)
+      board = RubyTictactoe::Board.new(3)
       (board.all_cells).should == { '1A' => nil, '2A' => nil, '3A' => nil,
                                     '1B' => nil, '2B' => nil, '3B' => nil,
                                     '1C' => nil, '2C' => nil, '3C' => nil }
@@ -20,7 +20,7 @@ describe 'Board' do
 
   describe '#get_winning_lines' do
     it 'creates an empty board hash' do
-      board = Board.new(3)
+      board = RubyTictactoe::Board.new(3)
       (board.winning_lines).should == [['1A', '2A', '3A'],
                                        ['1B', '2B', '3B'],
                                        ['1C', '2C', '3C'],
@@ -41,7 +41,7 @@ describe 'Board' do
     end
 
     it 'returns an array of all rows on the board' do
-      board = Board.new(4)
+      board = RubyTictactoe::Board.new(4)
       rows  = board.all_rows
       expect(rows).should == [['1A', '2A', '3A', '4A'],
                               ['1B', '2B', '3B', '4B'],
@@ -115,7 +115,7 @@ describe 'Board' do
 
   describe '#open_cells' do
     before :each do
-      @board = Board.new(3)
+      @board = RubyTictactoe::Board.new(3)
       @player_x = MockPlayer.new('X')
       @player_o = MockPlayer.new('O')
     end
@@ -230,7 +230,7 @@ describe 'Board' do
       @board.empty?.should be_false
     end
     it "returns true when there are no open cells" do
-      board = Board.new(3)
+      board = RubyTictactoe::Board.new(3)
       board.empty?.should be_true
     end
   end
@@ -255,7 +255,7 @@ describe 'Board' do
 
   context 'displaying the board grid' do
     before :each do
-       @board  = CLIBoard.new(3)
+       @board  = RubyTictactoe::CLIBoard.new(3)
        @board.all_cells = {"1A"=>nil, "2A"=>'X', "3A"=>nil,
                           "1B"=>'O', "2B"=>'O', "3B"=>nil,
                           "1C"=>nil, "2C"=>nil, "3C"=>nil}
@@ -310,9 +310,9 @@ describe 'Board' do
 
   end
 
-  context 'WebUI print board methods' do
+  context 'RubyTictactoe::WebUI print board methods' do
     before :each do
-       @board = WebBoard.new(3)
+       @board = RubyTictactoe::WebBoard.new(3)
        @board.all_cells = {"1A"=>nil, "2A"=>'X', "3A"=>nil,
                           "1B"=>nil, "2B"=>nil, "3B"=>nil,
                           "1C"=>nil, "2C"=>nil, "3C"=>nil}

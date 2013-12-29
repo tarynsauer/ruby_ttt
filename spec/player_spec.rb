@@ -4,8 +4,8 @@ describe 'Player' do
 
   before :each do
     @board = MockBoard.new
-    @player_x = Player.new('X')
-    @player_o = Player.new('O')
+    @player_x = RubyTictactoe::Player.new('X')
+    @player_o = RubyTictactoe::Player.new('O')
   end
 
   describe '#add_marker' do
@@ -29,9 +29,9 @@ end
 describe 'AIPlayer' do
 
   before :each do
-    @board = Board.new(3)
-    player_o = HumanPlayer.new('O')
-    @player = AIPlayer.new('X')
+    @board = RubyTictactoe::Board.new(3)
+    player_o = RubyTictactoe::HumanPlayer.new('O')
+    @player = RubyTictactoe::AIPlayer.new('X')
     @player.opponent = player_o
     player_o.opponent = @player
   end
@@ -50,8 +50,8 @@ end
 describe 'ComputerPlayer' do
 
   before :each do
-    @board = Board.new(3)
-    @player = ComputerPlayer.new('X')
+    @board = RubyTictactoe::Board.new(3)
+    @player = RubyTictactoe::ComputerPlayer.new('X')
   end
 
   describe '#make_move' do
