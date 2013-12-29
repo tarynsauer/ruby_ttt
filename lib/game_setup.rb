@@ -1,10 +1,6 @@
-COMPUTER_PLAYER = 'computer'
-HUMAN_PLAYER = 'human'
-AI_PLAYER = 'hard computer'
-HARD_LEVEL = 'hard'
-EASY_LEVEL = 'easy'
-
+require 'tictactoe_constants'
 class GameSetup
+  include TictactoeConstants
   attr_accessor :ui
   def initialize
     @ui = UI.new
@@ -37,8 +33,8 @@ class CLIGameSetup < GameSetup
   end
 
   def set_up_players
-    player_one_type = get_player_type(MARKER_X)
-    player_two_type = get_player_type(MARKER_O)
+    player_one_type = get_player_type(TictactoeConstants::MARKER_X)
+    player_two_type = get_player_type(TictactoeConstants::MARKER_O)
     PlayerFactory.new(player_one_type, player_two_type)
   end
 
@@ -50,14 +46,14 @@ class CLIGameSetup < GameSetup
   end
 
   def get_difficulty_level(type)
-    return type if type == HUMAN_PLAYER
+    return type if type == TictactoeConstants::HUMAN_PLAYER
     level = ui.request_difficulty_level
     valid_level?(level) ? ui.level_assigned_message(level) : invalid_level(level)
     player_type_by_level(level)
   end
 
   def valid_type?(type)
-    (type == HUMAN_PLAYER) || (type == COMPUTER_PLAYER)
+    (type == TictactoeConstants::HUMAN_PLAYER) || (type == TictactoeConstants::COMPUTER_PLAYER)
   end
 
   def invalid_type(type, marker)
@@ -66,16 +62,16 @@ class CLIGameSetup < GameSetup
   end
 
   def valid_level?(level)
-    (level == HARD_LEVEL) || (level == EASY_LEVEL)
+    (level == TictactoeConstants::HARD_LEVEL) || (level == TictactoeConstants::EASY_LEVEL)
   end
 
   def invalid_level(level)
     ui.invalid_input_message(level)
-    get_difficulty_level(COMPUTER_PLAYER)
+    get_difficulty_level(TictactoeConstants::COMPUTER_PLAYER)
   end
 
   def player_type_by_level(level)
-    level == HARD_LEVEL ? AI_PLAYER : COMPUTER_PLAYER
+    level == TictactoeConstants::HARD_LEVEL ? TictactoeConstants::AI_PLAYER : TictactoeConstants::COMPUTER_PLAYER
   end
 
   def get_board

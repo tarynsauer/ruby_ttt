@@ -1,7 +1,6 @@
-MARKER_X = 'X'
-MARKER_O = 'O'
-
+require 'tictactoe_constants'
 class Board
+  include TictactoeConstants
   attr_accessor :all_cells, :num_of_rows, :winning_lines
   def initialize(num_of_rows)
     @num_of_rows = num_of_rows
@@ -75,7 +74,7 @@ class Board
   end
 
   def game_over?
-    !moves_remaining? || winner?(MARKER_X) || winner?(MARKER_O)
+    !moves_remaining? || winner?(TictactoeConstants::MARKER_X) || winner?(TictactoeConstants::MARKER_O)
   end
 
   def open_cells

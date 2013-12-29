@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe 'PlayerFactory' do
   before :each do
-    @factory = PlayerFactory.new(COMPUTER_PLAYER, HUMAN_PLAYER)
+    @factory = PlayerFactory.new(TictactoeConstants::COMPUTER_PLAYER, TictactoeConstants::HUMAN_PLAYER)
   end
 
   describe '#create_player' do
@@ -15,12 +15,12 @@ describe 'PlayerFactory' do
     end
 
     it 'assigns player_one to a new AIPlayer' do
-      @factory = PlayerFactory.new(AI_PLAYER, HUMAN_PLAYER)
+      @factory = PlayerFactory.new(TictactoeConstants::AI_PLAYER, TictactoeConstants::HUMAN_PLAYER)
       @factory.player_one.is_a?(AIPlayer)
     end
 
     it 'raises an Invalid type error when type is invalid' do
-      expect { PlayerFactory.new('bad_type', HUMAN_PLAYER) }.to raise_error("Invalid player type")
+      expect { PlayerFactory.new('bad_type', TictactoeConstants::HUMAN_PLAYER) }.to raise_error("Invalid player type")
     end
   end
 

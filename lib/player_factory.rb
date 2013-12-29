@@ -1,18 +1,20 @@
+require 'tictactoe_constants'
 class PlayerFactory
+  include TictactoeConstants
   attr_accessor :player_one, :player_two
   def initialize(type_one, type_two)
-    @player_one = create_player(type_one, MARKER_X)
-    @player_two = create_player(type_two, MARKER_O)
+    @player_one = create_player(type_one, TictactoeConstants::MARKER_X)
+    @player_two = create_player(type_two, TictactoeConstants::MARKER_O)
     set_opponents
   end
 
   def create_player(type, marker)
     case type
-    when COMPUTER_PLAYER
+    when TictactoeConstants::COMPUTER_PLAYER
       ComputerPlayer.new(marker)
-    when HUMAN_PLAYER
+    when TictactoeConstants::HUMAN_PLAYER
       HumanPlayer.new(marker)
-    when AI_PLAYER
+    when TictactoeConstants::AI_PLAYER
       AIPlayer.new(marker)
     else
       raise "Invalid player type"

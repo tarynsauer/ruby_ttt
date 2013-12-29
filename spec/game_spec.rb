@@ -181,8 +181,8 @@ describe 'Game' do
 
   describe '#total_markers' do
     before :each do
-      @player_x = MockPlayer.new(MARKER_X)
-      @player_o = MockPlayer.new(MARKER_O)
+      @player_x = MockPlayer.new(TictactoeConstants::MARKER_X)
+      @player_o = MockPlayer.new(TictactoeConstants::MARKER_O)
       settings = { :board => MockBoard.new,
                :player_one => @player_x,
                :player_two => @player_o,
@@ -195,19 +195,19 @@ describe 'Game' do
     end
 
     it 'returns the total X markers on the board' do
-      @game.total_markers(MARKER_X).should == 2
+      @game.total_markers(TictactoeConstants::MARKER_X).should == 2
     end
 
     it 'returns the total O marker on the board' do
-      @game.total_markers(MARKER_O).should == 3
+      @game.total_markers(TictactoeConstants::MARKER_O).should == 3
     end
   end
 
   describe '#current_player' do
 
     before :each do
-      @player_x = MockPlayer.new(MARKER_X)
-      @player_o = MockPlayer.new(MARKER_O)
+      @player_x = MockPlayer.new(TictactoeConstants::MARKER_X)
+      @player_o = MockPlayer.new(TictactoeConstants::MARKER_O)
       settings = { :board => MockBoard.new,
                    :player_one => @player_x,
                    :player_two => @player_o,

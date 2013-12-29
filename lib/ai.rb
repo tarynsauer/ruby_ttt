@@ -1,10 +1,9 @@
-POS_INF = 999
-NEG_INF = -999
-WIN = 1
-LOSE = -1
-TIE = 0
-
 class AI
+  POS_INF = 999
+  NEG_INF = -999
+  WIN = 1
+  LOSE = -1
+  TIE = 0
   attr_reader :current_player
   def initialize(player)
     @current_player = player

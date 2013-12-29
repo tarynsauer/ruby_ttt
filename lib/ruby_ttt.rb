@@ -1,11 +1,14 @@
+require 'tictactoe_constants'
 require 'ai'
 require 'board'
 require 'player_factory'
 require 'game_setup'
 require 'player'
 require 'ui'
+require 'alpha_beta_player'
 
 class Game
+  include TictactoeConstants
   attr_accessor :board, :player_one, :player_two, :ui, :player_first_move
   def initialize(settings)
     @board = settings[:board]
@@ -35,9 +38,9 @@ class Game
   end
 
   def current_player
-    if total_markers(MARKER_X) > total_markers(MARKER_O)
+    if total_markers(TictactoeConstants::MARKER_X) > total_markers(TictactoeConstants::MARKER_O)
       player_two
-    elsif total_markers(MARKER_O) > total_markers(MARKER_X)
+    elsif total_markers(TictactoeConstants::MARKER_O) > total_markers(TictactoeConstants::MARKER_X)
       player_one
     else
       player_first_move
@@ -119,7 +122,7 @@ class WebGame < Game
   end
 
   def computer_player?(type_one, type_two)
-    ((type_one.downcase) == COMPUTER_PLAYER) || ((type_two.downcase) == COMPUTER_PLAYER)
+    ((type_one.downcase) == TictactoeConstants::COMPUTER_PLAYER) || ((type_two.downcase) == TictactoeConstants::COMPUTER_PLAYER)
   end
 
 end
