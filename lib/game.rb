@@ -1,12 +1,3 @@
-require 'tictactoe_constants'
-require 'ai'
-require 'board'
-require 'player_factory'
-require 'game_setup'
-require 'player'
-require 'ui'
-require 'alpha_beta_player'
-
 module RubyTictactoe
 
   class Game
@@ -40,9 +31,9 @@ module RubyTictactoe
     end
 
     def current_player
-      if total_markers(RubyTictactoe::TictactoeConstants::MARKER_X) > total_markers(RubyTictactoe::TictactoeConstants::MARKER_O)
+      if total_markers(MARKER_X) > total_markers(MARKER_O)
         player_two
-      elsif total_markers(RubyTictactoe::TictactoeConstants::MARKER_O) > total_markers(RubyTictactoe::TictactoeConstants::MARKER_X)
+      elsif total_markers(MARKER_O) > total_markers(MARKER_X)
         player_one
       else
         player_first_move
@@ -124,7 +115,7 @@ module RubyTictactoe
     end
 
     def computer_player?(type_one, type_two)
-      ((type_one.downcase) == RubyTictactoe::TictactoeConstants::COMPUTER_PLAYER) || ((type_two.downcase) == RubyTictactoe::TictactoeConstants::COMPUTER_PLAYER)
+      ((type_one.downcase) == COMPUTER_PLAYER) || ((type_two.downcase) == COMPUTER_PLAYER)
     end
   end
 

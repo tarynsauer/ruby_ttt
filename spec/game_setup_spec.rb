@@ -23,10 +23,12 @@ describe 'RubyTictactoe::GameSetup' do
 
   describe '#get_player_type' do
     it 'returns validated player type string' do
+      @setup.ui.io.set_gets('Human')
       @setup.get_player_type('X').should == 'human'
     end
 
     it 'prints type assigned message' do
+      @setup.get_player_type('X')
       @setup.ui.io.last_print_call.should include("Player 'X' is human.")
     end
   end

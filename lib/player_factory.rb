@@ -6,18 +6,18 @@ module RubyTictactoe
     include TictactoeConstants
     attr_accessor :player_one, :player_two
     def initialize(type_one, type_two)
-      @player_one = create_player(type_one, RubyTictactoe::TictactoeConstants::MARKER_X)
-      @player_two = create_player(type_two, RubyTictactoe::TictactoeConstants::MARKER_O)
+      @player_one = create_player(type_one, MARKER_X)
+      @player_two = create_player(type_two, MARKER_O)
       set_opponents
     end
 
     def create_player(type, marker)
       case type
-      when RubyTictactoe::TictactoeConstants::COMPUTER_PLAYER
+      when COMPUTER_PLAYER
         ComputerPlayer.new(marker)
-      when RubyTictactoe::TictactoeConstants::HUMAN_PLAYER
+      when HUMAN_PLAYER
         HumanPlayer.new(marker)
-      when RubyTictactoe::TictactoeConstants::AI_PLAYER
+      when AI_PLAYER
         AIPlayer.new(marker)
       else
         raise "Invalid player type"

@@ -36,8 +36,8 @@ module RubyTictactoe
     end
 
     def set_up_players
-      player_one_type = get_player_type(RubyTictactoe::TictactoeConstants::MARKER_X)
-      player_two_type = get_player_type(RubyTictactoe::TictactoeConstants::MARKER_O)
+      player_one_type = get_player_type(MARKER_X)
+      player_two_type = get_player_type(MARKER_O)
       PlayerFactory.new(player_one_type, player_two_type)
     end
 
@@ -49,14 +49,14 @@ module RubyTictactoe
     end
 
     def get_difficulty_level(type)
-      return type if type == RubyTictactoe::TictactoeConstants::HUMAN_PLAYER
+      return type if type == HUMAN_PLAYER
       level = ui.request_difficulty_level
       valid_level?(level) ? ui.level_assigned_message(level) : invalid_level(level)
       player_type_by_level(level)
     end
 
     def valid_type?(type)
-      (type == RubyTictactoe::TictactoeConstants::HUMAN_PLAYER) || (type == RubyTictactoe::TictactoeConstants::COMPUTER_PLAYER)
+      (type == HUMAN_PLAYER) || (type == COMPUTER_PLAYER)
     end
 
     def invalid_type(type, marker)
@@ -65,16 +65,16 @@ module RubyTictactoe
     end
 
     def valid_level?(level)
-      (level == RubyTictactoe::TictactoeConstants::HARD_LEVEL) || (level == RubyTictactoe::TictactoeConstants::EASY_LEVEL)
+      (level == HARD_LEVEL) || (level == EASY_LEVEL)
     end
 
     def invalid_level(level)
       ui.invalid_input_message(level)
-      get_difficulty_level(RubyTictactoe::TictactoeConstants::COMPUTER_PLAYER)
+      get_difficulty_level(COMPUTER_PLAYER)
     end
 
     def player_type_by_level(level)
-      level == RubyTictactoe::TictactoeConstants::HARD_LEVEL ? RubyTictactoe::TictactoeConstants::AI_PLAYER : RubyTictactoe::TictactoeConstants::COMPUTER_PLAYER
+      level == HARD_LEVEL ? AI_PLAYER : COMPUTER_PLAYER
     end
 
     def get_board

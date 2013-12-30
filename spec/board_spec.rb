@@ -35,7 +35,7 @@ describe 'RubyTictactoe::Board' do
   describe '#all_rows' do
     it 'returns an array of all rows on the board' do
       rows = @board.all_rows
-      expect(rows).should == [['1A', '2A', '3A'],
+      expect(rows) == [['1A', '2A', '3A'],
                               ['1B', '2B', '3B'],
                               ['1C', '2C', '3C']]
     end
@@ -43,7 +43,7 @@ describe 'RubyTictactoe::Board' do
     it 'returns an array of all rows on the board' do
       board = RubyTictactoe::Board.new(4)
       rows  = board.all_rows
-      expect(rows).should == [['1A', '2A', '3A', '4A'],
+      expect(rows) == [['1A', '2A', '3A', '4A'],
                               ['1B', '2B', '3B', '4B'],
                               ['1C', '2C', '3C', '4C'],
                               ['1D', '2D', '3D', '4D']]

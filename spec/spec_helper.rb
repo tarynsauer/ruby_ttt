@@ -6,7 +6,7 @@ require 'game_setup'
 require 'player_factory'
 require 'ai'
 require 'board'
-require 'ruby_ttt'
+require 'game'
 require 'player'
 require 'ui'
 require 'alpha_beta_player'
@@ -15,6 +15,7 @@ RSpec.configure do |config|
   config.color_enabled = true
   config.tty = true
   config.formatter = :documentation
+  config.order = :rand
 end
 
 class MockBoard
