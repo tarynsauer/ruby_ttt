@@ -35,7 +35,10 @@ class MockBoard
     'A1'
   end
 
-  def winner?
+  def winner?(marker)
+  end
+
+  def game_over?
   end
 
   def valid_cell?(cell)
@@ -83,42 +86,5 @@ class MockPlayer
   def initialize(marker)
     @marker = marker
     @opponent = nil
-  end
-end
-
-class MockKernel
-  @@input = nil
-  @@lines = []
-  @@output = nil
-  @@gets_string = ''
-  @@gets_sequence_array = []
-
-  def self.print(string)
-    @@input = string
-    @@lines.push(@@input)
-  end
-
-  def self.last_print_call
-    @@input
-  end
-
-  def self.last_lines(num)
-    @@lines[-num..-1].join('')
-  end
-
-  def self.set_gets(string)
-    @@gets_string = string
-  end
-
-  def self.set_gets_sequence(array)
-    @@gets_sequence_array = array
-  end
-
-  def self.gets
-    (@@gets_sequence_array.length > 0) ? @@gets_sequence_array.shift : @@gets_string
-  end
-
-  def self.exit
-    'exited'
   end
 end
