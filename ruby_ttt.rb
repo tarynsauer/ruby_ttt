@@ -1,10 +1,2 @@
 File.join(File.expand_path(File.dirname(__FILE__)), "..", "lib")
-require 'tictactoe_constants'
-require 'ai'
-require 'board'
-require 'player_factory'
-require 'game_setup'
-require 'player'
-require 'ui'
-require 'alpha_beta_player'
-require 'game'
+require 'ruby_ttt'
