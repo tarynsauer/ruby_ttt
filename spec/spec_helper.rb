@@ -8,8 +8,10 @@ require 'ai'
 require 'board'
 require 'game'
 require 'player'
+require 'ai_player'
+require 'computer_player'
+require 'human_player'
 require 'ui'
-require 'alpha_beta_player'
 
 RSpec.configure do |config|
   config.color_enabled = true
